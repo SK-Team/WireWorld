@@ -3,3 +3,4 @@
 *.syntex.gz
 Specyfikacja_funkcjonalna_C/*.txt
 Specyfikacja_implementacyjna_C/*txt
+*.log

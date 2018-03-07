@@ -1,0 +1,5 @@
+#ignore unnecessery files genereted by TeX editor
+*.aux
+*.syntex.gz
+Specyfikacja_funkcjonalna_C/*.txt
+Specyfikacja_implementacyjna_C/*txt

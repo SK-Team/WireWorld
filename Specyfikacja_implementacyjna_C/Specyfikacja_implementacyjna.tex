@@ -48,6 +48,8 @@
 \begin{document}
 \maketitle
 \setcounter{page}{2}
+\tableofcontents
+\newpage
 \section{Diagram programu}
 \begin{figure}[h]
 \centering
@@ -55,7 +57,7 @@
 \caption{Diagram}
 \end{figure}
 
-
+Na diagramie naszego projektu przedstawiliśmy wszystkie moduły, które wchodzą w jego skład. Moduły korzystają z funkcji tych modułów, które mają strzałki skierowane w ich kierunku.
 
 \section{Opis modułów i ich funkcji}
 \subsection{Board}
@@ -138,7 +140,7 @@ Zawiera strukturę przechowywującą planszę i rozłożone na niej komórki ora
 Odpowiada za symulację kolejnych generacji komórek. Zawiera następujące funkcje:
 \begin{enumerate}
 
-\item \begin{verbatim} board_t simulate_generation(board_t previous_generation, int rules[], int neighbourhood). \end{verbatim}
+\item \verb+board_t simulate_generation(board_t previous_generation,+ \\\verb+int rules[],int neighbourhood).+
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -232,30 +234,13 @@ Odpowiada za generowanie obrazów \verb+.png+ przedstawiających stan kolejnych 
 \end{itemize}
 \end{itemize}
 
-\item \begin{verbatim} int what_happens_with_cell(int neighbours_alive, int rules[]). \end{verbatim}
-\begin{itemize}
-\item Argumenty:
-\begin{itemize}
-\item \verb+neighbours_alive+ - ilość żywych sąsiadów komórki,
-\item \verb+rules+ - przyjęte zasady przżywania komórek.
-\end{itemize}
-\item Wartość zwracana:
-\begin{itemize}
-\item Liczba określająca czy komórka przeżywa (2), umiera (0) czy ożywa (1).
-\end{itemize}
-\item Działanie:
-\begin{itemize}
-\item Funkcja na podstawie podanej ilości żywych sąsiadów ustala (korzystając z przyjętych zasad przeżywania komórek) czy komórka przeżyje, umrze lub ożyje.
-\end{itemize}
-\end{itemize}
-
 \end{enumerate}
 
 \subsection{Main}
 Jest modułem sterującym programu. Zawiera następujące funkcje:
 \begin{enumerate}
 
-\item \begin{verbatim} void read_rules(FILE* settings_file, int rules[], int neighbourhood) \end{verbatim}
+\item \verb+ void read_rules(FILE* settings_file, int rules[],+ \\\verb+ int neighbourhood)+
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -311,7 +296,7 @@ Jest modułem testującym działanie modułu \verb+Board+. Zawiera następujące
 \end{itemize}
 \item Działanie:
 \begin{itemize}
-\item Funkcja powinna poprawnie wypisać podaną jako argument planszę na dany strumień wyjściowy za pomocą funkcji \verb+print_board+ z modułu \verb+Board+. 
+\item Funkcja powinna poprawnie wypisać podaną jako argument planszę na dany strumień wyjściowy za pomocą funkcji \\\verb+print_board+ z modułu \verb+Board+. 
 \end{itemize}
 \end{itemize}
 
@@ -328,12 +313,12 @@ Jest modułem testującym działanie modułu \verb+Board+. Zawiera następujące
 \end{itemize}
 \item Działanie:
 \begin{itemize}
-\item Funkcja powinna poprawnie przeczytać planszę z podanego (poprawnego) pliku wejściowego, korzystając z funkcji \verb+read_from_board_file+ z modułu \verb+Board+ oraz wypisać ją na standardowe wyjście.
+\item Funkcja powinna poprawnie przeczytać planszę z podanego (poprawnego) pliku wejściowego, korzystając z funkcji \\\verb+read_from_board_file+ z modułu \verb+Board+ oraz wypisać ją na standardowe wyjście.
 \end{itemize}
 \end{itemize}
 
 
-\item \begin{verbatim} void should_show_error_message_for_incorrect_board_file(char *file_name) \end{verbatim}
+\item \verb+ void should_show_error_message_for_incorrect_board_file+ \\\verb+(char *file_name)+
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -345,12 +330,12 @@ Jest modułem testującym działanie modułu \verb+Board+. Zawiera następujące
 \end{itemize}
 \item Działanie:
 \begin{itemize}
-\item Funkcja próbuje przeczytać planszę z niepoprawnego pliku wejciowego, używając funkcji \verb+read_from_board_file+ z modułu \verb+Board+. Próba ta powinna zakończyć się niepowodzeniem. W takim przypadku zostanie wypisany komunikat o błędzie.
+\item Funkcja próbuje przeczytać planszę z niepoprawnego pliku wejściowego, używając funkcji \verb+read_from_board_file+ z modułu \verb+Board+. Próba ta powinna zakończyć się niepowodzeniem. W takim przypadku zostanie wypisany komunikat o błędzie.
 \end{itemize}
 \end{itemize}
 
 
-\item \begin{verbatim} void should_show_confirmation_for_succesful_memory_allocation(int height, int width) \end{verbatim}
+\item \verb+ void should_show_confirmation_for_succesful_memory_+\\\verb+allocation(int height, int width)+
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -366,7 +351,7 @@ Jest modułem testującym działanie modułu \verb+Board+. Zawiera następujące
 \end{itemize}
 \end{itemize}
 
-\item \begin{verbatim} void should_show_error_message_for_unsuccessful_memory_allocation(int height, int width) \end{verbatim}
+\item \verb+void should_show_error_message_for_unsuccessful_memory_+ \\\verb+allocation(int height, int width)+
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -378,7 +363,7 @@ Jest modułem testującym działanie modułu \verb+Board+. Zawiera następujące
 \end{itemize}
 \item Działanie:
 \begin{itemize}
-\item Funkcja próbuje zaalokować pamięć na planszę korzystając z funkcji \verb+make_matrix+ z modułu \verb+Board+. Jeżeli ta próba zakończy się niepowodzeniem, funkcja wypisze komunikat o błędzie. Przy wywoływaniu tej funkcji, jako 
+\item Funkcja próbuje zaalokować pamięć na planszę korzystając z~funkcji \verb+make_matrix+ z modułu \verb+Board+. Jeżeli ta próba zakończy się niepowodzeniem, funkcja wypisze komunikat o błędzie. Przy wywoływaniu tej funkcji, jako 
 argumenty podawane będą bardzo duże liczby w celu przetestowania zachowania funkcji przy braku potrzebnej pamięci. 
 \end{itemize}
 \end{itemize}
@@ -388,7 +373,7 @@ argumenty podawane będą bardzo duże liczby w celu przetestowania zachowania f
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
-\item \verb+argc+ - ilość podanych argumentów w wierszu poleceń ,
+\item \verb+argc+ - ilość podanych argumentów w wierszu poleceń,
 \item \verb+argv+ - argumenty podane przez użytkownika w wierszu poleceń.
 \end{itemize}
 \item Wartość zwracana:
@@ -411,7 +396,7 @@ argumenty podawane będą bardzo duże liczby w celu przetestowania zachowania f
 Jest modułem testującym działanie modułu \verb+Simulator+. Zawiera następujące funkcje:
 \begin{enumerate}
 
-\item \begin{verbatim} void should_show_generation_after_simulation(board_t prevoius_generation, int rules[], int neighbourhood) \end{verbatim}
+\item \verb+ void should_show_generation_after_simulation(board_t+ \\\verb+ prevoius_generation, int rules[], int neighbourhood) +
 \begin{itemize}
 \item Argumenty:
 \begin{itemize}
@@ -444,12 +429,92 @@ Jest modułem testującym działanie modułu \verb+Simulator+. Zawiera następuj
 \end{itemize}
 \item Działanie:
 \begin{itemize}
-\item Funkcja steruje działaniem modułu \verb+Simulation_test+. Wywołuje funkcję testową \verb+ should_show_generation_after_simulation+.
+\item Funkcja steruje działaniem modułu \verb+Simulation_test+. Wywołuje funkcję testową 
+\verb+ should_show_generation_after_+\\\verb+simulation.+
 \end{itemize}
 \end{itemize}
 
 
 \end{enumerate}
+\subsection{Png test}
+Jest modułem testującym działanie modułu \verb+Png_generator+. Zawiera następujące funkcje:
+\begin{enumerate}
+
+\item \verb+void should_show_confirmation_for_successful_png_generation+\\\verb+(char *filename, board_t b)+
+\begin{itemize}
+\item Argumenty:
+\begin{itemize}
+\item \verb+filename+ - nazwa pliku png,
+\item \verb+b+ - dane w strukturze \verb+board_t+ zawierające planszę przeznaczoną do zapisania w png,
+\end{itemize}
+\item Wartość zwracana:
+\begin{itemize}
+\item Void.
+\end{itemize}
+\item Działanie:
+\begin{itemize}
+\item Funkcja próbuje wygenerować plik png o nazwie podanej jako argument na podstawie podanej planszy za pomocą funkcji \verb+process_file+ oraz \verb+generate+ z modułu \verb+Png_generator+.
+\end{itemize}
+\end{itemize}
+
+\item \verb+void should_show_error_message_for_unsuccessful_png_generation+\\\verb+(char *filename, board_t b)+
+\begin{itemize}
+\item Argumenty:
+\begin{itemize}
+\item \verb+filename+ - nazwa pliku png,
+\item \verb+b+ - dane w strukturze \verb+board_t+ zawierające planszę przeznaczoną do zapisania w png,
+\end{itemize}
+\item Wartość zwracana:
+\begin{itemize}
+\item Void.
+\end{itemize}
+\item Działanie:
+\begin{itemize}
+\item Funkcja próbuje wygenerować plik png o nazwie podanej jako argument na podstawie podanej planszy za pomocą funkcji \verb+process_file+ oraz \verb+generate+ z modułu \verb+Png_generator+. Próba ta powinna zakończyć się niepowodzeniem i wypisaniem komunikatu o błędzie.
+\end{itemize}
+\end{itemize}
+
+\item \begin{verbatim} int main(int argc, char** argv) \end{verbatim}
+\begin{itemize}
+\item Argumenty:
+\begin{itemize}
+\item \verb+argc+ - ilość podanych argumentów w wierszu poleceń ,
+\item \verb+argv+ - argumenty podane przez użytkownika w wierszu poleceń.
+\end{itemize}
+\item Wartość zwracana:
+\begin{itemize}
+\item Liczba '0'.
+\end{itemize}
+\item Działanie:
+\begin{itemize}
+\item Funkcja steruje działaniem modułu \verb+Png_test+. Wywołuje funkcję testową \verb+ should_show_confirmation_for_successful_+\\\verb+png_generation+ oraz \verb+void should_show_error_message_+\\\verb+for_unsuccessful_png_generation+.
+\end{itemize}
+\end{itemize}
+
+
+\end{enumerate}
+
+\section{Testy}
+Opis funkcji testujących został opisany w poprzednim rozdziale podczas opisu modułów \verb+Board_test+,
+\verb+Simulation_test+ oraz \verb+Png_test+.
+
+Podczas testów będziemy analizować dane, które zostaną zwrócone przez funkcje testujące i na ich podstawie ocenimy działanie naszego programu.
+
+
+\section{Strona techniczna projektu}
+\begin{description}
+\item[Używana wersja C]\hfill \\
+ W naszym projekcie zostanie użyty język C w wersji~89.
+\item[Używany system operacyjny]\hfill \\
+ Projekt będzie tworzony w systemie Linux.
+\item[Użyte biblioteki]\hfill \\
+ Nasz program będzie korzystał z biblioteki \verb+libpng+.
+\item[Wersjonowanie]\hfill \\
+ Podczas tworzenia projektu będziemy go wersjonować zaczynając od \verb+0.1+, a gotowa wersja naszego programu będzie miała numer \verb+1.0+. Podczas pracy z Gitem będziemy tworzyć nowy branch za każdym razem gdy będziemy chcieli wprowadzić nową funkcjonalność.
+
+
+
+\end{description}
 
 
 \end{document}

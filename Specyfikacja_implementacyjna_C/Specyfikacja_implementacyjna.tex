@@ -58,8 +58,7 @@
 \end{figure}
 
 Na diagramie naszego projektu przedstawiliśmy wszystkie moduły, które wchodzą w jego skład. Moduły korzystają z funkcji tych modułów, które mają strzałki skierowane w ich kierunku.
-
-\section{Opis modułów i ich funkcji}
+\section{Opis modułów i ich funkcji}\label{Opis}
 \subsection{Board}
 Zawiera strukturę przechowywującą planszę i rozłożone na niej komórki oraz następujące funkcje:
 \begin{enumerate}
@@ -494,12 +493,16 @@ Jest modułem testującym działanie modułu \verb+Png_generator+. Zawiera nast�
 
 \end{enumerate}
 
+\section{Dane w naszym programie}
+Przechowywanie danych, sposób ich przyjmowania i generowania przez nasz program został opisany w specyfikacji funkcjonalnej. Argumenty przyjmowane przez poszczególne funkcje oraz ich typy opisane są w sekcji \ref{Opis} Opis modułów i ich funkcji.
+
 \section{Testy}
 Opis funkcji testujących został opisany w poprzednim rozdziale podczas opisu modułów \verb+Board_test+,
 \verb+Simulation_test+ oraz \verb+Png_test+.
 
 Podczas testów będziemy analizować dane, które zostaną zwrócone przez funkcje testujące i na ich podstawie ocenimy działanie naszego programu.
 
+Do sprawdzenia czy nasz program nie powoduje wycieków pamięci użyjemy programu \verb+valgrind+.
 
 \section{Strona techniczna projektu}
 \begin{description}

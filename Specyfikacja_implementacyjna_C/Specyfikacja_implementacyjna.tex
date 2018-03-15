@@ -144,8 +144,15 @@ Odpowiada za symulację kolejnych generacji komórek. Zawiera następujące funk
 \item Argumenty:
 \begin{itemize}
 \item \verb+previous_generation+ - aktualny stan planszy,
-\item \verb+rules+ - zasady życia komórek,
-\item \verb+neighbourhood+ - przyjęta zasada sąsiedztwa.
+\item \verb+rules+ - zasady życia komórek. Każda pozycja tablicy rules odpowiada ilości żywych sąsiadów, dla której komórka przechodzi do odpowiedniego stanu. Każda wartość na danej pozycji informuje do jakiego stanu przejdzie komórka z daną ilością żywych sąsiadów (liczbie żywych sąsiadów odpowiada pozycja w tablicy): 
+\begin{itemize}
+	\item przeżywa lub rodzi się w zależności od bieżącego stanu (3),
+	\item rodzi się (2), 
+	\item przeżywa (1), 
+	\item na pewno umiera (0).
+\end{itemize}
+Jeśli komórka żyje i ma liczbę żywych sąsiadów odpowiadającą tylko rodzeniu się, umiera z zatłoczenia (stąd dodatkowa wartość: "przeżywa lub rodzi się").
+\item \verb+neighbourhood+ - przyjęta zasada sąsiedztwa, czyli ilość rozpatrywanych sąsiadów (4 - sąsiedztwo von Neumanna, 8 - sąsiedztwo Moore'a).
 \end{itemize}
 \item Wartość zwracana:
 \begin{itemize}
@@ -199,7 +206,6 @@ Nowy stan każdej komórki zapisywany jest do nowej planszy.
 \subsection{Png generator}
 Odpowiada za generowanie obrazów \verb+.png+ przedstawiających stan kolejnych generacji. Zawiera następujące funkcje:
 \begin{enumerate}
-
 \item \begin{verbatim} void process_file(board_t b). \end{verbatim}
 \begin{itemize}
 \item Argumenty:

@@ -5,22 +5,17 @@
 
 int main(int argc, char **argv){
 
-	board_t b = make_board(5,5);
+	FILE *out = fopen("test","r");
 
-	if(b == NULL){
-		printf("Niefajnie\n");
-		return 1;		
+	if(out == NULL){
+		printf("Slabiutko\n");
+		return 1;
 	}
-	
-	int i,j;
 
-	for (i = 0; i < 5; i++)
-		for (j = 0; j < 5; j++)
-			b->values[i][j] = 'a';
+	board_t b = read_board_file(out);
 
-	for (i = 0; i < 5; i++){
-	        for (j = 0; j < 5; j++)
-			printf("%c ", b->values[i][j]);
-		printf("\n");
-	}
+	print_board(stdout, b);
+
+	b = free_board(b);	
+
 }

@@ -57,19 +57,25 @@ board_t read_board_file(FILE* in){
 
 	board_t b;
 
-	if (fscanf(in, "%d %d", &height, &width) != 0)
+	char pom;
+
+	if (fscanf(in, "%d %d", &height, &width) != 2)
 		return NULL;
 
 	if ((b = make_board(height, width)) == NULL)
 		return NULL;
 
-	for (i = 0; i < b->rows; i++)
+	fscanf(in, "%c", &pom);
+
+	for (i = 0; i < b->rows; i++){
 		for (j = 0; j < b->columns; j++){
-			if ((fscanf(in, "%c", &(b->values[i][j]))) != 0){
+			if (fscanf(in, "%c", &(b->values[i][j])) != 1){
 				free(b);
 				return NULL;
 			}
 		}
+		fscanf(in, "%c", &pom);
+	}
 
 	return b;
 }

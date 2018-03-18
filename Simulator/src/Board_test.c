@@ -14,8 +14,14 @@ int main(int argc, char **argv){
 
 	board_t b = read_board_file(out);
 
+	if(b == NULL){
+		printf("Slabiutko 2\n");
+		return 2;
+	}
+
 	print_board(stdout, b);
 
 	b = free_board(b);	
 
+	fclose(out);
 }

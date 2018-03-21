@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Board.h"
+#include "board.h"
 
 board_t make_board(int height, int width){
 	
@@ -69,8 +69,8 @@ board_t read_board_file(FILE* in){
 
 	for (i = 0; i < b->rows; i++){
 		for (j = 0; j < b->columns; j++){
-			if (fscanf(in, "%c", &(b->values[i][j])) != 1){
-				free(b);
+			if ((fscanf(in, "%c", &(b->values[i][j])) != 1) || (b->values[i][j] != '0' && b->values[i][j] != '1')){
+				free_board(b);
 				return NULL;
 			}
 		}
@@ -84,9 +84,11 @@ void print_board(FILE *out, board_t b){
 	
 	int i,j;
 
+	fprintf(out, "%d %d\n", b->rows, b->columns);
+
 	for (i = 0; i < b->rows; i++){
 		for (j = 0; j < b->columns; j++)
-			fprintf(out, "%c ", b->values[i][j]);
+			fprintf(out, "%c", b->values[i][j]);
 		fprintf(out, "\n");
 	}
 }

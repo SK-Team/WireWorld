@@ -122,13 +122,46 @@ int main(int argc, char **argv){
 
 			fclose(out);
 
-		} else if (strcmp(argv[1], "-help") == 0 || strcmp(argv[1], "-h") == 0) {
-			
-		}
+		} else if (strcmp(argv[1], "-help") == 0 || strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
+		
+			printf("\n");
+			printf("Uzycie programu testujacego modul board\n");
+			printf("\n");
+			printf("./board_test [argument] [path]\n");
+			printf("\n");
+			printf("Lista argumentow:\n");
+			printf("--help, -help, -h - wywolanie pomocy,\n");
+			printf("-sa - wywolanie testu poprawnego alokowania pamieci na plansze,\n");
+			printf("-ua - wywolanie testu niepoprawnego alokowania pamieci na plansze,\n");
+			printf("-p - wywolanie testu drukowania,\n");
+			printf("-cr - wywolanie testu poprawnego czytania z pliku,\n");
+			printf("      po podaniu sciezki pliku na nim wykonac test,\n");
+			printf("-ir - wywolanie testu niepoprawnego czytania z pliku,\n");
+			printf("      po podaniu sciezki pliku na nim wykonac test.\n");
+			printf("\n");
 
-			   
-			          
+		} 
+		
+	} else {
+			
+			printf("\n");
+			printf("Uzycie programu testujacego modul board\n");
+			printf("\n");
+			printf("./board_test [argument] [path]\n");
+			printf("\n");
+			printf("Lista argumentow:\n");
+			printf("--help, -help, -h - wywolanie pomocy,\n");
+			printf("-sa - wywolanie testu poprawnego alokowania pamieci na plansze,\n");
+			printf("-ua - wywolanie testu niepoprawnego alokowania pamieci na plansze,\n");
+			printf("-p - wywolanie testu drukowania,\n");
+			printf("-cr - wywolanie testu poprawnego czytania z pliku,\n");
+			printf("      po podaniu sciezki pliku na nim wykonac test,\n");
+			printf("-ir - wywolanie testu niepoprawnego czytania z pliku,\n");
+			printf("      po podaniu sciezki pliku na nim wykonac test.\n");
+			printf("\n");
 
 	}
+
+	return 0;
 
 }

@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 		}
 		i+=2;
 	}	
-	printf("|%s| |%d| |%s|\n ",nazwa_pliku_konfig,ile_generacji,nazwa_pliku_wyjsciowego);		
+	
 	if(nazwa_pliku_konfig == NULL)
 		nazwa_pliku_konfig = "../data/generation_config"; //domyslna nazwa pliku konfiguracyjnego
 	if(strstr(nazwa_pliku_wyjsciowego,"../bin/") == NULL)
@@ -46,6 +46,7 @@ int main(int argc, char** argv)
 	if(ile_generacji==-1)
 		ile_generacji = 20; //domyslna ilosc generacji do zasymulowania
 
+	printf("|%s| |%d| |%s|\n ",nazwa_pliku_konfig,ile_generacji,nazwa_pliku_wyjsciowego);		
 
 	plik_konfig = fopen(nazwa_pliku_konfig,"r");
 	if(plik_konfig==NULL)

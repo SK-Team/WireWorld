@@ -10,7 +10,7 @@ int read_rules(FILE *in, int rules[], int*neighbourhood)
 		*neighbourhood=4;
 	else if(tmp=='M')
 		*neighbourhood=8;
-	else return 1;
+	else return 1; //bledny format pliku
 
 	for(i=0; i<=*neighbourhood; i++)
 	{
@@ -42,7 +42,8 @@ int read_rules(FILE *in, int rules[], int*neighbourhood)
 		{
 			rules[pom]=2;
 		}
-	}	
+	}
+	return 0;	
 }
 int count_neighbours_alive(int x, int y, int neighbourhood, board_t b)
 {

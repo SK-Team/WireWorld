@@ -4,12 +4,8 @@
 
 void should_show1_generation_after_simulation(board_t previous_generation, int rules[], int neighbourhood)
 {
-
 	board_t new_generation = simulate_generation(previous_generation,rules, neighbourhood);
-	print_board(stdout,new_generation);	
-	
-	
-
+	print_board(stdout,new_generation);
 }
 
 
@@ -29,7 +25,6 @@ int main(int argc, char** argv)
 	{
 		fprintf(stderr,"Nie moge odczytac pliku ustawien. Test nie zadziala\n");
 		return EXIT_FAILURE;
-			
 	}
 
 	read_rules(ustawienia,rules,&neighbourhood);
@@ -41,6 +36,4 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 	should_show1_generation_after_simulation(generation,rules,neighbourhood);
-
-
 }

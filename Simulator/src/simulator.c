@@ -1,8 +1,8 @@
 #include "simulator.h"
 int read_rules(FILE *in, int rules[], int*neighbourhood)
 {
-	char tmp;
-	int pom;
+	char tmp; //do wczytywania znakow z pliku ustawien
+	int pom; //do konwersji zasad gry na liczby calkowite
 	int i;
 	if(fscanf(in,"%c",&tmp)!=1)
 		return 1;
@@ -11,7 +11,6 @@ int read_rules(FILE *in, int rules[], int*neighbourhood)
 	else if(tmp=='M')
 		*neighbourhood=8;
 	else return 1;
-	printf("mam sasiedztwo: %d\n",*neighbourhood);	
 
 	for(i=0; i<=*neighbourhood; i++)
 	{
@@ -21,49 +20,30 @@ int read_rules(FILE *in, int rules[], int*neighbourhood)
 
 	while((tmp=fgetc(in))!=EOF && tmp!='/')
 	{
-		printf("analizowany znak: '%c'\n",tmp);
 		if(tmp=='\n')
 			continue;
 		pom = (int)tmp-48; //konwersja na int
 		if(pom<0 || pom>*neighbourhood)
 			return 1;
 		rules[pom]=1;
-		printf("Wrzucam 1 na miejsce %d\n",pom);
 	}
-	printf("przed ukosnikiem wczytane\n");
 	while((tmp=fgetc(in))!=EOF)
 	{
-		printf("analizowany znak: '%c'\n",tmp);
 		if(tmp=='\n')
 			continue;
 		pom = (int)tmp-48;
 		if(pom<0 || pom>*neighbourhood)
 			return 1;
-		printf("Analizowane miejsce: %d. Rules na tym miejscu: %d. ",pom,rules[pom]);
 		if(rules[pom]==1) //rodzi sie lub przezywa w zalezosci od wlasnego stanu
 		{
 			rules[pom]=3;
-			printf("Wrzucam 3.\n");
 		}
 		else
 		{
 			rules[pom]=2;
-			printf("Wrzucam 2.\n");
 		}
 	}	
-	printf("po ukosniku wczytane\n");
-	
-	printf("sasiedztwo: %d\n", *neighbourhood);
-	printf("zasady: ");
-	for(i=0; i<=*neighbourhood; i++)
-	{
-		printf("%d ",rules[i]);
-	}
-	printf("\n");
-
-
 }
-
 int count_neighbours_alive(int x, int y, int neighbourhood, board_t b)
 {
 	int alive=0;
@@ -81,7 +61,7 @@ int count_neighbours_alive(int x, int y, int neighbourhood, board_t b)
 	}
 	return alive;
 }
-char what_happens_with_cell(int current_state,int neighbours_alive, int rules[])
+char what_happens_with_cell(char current_state,int neighbours_alive, int rules[])
 {
 	
 	switch(rules[neighbours_alive])
@@ -90,14 +70,12 @@ char what_happens_with_cell(int current_state,int neighbours_alive, int rules[])
 			return '0';
 		case 1:
 			if(current_state=='1')return '1';  
-			return 0;
+			return '0';
 		case 2:
 			if(current_state=='0')return '1';
 			return '0';
 		case 3:
 			return '1';
-		
-
 	}
 }
 board_t simulate_generation(board_t previous_generation, int rules[], int neighbourhood)
@@ -113,8 +91,4 @@ board_t simulate_generation(board_t previous_generation, int rules[], int neighb
 		
 	}
 	return nextGen;	
-	
 }
-
-
-

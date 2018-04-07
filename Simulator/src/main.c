@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	int resultCheck; //do sprawdzania czy funkcje zadzialaly prawidlowo	
 
 	board_t current_generation;
-	char* command;	
+	char command[15];	
 	int if_correct_command;	
 	int command_length;
 	int tmp;
@@ -92,12 +92,14 @@ int main(int argc, char** argv)
 	while(i<how_many_generations)
 	{
 		printf("\n----- Generacja nr %d -----\n",i);
+		print_board(stdout,current_generation);
 		if_correct_command=0;
 		generations_to_skip=0;
 		while(!if_correct_command)
 		{
-			scanf("%s",command);
-			command_length=strlen(command);
+			//scanf("%s",command);
+			fgets(command,14,stdin);
+			command_length=strlen(command)-1;//ignoruje znak konca linii;
 			if(strstr(command,"n")!=NULL)
 			{
 				
@@ -136,12 +138,20 @@ int main(int argc, char** argv)
 				generations_to_skip=1;
 			}		
 		}
-		for(j=0; j<generations_to_skip; j++)
+		for(j=0; j<generations_to_skip && j+i<how_many_generations; j++)
 		{
 			current_generation=simulate_generation(current_generation,rules,neighbourhood);
 		}
-		i+=generations_to_skip;
-
+		if(i+generations_to_skip<how_many_generations)
+			i+=generations_to_skip;
+		else
+		{
+			printf("\n----- Generacja nr %d -----\n",how_many_generations);
+			print_board(stdout,current_generation);
+			break;
+			
+		}
+		
 	
 	}
 

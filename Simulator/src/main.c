@@ -21,10 +21,10 @@ int main(int argc, char** argv)
 	int resultCheck; //do sprawdzania czy funkcje zadzialaly prawidlowo	
 
 	board_t current_generation;
-	char command[15];	
+	char command[15];	 //do przechodzenia generacji, pomijania lub zapisywania
 	int if_correct_command;	
 	int command_length;
-	int tmp;
+	int tmp; //do tymczasowych podstawien
 	int generations_to_skip;
 
 	while(argc>i)
@@ -44,7 +44,6 @@ int main(int argc, char** argv)
 		}
 		i+=2;
 	}	
-	printf("|%s| |%d| |%s|\n ",config_file_name,how_many_generations,out_file_name);		
 	if(config_file_name == NULL)
 		config_file_name = "../data/generation_config"; //domyslna nazwa pliku konfiguracyjnego
 	if(strstr(out_file_name,"../bin/") == NULL)
@@ -131,7 +130,7 @@ int main(int argc, char** argv)
 					continue;
 				}
 			}
-			else if(strcmp(command,"s")==0)
+			else if(strcmp(command,"s\n")==0)
 			{
 				if_correct_command=1;
 				//tu zrealizowac zapisywanie png i wypisac czy poprawnie
@@ -154,7 +153,7 @@ int main(int argc, char** argv)
 		
 	
 	}
-
+	print_board(out_file,current_generation); //wypisanie ostatniej generacji do pliku wyjsciowego
 
 	
 

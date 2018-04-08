@@ -13,6 +13,8 @@ zamieszczony tam przez pana dr B. Chabra
 
 #include "board.h"
 
+#define DEBUG
+
 int x, y;
 
 int width, height;
@@ -84,20 +86,26 @@ void process_file(board_t b) {
   	for (y = 0; y < height; y++)
     		row_pointers[y] = (png_byte*) malloc(sizeof(png_byte) * width);
 
+
   	for (y=0; y<height; y++) {
     		png_byte* row = row_pointers[y];
     		for (x=0; x<width; x++) {
       			row[x] = b->values[x][y] == '1'? 255 : 0;
-      			printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
+#ifdef DEBUG
+			printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
        				x, y, row[x]);
+#endif
     		}
   	}
+
+
 }
 
+#ifdef DEBUG
 
 int main(int argc, char **argv) {
   	
-	FILE * in = fopen("../data/test/test0", "r");
+	FILE * in = fopen("../data/generation_config", "r");
 
 	if(in == NULL){
 		printf("Plik\n");
@@ -117,3 +125,5 @@ int main(int argc, char **argv) {
 
   	return 0;
 }
+
+#endif

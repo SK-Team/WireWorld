@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "board.h"
 #include "simulator.h"
-
+#include "pngx.h"
 
 int main(int argc, char** argv)
 {
@@ -26,6 +27,8 @@ int main(int argc, char** argv)
 	int command_length;
 	int tmp; //do tymczasowych podstawien
 	int generations_to_skip;
+
+	char* out_png_file = "../bin/out.png";
 
 	while(argc>i)
 	{
@@ -52,10 +55,7 @@ int main(int argc, char** argv)
 	if(how_many_generations==-1)
 		how_many_generations = 20; //domyslna ilosc generacji do zasymulowania
 
-<<<<<<< HEAD
-=======
 //	printf("|%s| |%d| |%s|\n ",nazwa_pliku_konfig,ile_generacji,nazwa_pliku_wyjsciowego);		
->>>>>>> aff4e8be57f3942a357842d99ddd143ec45b3433
 
 	config_file = fopen(config_file_name,"r");
 	if(config_file==NULL)
@@ -138,6 +138,14 @@ int main(int argc, char** argv)
 			else if(strcmp(command,"s\n")==0)
 			{
 				if_correct_command=1;
+
+				int res = create_png(current_generation, out_png_file);
+
+				if(res == 0)
+					printf("Udalo sie zapisac generacje do pliku.\n");
+				else
+					printf("Nie udalo sie zapisac generacje do pliku.\n");
+
 				//tu zrealizowac zapisywanie png i wypisac czy poprawnie
 				generations_to_skip=1;
 			}		

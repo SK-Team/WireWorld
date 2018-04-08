@@ -12,6 +12,7 @@ zamieszczony tam przez pana dr B. Chabra
 #include <png.h>
 
 #include "board.h"
+#include "pngx.h"
 
 #define DEBUG
 
@@ -26,27 +27,37 @@ png_infop info_ptr;
 int number_of_passes;
 png_bytep * row_pointers;
 
-void write_png_file(char* file_name) {
+int write_png_file(char* file_name) {
 	FILE *fp = fopen(file_name, "wb");
-	if (!fp)
+	if (!fp){
     		printf("[write_png_file] File %s could not be opened for writing", file_name);
+		return 1;
+	}
 
  	 png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
-  	if (!png_ptr)
+  	if (!png_ptr){
     		printf("[write_png_file] png_create_write_struct failed");
+		return 1;
+	}
 
   	info_ptr = png_create_info_struct(png_ptr);
-  	if (!info_ptr)
+  	if (!info_ptr){
     		printf("[write_png_file] png_create_info_struct failed");
+		return 1;
+	}
 
-  	if (setjmp(png_jmpbuf(png_ptr)))
+  	if (setjmp(png_jmpbuf(png_ptr))){
     		printf("[write_png_file] Error during init_io");
+		return 1;
+	}
 
   	png_init_io(png_ptr, fp);
 
-  	if (setjmp(png_jmpbuf(png_ptr)))
+  	if (setjmp(png_jmpbuf(png_ptr))){
     		printf("[write_png_file] Error during writing header");
+		return 1;
+	}
 
   	png_set_IHDR(png_ptr, info_ptr, width, height,
    		bit_depth, color_type, PNG_INTERLACE_NONE,
@@ -54,13 +65,17 @@ void write_png_file(char* file_name) {
 
   	png_write_info(png_ptr, info_ptr);
 
-  	if (setjmp(png_jmpbuf(png_ptr)))
+  	if (setjmp(png_jmpbuf(png_ptr))){
     		printf("[write_png_file] Error during writing bytes");
+		return 1;
+	}
 
   	png_write_image(png_ptr, row_pointers);
 
-  	if (setjmp(png_jmpbuf(png_ptr)))
+  	if (setjmp(png_jmpbuf(png_ptr))){
     		printf("[write_png_file] Error during end of write");
+		return 1;
+	}
 
   	png_write_end(png_ptr, NULL);
 
@@ -69,6 +84,8 @@ void write_png_file(char* file_name) {
   	free(row_pointers);
 
   	fclose(fp);
+
+	return 0;
 }
 
 /*
@@ -76,8 +93,8 @@ Wlasna czesc kodu
 */
 
 void process_file(board_t b) {
-  	width = b->rows;
- 	 height = b->columns;
+  	width = b->columns;
+ 	 height = b->rows;
 	  bit_depth = 8;
   	color_type = PNG_COLOR_TYPE_GRAY;
 
@@ -90,7 +107,7 @@ void process_file(board_t b) {
   	for (y=0; y<height; y++) {
     		png_byte* row = row_pointers[y];
     		for (x=0; x<width; x++) {
-      			row[x] = b->values[x][y] == '1'? 255 : 0;
+      			row[x] = b->values[y][x] == '0'? 255 : 0;
 #ifdef DEBUG
 			printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
        				x, y, row[x]);
@@ -101,29 +118,17 @@ void process_file(board_t b) {
 
 }
 
-#ifdef DEBUG
-
-int main(int argc, char **argv) {
-  	
-	FILE * in = fopen("../data/generation_config", "r");
-
-	if(in == NULL){
-		printf("Plik\n");
-		return -1;
-	}
-
-	board_t b = read_board_file(in);
+int create_png(board_t b, char *filename){
 
 
-	if(b == NULL){
-		printf("Plansza\n");
-		return -2;
-	}
+	int res = 0;
 
 	process_file(b);
-  	write_png_file("out.png");
 
-  	return 0;
+	res = write_png_file(filename);
+
+	return res;
+
 }
 
-#endif
+

@@ -1,8 +1,8 @@
-simulation_test: 
-	cc -ggdb board.c simulator.c simulation_test.c -o tescik
+automat: 
+	cc -ggdb board.c simulator.c main.c -o AutomatKomorkowyLIFE
 
-AutomatKomorkowyLIFE:	
-	cc board.c simulator.c main.c -o "AutomatKomorkowyLIFE"
-       	
+simulation_test: 
+	cc -ggdb board.c simulator.c simulation_test.c -o simulation_test
+
 board_test:
 	cc board.c board_test.c -o "board_test"

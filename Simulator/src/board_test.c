@@ -32,7 +32,8 @@ void should_print_board(FILE *out, board_t b){
 	print_board(out, b);
 }
 
-void should_show_board_for_correct_board_file(FILE *out){
+void should_show_board_for_correct_board_file(FILE *out){//zmiana w stosunku do specyfikacji,
+							 //FILE * zamiast char * file_name
 
 	board_t b = read_board_file(out);
 
@@ -42,7 +43,8 @@ void should_show_board_for_correct_board_file(FILE *out){
 	}
 }
 
-void should_show_error_message_for_incorrect_board_file(FILE *out){
+void should_show_error_message_for_incorrect_board_file(FILE *out){//zmiana w stosunku do specyfikacji,
+                                                          	   //FILE * zamiast char * file_name
 
 	board_t b = read_board_file(out);
 

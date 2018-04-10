@@ -118,6 +118,8 @@ void process_file(board_t b) {
 
 }
 
+
+
 int create_png(board_t b, char *filename){
 
 
@@ -130,5 +132,64 @@ int create_png(board_t b, char *filename){
 	return res;
 
 }
+
+
+
+char * out_png_gen(int generation_no){
+
+	char * nazwa;
+
+	int how_many_chars = 1;
+
+	int i;
+
+	int gen_no = generation_no;
+
+	while(generation_no >= 10){
+
+		how_many_chars++;
+
+		generation_no = generation_no / 10;
+	}
+
+
+
+	nazwa = malloc( (14 + how_many_chars) * sizeof(char));
+
+	strcpy(nazwa, "../bin/out");
+
+	for(i = 0;i < how_many_chars; i++){
+
+		nazwa[i + 10] = gen_no % 10 + '0';
+
+		gen_no = gen_no / 10;
+
+	}
+
+	nazwa[10 + i++] ='.';
+
+	nazwa[10 + i++] ='p';
+	
+	nazwa[10 + i++] ='n';
+
+	nazwa[10 + i++] ='g';
+
+	nazwa[10 + i] = '\0';
+
+
+	return nazwa;
+	
+
+}
+
+
+
+
+
+
+
+
+
+
 
 

@@ -9,5 +9,7 @@ int create_png(board_t, char*);
 
 int main(int , char **);
 
+char * out_png_gen(int);
+
 #endif
 

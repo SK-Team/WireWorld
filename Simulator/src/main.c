@@ -28,7 +28,8 @@ int main(int argc, char** argv)
 	int tmp; //do tymczasowych podstawien
 	int generations_to_skip;
 
-	char* out_png_file = "../bin/out.png";
+	char * out_png_file; 
+
 
 	while(argc>i)
 	{
@@ -138,6 +139,8 @@ int main(int argc, char** argv)
 			else if(strcmp(command,"s\n")==0)
 			{
 				if_correct_command=1;
+				
+				out_png_file = out_png_gen(i);
 
 				int res = create_png(current_generation, out_png_file);
 
@@ -146,9 +149,12 @@ int main(int argc, char** argv)
 				else
 					printf("Nie udalo sie zapisac generacje do pliku.\n");
 
-				//tu zrealizowac zapisywanie png i wypisac czy poprawnie
 				generations_to_skip=1;
-			}		
+
+				free(out_png_file);
+
+				}
+
 		}
 		for(j=0; j<generations_to_skip && j+i<how_many_generations; j++)
 		{
@@ -168,7 +174,6 @@ int main(int argc, char** argv)
 	}
 	print_board(out_file,current_generation); //wypisanie ostatniej generacji do pliku wyjsciowego
 
-	
 
 
 

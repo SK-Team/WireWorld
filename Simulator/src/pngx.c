@@ -14,7 +14,7 @@ zamieszczony tam przez pana dr B. Chabra
 #include "board.h"
 #include "pngx.h"
 
-#define MAX_SIZE 1000 
+#define MAX_SIZE 1000
 
 //#define DEBUG
 
@@ -27,67 +27,67 @@ png_byte bit_depth;
 png_structp png_ptr;
 png_infop info_ptr;
 int number_of_passes;
-png_bytep * row_pointers;
+png_bytep *row_pointers;
 
-int write_png_file(char* file_name) {
-	FILE *fp = fopen(file_name, "wb");
-	if (!fp){
-    		printf("[write_png_file] File %s could not be opened for writing", file_name);
-		return 1;
-	}
+int write_png_file(char *file_name) {
+    FILE *fp = fopen(file_name, "wb");
+    if (!fp) {
+        printf("[write_png_file] File %s could not be opened for writing", file_name);
+        return 1;
+    }
 
- 	 png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
-  	if (!png_ptr){
-    		printf("[write_png_file] png_create_write_struct failed");
-		return 1;
-	}
+    if (!png_ptr) {
+        printf("[write_png_file] png_create_write_struct failed");
+        return 1;
+    }
 
-  	info_ptr = png_create_info_struct(png_ptr);
-  	if (!info_ptr){
-    		printf("[write_png_file] png_create_info_struct failed");
-		return 1;
-	}
+    info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr) {
+        printf("[write_png_file] png_create_info_struct failed");
+        return 1;
+    }
 
-  	if (setjmp(png_jmpbuf(png_ptr))){
-    		printf("[write_png_file] Error during init_io");
-		return 1;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        printf("[write_png_file] Error during init_io");
+        return 1;
+    }
 
-  	png_init_io(png_ptr, fp);
+    png_init_io(png_ptr, fp);
 
-  	if (setjmp(png_jmpbuf(png_ptr))){
-    		printf("[write_png_file] Error during writing header");
-		return 1;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        printf("[write_png_file] Error during writing header");
+        return 1;
+    }
 
-  	png_set_IHDR(png_ptr, info_ptr, width, height,
-   		bit_depth, color_type, PNG_INTERLACE_NONE,
-   		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+    png_set_IHDR(png_ptr, info_ptr, width, height,
+                 bit_depth, color_type, PNG_INTERLACE_NONE,
+                 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
-  	png_write_info(png_ptr, info_ptr);
+    png_write_info(png_ptr, info_ptr);
 
-  	if (setjmp(png_jmpbuf(png_ptr))){
-    		printf("[write_png_file] Error during writing bytes");
-		return 1;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        printf("[write_png_file] Error during writing bytes");
+        return 1;
+    }
 
-  	png_write_image(png_ptr, row_pointers);
+    png_write_image(png_ptr, row_pointers);
 
-  	if (setjmp(png_jmpbuf(png_ptr))){
-    		printf("[write_png_file] Error during end of write");
-		return 1;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        printf("[write_png_file] Error during end of write");
+        return 1;
+    }
 
-  	png_write_end(png_ptr, NULL);
+    png_write_end(png_ptr, NULL);
 
-  	for (y = 0; y < height; y++)
-    		free(row_pointers[y]);
-  	free(row_pointers);
+    for (y = 0; y < height; y++)
+        free(row_pointers[y]);
+    free(row_pointers);
 
-  	fclose(fp);
+    fclose(fp);
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -96,115 +96,113 @@ Wlasna czesc kodu
 
 void process_file(board_t b) {
 
-	int s_size;
+    int s_size;
 
-	if(b->rows >= b->columns){
-	
-		height = MAX_SIZE;
+    if (b->rows >= b->columns) {
 
-		s_size = height / b->rows;
+        height = MAX_SIZE;
 
-		width = s_size * b->columns;
-	} else {
-	
-		width = MAX_SIZE;
+        s_size = height / b->rows;
 
-		s_size = width / b->columns;
+        width = s_size * b->columns;
+    } else {
 
-		height = s_size * b->rows;
+        width = MAX_SIZE;
 
-	}
+        s_size = width / b->columns;
+
+        height = s_size * b->rows;
+
+    }
 
 
-	bit_depth = 8;
+    bit_depth = 8;
 
-  	color_type = PNG_COLOR_TYPE_GRAY;
+    color_type = PNG_COLOR_TYPE_GRAY;
 
-  	number_of_passes = 7;
+    number_of_passes = 7;
 
-  	row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
+    row_pointers = (png_bytep *) malloc(sizeof(png_bytep) * height);
 
-  	for (y = 0; y < height; y++)
-    		row_pointers[y] = (png_byte*) malloc(sizeof(png_byte) * width);
+    for (y = 0; y < height; y++)
+        row_pointers[y] = (png_byte *) malloc(sizeof(png_byte) * width);
 
-	for(y = 0; y < height; y++){	
+    for (y = 0; y < height; y++) {
 
-    		png_byte* row = row_pointers[y];
-		for(x = 0; x < width; x++){
-			
-      			row[x] = b->values[y / s_size][x / s_size] == '0'? 255 : 0;
+        png_byte *row = row_pointers[y];
+        for (x = 0; x < width; x++) {
+
+            row[x] = b->values[y / s_size][x / s_size] == '0' ? 255 : 0;
 #ifdef DEBUG
-			printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
-       				y, x, row[x]);
+            printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
+                       y, x, row[x]);
 #endif
-		}
-		
-	}
+        }
+
+    }
 
 
 }
 
-int create_png(board_t b, char *filename){
+int create_png(board_t b, char *filename) {
 
 
-	int res = 0;
+    int res = 0;
 
-	process_file(b);
+    process_file(b);
 
-	res = write_png_file(filename);
+    res = write_png_file(filename);
 
-	return res;
+    return res;
 
 }
 
 
+char *out_png_gen(int generation_no) {
 
-char * out_png_gen(int generation_no){
+    char *nazwa;
 
-	char * nazwa;
+    int how_many_chars = 1;
 
-	int how_many_chars = 1;
+    int i;
 
-	int i;
+    int gen_no = generation_no;
 
-	int gen_no = generation_no;
+    while (generation_no >= 10) {
 
-	while(generation_no >= 10){
+        how_many_chars++;
 
-		how_many_chars++;
-
-		generation_no = generation_no / 10;
-	}
-
+        generation_no = generation_no / 10;
+    }
 
 
-	nazwa = malloc( (14 + how_many_chars) * sizeof(char));
+    nazwa = malloc((14 + how_many_chars) * sizeof(char));
 
-	strcpy(nazwa, "../bin/out");
+    strcpy(nazwa, "../bin/out");
 
-	for(i = how_many_chars - 1;i >= 0; i--){
+    for (i = how_many_chars - 1; i >= 0; i--) {
 
-		nazwa[i + 10] = gen_no % 10 + '0';
+        nazwa[i + 10] = gen_no % 10 + '0';
 
-		gen_no = gen_no / 10;
+        gen_no = gen_no / 10;
 
-	}
+    }
 
-	i = how_many_chars;
+    i = how_many_chars;
 
-	nazwa[10 + i++] ='.';
+    nazwa[10 + i++] = '.';
 
-	nazwa[10 + i++] ='p';
-	
-	nazwa[10 + i++] ='n';
+    nazwa[10 + i++] = 'p';
 
-	nazwa[10 + i++] ='g';
+    nazwa[10 + i++] = 'n';
 
-	nazwa[10 + i] = '\0';
+    nazwa[10 + i++] = 'g';
+
+    nazwa[10 + i] = '\0';
 
 
-	return nazwa;
-	
+    return nazwa;
+
 
 }
 

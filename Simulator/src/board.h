@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct{
+typedef struct {
 
-	int rows, columns;
-	char **values;
+    int rows, columns;
+    char **values;
 
 } *board_t;
 

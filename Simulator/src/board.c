@@ -3,92 +3,92 @@
 
 #include "board.h"
 
-board_t make_board(int height, int width){
-	
-	board_t nb = malloc(sizeof(*nb));
-	
-	int i,j;
+board_t make_board(int height, int width) {
 
-	if (nb == NULL)
-		return NULL;
+    board_t nb = malloc(sizeof(*nb));
 
-	nb->values = malloc(height * sizeof(char *));
+    int i, j;
 
-	if (nb->values == NULL){
-		free(nb);
-		return NULL;
-	}
+    if (nb == NULL)
+        return NULL;
 
-	for (i = 0; i < height; i++) {
-		nb->values[i] =  malloc(width * sizeof(char));
-		if (nb->values[i] == NULL){
-			for(j = 0; j < i; j++)
-				free(nb->values[j]);
-			free(nb->values);
-			free(nb);
-			return NULL;
-		}
-	}
-	
-	nb->rows = height;
-	nb->columns = width;
+    nb->values = malloc(height * sizeof(char *));
 
-	return nb;
+    if (nb->values == NULL) {
+        free(nb);
+        return NULL;
+    }
+
+    for (i = 0; i < height; i++) {
+        nb->values[i] = malloc(width * sizeof(char));
+        if (nb->values[i] == NULL) {
+            for (j = 0; j < i; j++)
+                free(nb->values[j]);
+            free(nb->values);
+            free(nb);
+            return NULL;
+        }
+    }
+
+    nb->rows = height;
+    nb->columns = width;
+
+    return nb;
 }
 
-board_t free_board(board_t b){
+board_t free_board(board_t b) {
 
-	int i;
-	
-	for (i = 0; i < b->rows; i++)
-		free(b->values[i]);
+    int i;
 
-	free(b->values);
-	free(b);
+    for (i = 0; i < b->rows; i++)
+        free(b->values[i]);
 
-	return NULL;
+    free(b->values);
+    free(b);
+
+    return NULL;
 }
 
-board_t read_board_file(FILE* in){
-	
-	int i,j;
+board_t read_board_file(FILE *in) {
 
-	int height, width;
+    int i, j;
 
-	board_t b;
+    int height, width;
 
-	char pom;
+    board_t b;
 
-	if (fscanf(in, "%d %d", &height, &width) != 2)
-		return NULL;
+    char pom;
 
-	if ((b = make_board(height, width)) == NULL)
-		return NULL;
+    if (fscanf(in, "%d %d", &height, &width) != 2)
+        return NULL;
 
-	fscanf(in, "%c", &pom);
+    if ((b = make_board(height, width)) == NULL)
+        return NULL;
 
-	for (i = 0; i < b->rows; i++){
-		for (j = 0; j < b->columns; j++){
-			if ((fscanf(in, "%c", &(b->values[i][j])) != 1) || (b->values[i][j] != '0' && b->values[i][j] != '1')){
-				free_board(b);
-				return NULL;
-			}
-		}
-		fscanf(in, "%c", &pom);
-	}
+    fscanf(in, "%c", &pom);
 
-	return b;
+    for (i = 0; i < b->rows; i++) {
+        for (j = 0; j < b->columns; j++) {
+            if ((fscanf(in, "%c", &(b->values[i][j])) != 1) || (b->values[i][j] != '0' && b->values[i][j] != '1')) {
+                free_board(b);
+                return NULL;
+            }
+        }
+        fscanf(in, "%c", &pom);
+    }
+
+    return b;
 }
 
-void print_board(FILE *out, board_t b){
-	
-	int i,j;
+void print_board(FILE *out, board_t b) {
 
-	fprintf(out, "%d %d\n", b->rows, b->columns);
+    int i, j;
 
-	for (i = 0; i < b->rows; i++){
-		for (j = 0; j < b->columns; j++)
-			fprintf(out, "%c", b->values[i][j]);
-		fprintf(out, "\n");
-	}
+    fprintf(out, "%d %d\n", b->rows, b->columns);
+
+    for (i = 0; i < b->rows; i++) {
+        for (j = 0; j < b->columns; j++)
+            fprintf(out, "%c", b->values[i][j]);
+        fprintf(out, "\n");
+    }
 }

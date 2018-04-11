@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv) {
   	
-/*	FILE * in = fopen("../data/generation_config", "r");
+	FILE * in = fopen("../data/generation_config", "r");
 
 	char *filename = argc > 1? argv[1]: "../bin/out.png";
 
@@ -26,8 +26,7 @@ int main(int argc, char **argv) {
   	int res = create_png(b, filename);
 
 	printf("\n%d\n", res);
-
-*/
+/*
 
 	int i;
 
@@ -40,4 +39,5 @@ int main(int argc, char **argv) {
 		free(naz);
 
 	}
+*/
 }

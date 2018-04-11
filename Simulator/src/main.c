@@ -142,18 +142,23 @@ int main(int argc, char** argv)
 				
 				out_png_file = out_png_gen(i);
 
-				int res = create_png(current_generation, out_png_file);
+				int res = create_png(current_generation, out_png_file );
 
 				if(res == 0)
-					printf("Udalo sie zapisac generacje do pliku.\n");
+					printf("\nUdalo sie zapisac generacje do pliku.\n");
 				else
-					printf("Nie udalo sie zapisac generacje do pliku.\n");
+					printf("\nNie udalo sie zapisac generacje do pliku.\n");
 
 				generations_to_skip=1;
 
 				free(out_png_file);
 
-				}
+			} else if(strcmp(command,"q\n")==0){
+			
+				i = how_many_generations;
+				break;
+			}
+
 
 		}
 		for(j=0; j<generations_to_skip && j+i<how_many_generations; j++)

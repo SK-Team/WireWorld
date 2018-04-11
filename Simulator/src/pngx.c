@@ -14,7 +14,9 @@ zamieszczony tam przez pana dr B. Chabra
 #include "board.h"
 #include "pngx.h"
 
-#define DEBUG
+#define MAX_SIZE 1000 
+
+//#define DEBUG
 
 int x, y;
 
@@ -93,32 +95,56 @@ Wlasna czesc kodu
 */
 
 void process_file(board_t b) {
-  	width = b->columns;
- 	 height = b->rows;
-	  bit_depth = 8;
+
+	int s_size;
+
+	if(b->rows >= b->columns){
+	
+		height = MAX_SIZE;
+
+		s_size = height / b->rows;
+
+		width = s_size * b->columns;
+	} else {
+	
+		width = MAX_SIZE;
+
+		s_size = width / b->columns;
+
+		height = s_size * b->rows;
+
+	}
+
+//	printf("\nwys: %d, szer: %d, w_kwad:%d\n\n", height, width, s_size);
+
+	bit_depth = 8;
+
   	color_type = PNG_COLOR_TYPE_GRAY;
 
   	number_of_passes = 7;
+
   	row_pointers = (png_bytep*) malloc(sizeof(png_bytep) * height);
+
   	for (y = 0; y < height; y++)
     		row_pointers[y] = (png_byte*) malloc(sizeof(png_byte) * width);
 
+	for(y = 0; y < height; y++){	
 
-  	for (y=0; y<height; y++) {
     		png_byte* row = row_pointers[y];
-    		for (x=0; x<width; x++) {
-      			row[x] = b->values[y][x] == '0'? 255 : 0;
+		for(x = 0; x < width; x++){
+//			printf("%c ", b->values[y / s_size][x / s_size]);
+			
+      			row[x] = b->values[y / s_size][x / s_size] == '0'? 255 : 0;
 #ifdef DEBUG
 			printf("Pixel at position [ %d - %d ] has RGBA values: %d\n",
-       				x, y, row[x]);
+       				y, x, row[x]);
 #endif
-    		}
-  	}
+		}
+		
+	}
 
 
 }
-
-
 
 int create_png(board_t b, char *filename){
 
@@ -181,15 +207,4 @@ char * out_png_gen(int generation_no){
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
 

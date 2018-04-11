@@ -1,12 +1,12 @@
 automat: 
-	cc -ggdb board.c simulator.c pngx.c main.c -o AutomatKomorkowyLIFE -lpng
+	cc  board.c simulator.c pngx.c main.c -o AutomatKomorkowyLIFE -lpng
 
 simulation_test: 
-	cc -ggdb board.c simulator.c simulation_test.c -o simulation_test
+	cc  board.c simulator.c simulation_test.c -o simulation_test
 
 board_test:
-	cc -ggdb board.c board_test.c -o "board_test"
+	cc  board.c board_test.c -o "board_test"
 
 png_te:
-	cc -ggdb png_test.c pngx.c board.c -o png_test -lpng
+	cc  png_test.c pngx.c board.c -o png_test -lpng
 

@@ -84,12 +84,12 @@ board_t simulate_generation(board_t previous_generation, int rules[], int neighb
 	int i,j;
 	board_t nextGen = make_board(previous_generation->rows,previous_generation->columns);
 	for(i=0; i<previous_generation->rows; i++)
-	{
-		for(j=0; j<previous_generation->columns; j++)
+	{	for(j=0; j<previous_generation->columns; j++)
 		{	
 			nextGen->values[i][j]=what_happens_with_cell(previous_generation->values[i][j],count_neighbours_alive(j,i,neighbourhood,previous_generation),rules);		
 		}
 		
 	}
+	previous_generation=free_board(previous_generation);
 	return nextGen;	
 }

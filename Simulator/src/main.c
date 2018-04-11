@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 	char *config_file_name=NULL;
 	int how_many_generations=-1; //nadano wartosc -1, zeby wiedziec czy uzytkownik sam podal parametr
 	FILE *out_file;
-	char out_file_name[100];//tworze w inny sposob niz nazwe pliku konfiguracyjnego, bo do tej bd doklejal prefiks ../bin/
+	char out_file_name[100]="";//tworze w inny sposob niz nazwe pliku konfiguracyjnego, bo do tej bd doklejal prefiks ../bin/
 	int i=2; //do sprawdzania argumentow wywolania oraz pozniejszych iteracji
 	int j; //do przyszlych iteracji
 	FILE *settings_file;
@@ -28,8 +28,7 @@ int main(int argc, char** argv)
 	int tmp; //do tymczasowych podstawien
 	int generations_to_skip;
 
-	char * out_png_file; 
-
+	char * out_png_file; //do trzymania nazw plikow png
 
 	while(argc>i)
 	{
@@ -92,7 +91,11 @@ int main(int argc, char** argv)
 	}
 	
 	current_generation = read_board_file(config_file);
-	
+	if(current_generation==NULL)
+	{
+		printf("Bledny format pliku wejsciowego lub brak pamieci\n");
+		return EXIT_FAILURE;
+	}
 	i=0;
 	while(i<how_many_generations)
 	{
@@ -102,7 +105,6 @@ int main(int argc, char** argv)
 		generations_to_skip=0;
 		while(!if_correct_command)
 		{
-			//scanf("%s",command);
 			fgets(command,14,stdin);
 			command_length=strlen(command)-1;//ignoruje znak konca linii;
 			if(strstr(command,"n")!=NULL)
@@ -154,9 +156,9 @@ int main(int argc, char** argv)
 				free(out_png_file);
 
 			} else if(strcmp(command,"q\n")==0){
-			
-				i = how_many_generations;
-				break;
+				current_generation=free_board(current_generation);
+				printf("Dzialanie programu zostalo przerwane na zadanie uzytkownika\n");
+				return 0;
 			}
 
 
@@ -164,6 +166,7 @@ int main(int argc, char** argv)
 		for(j=0; j<generations_to_skip && j+i<how_many_generations; j++)
 		{
 			current_generation=simulate_generation(current_generation,rules,neighbourhood);
+			
 		}
 		if(i+generations_to_skip<how_many_generations)
 			i+=generations_to_skip;
@@ -178,10 +181,12 @@ int main(int argc, char** argv)
 	
 	}
 	print_board(out_file,current_generation); //wypisanie ostatniej generacji do pliku wyjsciowego
+	
+	current_generation=free_board(current_generation);
 
-
-
-
+	fclose(config_file);
+	fclose(out_file);
+	fclose(settings_file);
 	
 	
 

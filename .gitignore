@@ -3,3 +3,6 @@
 *.gz
 *.log
 *.toc
+
+#ignore generated .png files 
+*.png

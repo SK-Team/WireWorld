@@ -155,7 +155,7 @@ int main(int argc, char** argv)
 
 				free(out_png_file);
 
-			} else if(strcmp(command,"q\n")==0){
+			} else if(strcmp(command,"q\n")==0){ //nowa mozliwosc w stosunku dom specyfikacji
 				current_generation=free_board(current_generation);
 				printf("Dzialanie programu zostalo przerwane na zadanie uzytkownika\n");
 				return 0;
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
 	fclose(config_file);
 	fclose(out_file);
 	fclose(settings_file);
-	
+	printf("Program zakonczyl dzialanie\n");
 	
 
 	return 0;

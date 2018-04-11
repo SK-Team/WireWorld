@@ -115,7 +115,6 @@ void process_file(board_t b) {
 
 	}
 
-//	printf("\nwys: %d, szer: %d, w_kwad:%d\n\n", height, width, s_size);
 
 	bit_depth = 8;
 
@@ -132,7 +131,6 @@ void process_file(board_t b) {
 
     		png_byte* row = row_pointers[y];
 		for(x = 0; x < width; x++){
-//			printf("%c ", b->values[y / s_size][x / s_size]);
 			
       			row[x] = b->values[y / s_size][x / s_size] == '0'? 255 : 0;
 #ifdef DEBUG

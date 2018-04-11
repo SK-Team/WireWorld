@@ -8,5 +8,5 @@ board_test:
 	cc  board.c board_test.c -o "board_test"
 
 png_te:
-	cc  png_test.c pngx.c board.c -o png_test -lpng
+	cc  -ggdb png_test.c pngx.c board.c -o png_test -lpng
 

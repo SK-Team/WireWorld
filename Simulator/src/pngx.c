@@ -182,13 +182,15 @@ char * out_png_gen(int generation_no){
 
 	strcpy(nazwa, "../bin/out");
 
-	for(i = 0;i < how_many_chars; i++){
+	for(i = how_many_chars - 1;i >= 0; i--){
 
 		nazwa[i + 10] = gen_no % 10 + '0';
 
 		gen_no = gen_no / 10;
 
 	}
+
+	i = how_many_chars;
 
 	nazwa[10 + i++] ='.';
 

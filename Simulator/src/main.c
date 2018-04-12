@@ -48,7 +48,6 @@ int main(int argc, char **argv) {
     if (how_many_generations == -1)
         how_many_generations = 20; //domyslna ilosc generacji do zasymulowania
 
-//	printf("|%s| |%d| |%s|\n ",nazwa_pliku_konfig,ile_generacji,nazwa_pliku_wyjsciowego);		
 
     config_file = fopen(config_file_name, "r");
     if (config_file == NULL) {

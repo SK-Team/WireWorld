@@ -7,6 +7,6 @@ simulation_test:
 board_test:
 	cc  board.c board_test.c -o "board_test"
 
-png_te:
+png_test:
 	cc  -ggdb png_test.c pngx.c board.c -o png_test -lpng
 

@@ -43,7 +43,7 @@
 }
 \makeatother
 \author{J.~Korczakowski, nr albumu 291079\\ B.~Suchocki, nr albumu 291111\\ Grupa projektowa nr 11}
-\title{Specyfikacja funkcjonalna symulatora automatu komórkowego \textsl{Life}}
+\title{Specyfikacja funkcjonalna symulatora automatu komórkowego \textsl{Wireworld}}
 \frenchspacing
 \begin{document}
 \maketitle
@@ -54,7 +54,7 @@ Nasz program będzie nazywał się \verb+WireWorld+.
 \subsection{Poruszany problem}
 
 
-Zadaniem naszego programu będzie symulacja automatu komórkowego WireWorld wymyślonego przez Brian Silvermanna w 1987 roku. Kolejne symulacje polegają na zmianie stanów komórek ułożonych na prostokątnej planszy według okrelonych zasad. Każda komórka może znajdować się w jednym z czterech stanów: ogon elektronu (kolor żółty), głowa elektronu (kolor czerwony), przewodnik (kolor czarny), pusta komórka (kolor biały). Zasady symulacji:
+Zadaniem naszego programu będzie symulacja automatu komórkowego WireWorld wymyślonego przez Brian Silvermanna w 1987 roku. Kolejne symulacje polegają na zmianie stanów komórek ułożonych na prostokątnej planszy według okrelonych zasad. Każda komórka może znajdować się w~jednym z czterech stanów: ogon elektronu (kolor żółty), głowa elektronu (kolor czerwony), przewodnik (kolor czarny), pusta komórka (kolor biały). Zasady symulacji:
 \begin{itemize}
 \item Komórka pozostaje Pusta, jeśli była Pusta.
 \item Komórka staje się Ogonem elektronu, jeśli była Głową elektronu.
@@ -62,11 +62,22 @@ Zadaniem naszego programu będzie symulacja automatu komórkowego WireWorld wymy
 \item Komórka staje się Głową elektronu tylko wtedy, gdy dokładnie 1 lub 2 sąsiadujące komórki są Głowami Elektronu.
 \item Komórka staje się Przewodnikiem w każdym innym wypadku.
 \end{itemize}
-\indent Dodatkowo, w naszym programie zakładamy, że plansza jest ograniczona i komórki poza nią są puste. Naszym zdaniem uprości to symulację i zwiększy jej czytelność.
+\indent Dodatkowo, w naszym programie zakładamy, że plansza jest ograniczona i~komórki poza nią są puste. Naszym zdaniem uprości to symulację i zwiększy jej czytelność.
 
 \subsection{Cel projektu}
 Celem tego projektu jest nauka i praktyka programowania w języku JAVA~przy jednoczesnym zapoznaniu się z tematem automatu komórkowego WireWorld Briana Silvermanna.
 
+\section{Opis funkcjonalności}
+\subsection{Uruchomienie i korzystanie z programu}
+Program uruchamiany jest poprzez dwukrotne kliknięcie na ikonę. Korzystanie z niego odbywa się za pomocą graficznego interfejsu użytkownika.
+
+\subsection{Możliwości programu:}
+\begin{itemize}
+\item Wczytywanie plików wejściowych z danymi planszy i liczbą generacji
+\item Wizualizacja generacji na żywo.
+\item Możliwość wstrzymania i zakończenia generacji.
+\item Zapis obecnie wyświetlanej generacji do pliku możliwego do ponownego wczytania przez program.
+\end{itemize}
 
 \section{Format danych i struktura plików}
 \subsection{Pojęcia}
@@ -130,6 +141,47 @@ W przypadku kilkukrotnego wpisania obiektu/stanu komórki na te same współrzę
 
 \subsection{Dane wyjściowe}
 Plik wyjściowy programu (opisujący stan wybranej generacji przy zastopowanej symulacji) sporządzony zostanie według tej samej struktury co plik wejściowy, dzięki czemu będzie mógł być potem użyty jako plik wejściowy. 
+
+\section{Scenariusz działania programu}
+\subsection{Scenariusz ogólny}
+\begin{enumerate}
+\item Uruchomienie programu poprzez dwukrotne kliknięcie ikony.
+\item Wyświetlenie interfejsu aplikacji wraz z pustą planszą.
+\item Otwarcie wybranego przez użytkownika pliku wejściowego.
+\item Generacja zadanej liczby generacji.
+\item Zapisanie obecnie wyświetlanej generacji, jeżeli użytkownik kliknie przycisk \verb+Zapisz obecną generację+.
+\item Zakończenie generacji planszy. Użytkownik może wybrać następny plik do generacji lub zakończyć działanie programu.
+\end{enumerate}
+
+\subsection{Scenariusz szczegółowy}
+\begin{enumerate}
+\item Uruchomienie programu poprzez dwukrotne kliknięcie ikony.
+\item Wyświetlenie interfejsu aplikacji wraz z pustą planszą.
+\item Użytkownik wybiera plik wejściowy poprzez kliknięcie na przycisk \verb+Wybierz+ \verb+plik+, a następnie wskazanie na odpowiedni plik w drzewie katalogów. Następuje próba wczytania danych planszy i liczba generacji.
+\begin{itemize}
+\item Jeśli wybrany przez użytkownika plik nie jest możliwy do wczytania to zostanie wyświetlony komunikat:"Nie udało się wczytać pliku wejściowego".
+\item Jeśli plik wejściowy zawiera błędne dane to zostanie wyświetlony komunikat: "Błędny format pliku wejściowego".
+\item Jeśli liczba generacji nie została podana to program będzie generował planszę w nieskończoność, z wyjątkiem przypadku gdy użytkownik naciśnie przycisk \verb+Stop+.
+\end{itemize}
+\item Wyświetlenie wczytanej z pliku planszy.
+\begin{itemize}
+\item Po naciśnięciu przez użytkownika przycisku \verb+Start+ program rozpocznie wyświetlanie nowych generacji w odstępie 1 sekundy. W~czasie generacji zapełniany będzie pasek postępu znajdujący się po prawej stronie ekranu.
+\item Jeśli użytkownik naciśnie przycisk \verb+Pauza+, to program wstrzyma wyświetlanie nowych generacji i umożliwi zapis bieżącej generacji do pliku za pomocą naciśnięcia przycisku \verb+Zapisz obecną generację+, a następnie wpisania nazwy pliku do zapisu. Wznowienie generowania odbywa się za pomocą przycisku \verb+Start+
+\begin{itemize}
+\item Jeśli nie będzie można zapisać generacji do pliku o nazwie podanej przez użytkownika to program wyświetli komunikat: "Nie udało się zapisać generacji do podanego  pliku. Wybierz plik jeszcze raz".
+\end{itemize}
+\item Jeśli użytkownik naciśnie przycisk \verb+Stop+ to program zakończy generację i wyświetli początkową planszę. Możliwe będzie wtedy rozpoczęcie generacji od nowa lub wczytanie innego pliku wejściowego.
+\end{itemize}
+\item Zakończenie generacji na skutek wypełnienia zadanej liczby.
+\item Użytkownik może wczytać nowy plik wejściowy, rozpocząć generację od nowa lub zakończyć działanie programu.
+\end{enumerate}
+\subsection{Ekrany działania programu}
+\begin{figure}[h]
+\centering
+\includegraphics[width=13cm]{Ekran}
+\caption{Ekran aplikacji}
+\end{figure}
+Ekran aplikacji został zamieszczony poniżej(Rys 1). W lewym górnym rogu znajduję się tytuł programu. Poniżej znajduje się przycisk \verb+Wybierz plik+ \verb+wejściowy+ odpowiedzialny za wyświetlenie menu do wybrania pliku wejściowego. Poniżej wypisany jest aktualnie używany plik wejściowy. Poniżej znajduje się przycisk \verb+Zapisz obecną generację+ odpowiedzialny za wyświetlenie menu do wybrania pliku do zapisu. Poniżej znajdują się przyciski odpowiedzialne za sterowanie generowaniem. Poniżej znajduje się pasek progresu.
 
 \section{Testowanie}
 Działanie poszczególnych części programu przetestujemy przy użyciu biblioteki \verb+AssertJ+ oraz przykładowych plików wejściowych. Tylko część graficzną (GUI) przetestujemy ręcznie np. sprawdzając czy program wykona odpowiednią akcję po nacinięciu przycisku.

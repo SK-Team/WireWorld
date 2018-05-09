@@ -159,16 +159,16 @@ Plik wyjściowy programu (opisujący stan wybranej generacji przy zastopowanej s
 \item Wyświetlenie interfejsu aplikacji wraz z pustą planszą.
 \item Użytkownik wybiera plik wejściowy poprzez kliknięcie na przycisk \verb+Wybierz+ \verb+plik+, a następnie wskazanie na odpowiedni plik w drzewie katalogów. Następuje próba wczytania danych planszy i liczba generacji.
 \begin{itemize}
-\item Jeśli wybrany przez użytkownika plik nie jest możliwy do wczytania to zostanie wyświetlony komunikat o błędzie.
-\item Jeśli plik wejściowy zawiera błędne dane to zostanie wyświetlony komunikat o błędzie
+\item Jeśli wybrany przez użytkownika plik nie jest możliwy do wczytania to zostanie wyświetlony komunikat:"Nie udało się wczytać pliku wejściowego".
+\item Jeśli plik wejściowy zawiera błędne dane to zostanie wyświetlony komunikat: "Błędny format pliku wejściowego".
 \item Jeśli liczba generacji nie została podana to program będzie generował planszę w nieskończoność, z wyjątkiem przypadku gdy użytkownik naciśnie przycisk \verb+Stop+.
 \end{itemize}
 \item Wyświetlenie wczytanej z pliku planszy.
 \begin{itemize}
-\item Po naciśnięciu przez użytkownika przycisku \verb+Start+ program rozpocznie wyświetlanie nowych generacji w odstępie 2 sekund. W~czasie generacji zapełniany będzie pasek postępu znajdujący się po prawej stronie ekranu.
+\item Po naciśnięciu przez użytkownika przycisku \verb+Start+ program rozpocznie wyświetlanie nowych generacji w odstępie 1 sekundy. W~czasie generacji zapełniany będzie pasek postępu znajdujący się po prawej stronie ekranu.
 \item Jeśli użytkownik naciśnie przycisk \verb+Pauza+, to program wstrzyma wyświetlanie nowych generacji i umożliwi zapis bieżącej generacji do pliku za pomocą naciśnięcia przycisku \verb+Zapisz obecną generację+, a następnie wpisania nazwy pliku do zapisu. Wznowienie generowania odbywa się za pomocą przycisku \verb+Start+
 \begin{itemize}
-\item Jeśli nie będzie można zapisać generacji do pliku o nazwie podanej przez użytkownika to program wyświetli komunikat o błędzie i poprosi o ponowne wybranie pliku.
+\item Jeśli nie będzie można zapisać generacji do pliku o nazwie podanej przez użytkownika to program wyświetli komunikat: "Nie udało się zapisać generacji do podanego  pliku. Wybierz plik jeszcze raz".
 \end{itemize}
 \item Jeśli użytkownik naciśnie przycisk \verb+Stop+ to program zakończy generację i wyświetli początkową planszę. Możliwe będzie wtedy rozpoczęcie generacji od nowa lub wczytanie innego pliku wejściowego.
 \end{itemize}

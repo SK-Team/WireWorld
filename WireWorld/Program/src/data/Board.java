@@ -11,12 +11,13 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Board {
 
-	private final int WIDTH = 50;
-	private final int HEIGHT = 50;
+	private final int WIDTH = 20;
+	private final int HEIGHT = 20;
 	private final int CELL_WIDTH_AND_HEIGHT = 10;
 	private final int WRONG_INPUT_FILE_FORMAT = 1;
 
@@ -34,14 +35,16 @@ public class Board {
 		resetPoints();
 	}
 
+	
+
 	public Board(String inputFile) throws IOException {
 		this();
 		int result = readBoardFromFile(inputFile);
 	}
 
 	private void resetPoints() {
-		for (int i = 0; i < CELL_WIDTH_AND_HEIGHT; i++) {
-			for (int j = 0; j < CELL_WIDTH_AND_HEIGHT; j++) {
+		for (int i = 0; i < HEIGHT; i++) {
+			for (int j = 0; j <WIDTH; j++) {
 				cells[i][j] = Element.EMPTY_CELL;
 			}
 		}
@@ -171,30 +174,10 @@ public class Board {
 
 	public void drawBoardToCanvas(Canvas canvas) {
 		System.out.println("DrawBoardToCanvas called");
-		
 		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
-		DrawCellRunnable drawCellRunnable = new DrawCellRunnable(graphicsContext, 0, 0);
+		DrawBoardToCanvasRunnable drawBoardRunnable = new DrawBoardToCanvasRunnable(graphicsContext);
+		Platform.runLater(drawBoardRunnable);
 		
-		for (int i = 0; i < HEIGHT; i++) {
-			for (int j = 0; j < WIDTH; j++) {
-				switch (cells[i][j]) {
-				case Element.ELECTRON_HEAD:
-					graphicsContext.setFill(Element.ELECTRON_HEAD_COLOR);
-					break;
-				case Element.ELECTRON_TAIL:
-					graphicsContext.setFill(Element.ELECTRON_TAIL_COLOR);
-					break;
-				case Element.CONDUCTOR:
-					graphicsContext.setFill(Element.CONDUCTOR_COLOR);
-					break;
-				case Element.EMPTY_CELL:
-					graphicsContext.setFill(Element.EMPTY_CELL_COLOR);
-					break;
-				}
-				drawCellRunnable.setCoordinates(i, j);
-				Platform.runLater(drawCellRunnable);
-			}
-		}
 	}
 
 	public int getWIDTH() {
@@ -208,33 +191,61 @@ public class Board {
 	public int[][] getCells() {
 		return cells;
 	}
+	public void setCells(int[][] cells) {
+		this.cells = cells;
+	}
 
 	public void printToConsole() {
-		for (int i = 0; i < CELL_WIDTH_AND_HEIGHT; i++) {
+		for (int i = 0; i < HEIGHT; i++) {
 			System.out.println("");
-			for (int j = 0; j < CELL_WIDTH_AND_HEIGHT; j++) {
+			for (int j = 0; j < WIDTH; j++) {
 				System.out.print(cells[i][j] + " ");
 			}
 		}
 	}
 
-	class DrawCellRunnable implements Runnable {
-		private int cellX, cellY;
+	class DrawBoardToCanvasRunnable implements Runnable {
 		private GraphicsContext graphicsContext;
-
-		public DrawCellRunnable(GraphicsContext graphicsContext, int x, int y) {
+		private Color cellColor;
+		public DrawBoardToCanvasRunnable(GraphicsContext graphicsContext) {
 			this.graphicsContext = graphicsContext;
-			setCoordinates(x, y);
+			cellColor=Color.WHITE;
+			this.graphicsContext.setFill(cellColor);
 		}
 
 		public void run() {
-			Rectangle rect = rectangles[cellX][cellY];
-			graphicsContext.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+			Rectangle rectToDraw;
+			for (int i = 0; i < HEIGHT; i++) {
+				for (int j = 0; j < WIDTH; j++) {
+					switch (cells[i][j]) {
+					case Element.ELECTRON_HEAD:
+						cellColor=Element.ELECTRON_HEAD_COLOR;
+						break;
+					case Element.ELECTRON_TAIL:
+						cellColor=Element.ELECTRON_TAIL_COLOR;
+						break;
+					case Element.CONDUCTOR:
+						cellColor=Element.CONDUCTOR_COLOR;
+						break;
+					case Element.EMPTY_CELL:
+						cellColor=Element.EMPTY_CELL_COLOR;
+						break;
+					}
+					
+					graphicsContext.setFill(cellColor);
+					rectToDraw = rectangles[i][j];
+					graphicsContext.fillRect(rectToDraw.getX(), rectToDraw.getY(), rectToDraw.getWidth(), rectToDraw.getHeight());
+					
+					/*drawCellRunnable.setCoordinates(i, j);
+					drawCellRunnable.setColor(cellColor);
+					Platform.runLater(drawCellRunnable);*/
+				}
+			}
 		}
 
-		public void setCoordinates(int x, int y) {
-			this.cellX = x;
-			this.cellY = y;
+		
+		public void setColor(Color color) {
+			graphicsContext.setFill(color);
 		}
 	}
 }

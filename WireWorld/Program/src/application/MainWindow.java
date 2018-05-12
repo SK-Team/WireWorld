@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import data.Board;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -51,19 +52,29 @@ public class MainWindow extends Application {
 			simulator = new Simulator();
 			System.out.println("Simulator initialized");
 		}
+		board.printToConsole();
 		
 		simulationActive = true;
 		new Thread() {
 			public void run() {
 				for(int i=0; i<howManyGenerations && simulationActive==true; i++) {
+					System.out.println("Symulacja nr "+i);
 					simulator.simulateGeneration(board);	
-				}
-				board.drawBoardToCanvas(canvas);
-				try {
-					Thread.sleep(INTERVAL_BEETWEEN_SIMULATIONS);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							board.drawBoardToCanvas(canvas);
+							board.printToConsole();
+						}
+					});
+					
+					try {
+						Thread.sleep(INTERVAL_BEETWEEN_SIMULATIONS);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}.start();

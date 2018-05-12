@@ -37,6 +37,8 @@ public class Simulator {
 
 	private int whatHappensWithCell(Board b, int x, int y) { // przyjmuje wspó³rzêdne "tablicowe"
 		int[][] cells = b.getCells();
+
+		
 		if (cells[x][y] == Element.EMPTY_CELL) {
 			return Element.EMPTY_CELL;
 		} else if (cells[x][y] == Element.ELECTRON_HEAD) {
@@ -57,12 +59,15 @@ public class Simulator {
 	}
 
 	public int simulateGeneration(Board b) {
-		int newCells[][]=b.getCells();
+		int[][] cells=b.getCells();
+		int[][] newCells = new int[b.getHEIGHT()][b.getWIDTH()];
+		
 		for(int i=0; i<b.getHEIGHT(); i++) {
 			for(int j=0; j<b.getWIDTH(); j++) {
 				newCells[i][j] = whatHappensWithCell(b, i, j);
 			}
 		}
+		b.setCells(newCells);
 		return 1;
 	}
 

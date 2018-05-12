@@ -15,6 +15,8 @@ public class Controller implements Initializable{
 	
 	private GraphicsContext graphicsContext;
 	private MainWindow wireWorldFunctionality;
+
+	public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\Dell\\IdeaProjects\\2018L_JIMP2_repozytorium_gr11\\WireWorld\\Program\\src\\defaultInputFile.txt";
 	
 	@FXML private Canvas canvas;
 	
@@ -23,7 +25,7 @@ public class Controller implements Initializable{
 		//zmieniæ !!!
 		//sprawdziæ czy wireWorldFunctionallity mo¿e byæ nullem!
 		try {
-			wireWorldFunctionality.setBoard("C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt");
+			wireWorldFunctionality.setBoard(DEFAULT_TEXT_FILE_PATH);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

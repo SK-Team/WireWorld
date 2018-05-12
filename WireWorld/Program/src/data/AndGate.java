@@ -21,7 +21,7 @@ public class AndGate extends Element {
     }
 
     @Override
-    public void createLocation(Point p) { // dioda ma po trzy przewodniki z obu stron
+    public void createLocation(Point p) {
         int x = p.x;
         int y = p.y;
 

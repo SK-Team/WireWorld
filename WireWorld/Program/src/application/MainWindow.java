@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.IOException;
 
 import data.Board;
@@ -12,63 +12,56 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import simulator.Simulator;
 
-
 public class MainWindow extends Application {
-	
+
 	private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
-	
+
 	private Board board;
 	private Simulator simulator;
 	private boolean simulationActive = false;
+
 	@Override
 	public void start(Stage primaryStage) {
-		
+
 		MainWindow wireWorldFunctionality = new MainWindow();
-		
+
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
-			AnchorPane root = (AnchorPane)loader.load();
-			
-			
+			AnchorPane root = (AnchorPane) loader.load();
+
 			Controller controller = loader.getController();
 			controller.setWireWorldFunctionality(wireWorldFunctionality);
-			
-			
-			Scene scene = new Scene(root,400,400);
+
+			Scene scene = new Scene(root, 400, 400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
+
 	public void simulate(Canvas canvas, int howManyGenerations) {
-		
-		if(simulator==null) { //pierwsza symulacja
+
+		if (simulator == null) { // pierwsza symulacja
 			simulator = new Simulator();
 			System.out.println("Simulator initialized");
 		}
 		board.printToConsole();
-		
+
 		simulationActive = true;
 		new Thread() {
 			public void run() {
-				for(int i=0; i<howManyGenerations && simulationActive==true; i++) {
-					System.out.println("Symulacja nr "+i);
-					simulator.simulateGeneration(board);	
-					Platform.runLater(new Runnable() {
-						
-						@Override
-						public void run() {
-							board.drawBoardToCanvas(canvas);
-							board.printToConsole();
-						}
-					});
-					
+				for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
+					System.out.println("Symulacja nr " + i);
+					simulator.simulateGeneration(board);
+					board.drawBoardToCanvas(canvas);
+					board.printToConsole();
+
 					try {
 						Thread.sleep(INTERVAL_BEETWEEN_SIMULATIONS);
 					} catch (InterruptedException e) {
@@ -78,22 +71,25 @@ public class MainWindow extends Application {
 				}
 			}
 		}.start();
-		
-		
-		
+
 	}
+
 	public void stopSimulation() {
 		simulationActive = false;
-		
+
 	}
+
 	public void pauseSimulation() {
 		simulationActive = false;
 	}
-	public void saveGeneration(String filePath) {
-		
+
+	public void saveGeneration(String filePath) throws IOException {
+		board.printBoardToFile(filePath);
 	}
-	public void setBoard(String filePath) throws IOException{ //zastanowiæ siê nad try catch
+
+	public void setBoard(Canvas canvas,String filePath) throws IOException { // zastanowiæ siê nad try catch
 		board = new Board(filePath);
 		System.out.println("setBoard called");
+		board.drawBoardToCanvas(canvas);
 	}
 }

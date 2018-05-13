@@ -2,8 +2,10 @@ package data;
 
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,6 @@ public class Board {
 		resetPoints();
 	}
 
-	
-
 	public Board(String inputFile) throws IOException {
 		this();
 		int result = readBoardFromFile(inputFile);
@@ -44,16 +44,13 @@ public class Board {
 
 	private void resetPoints() {
 		for (int i = 0; i < HEIGHT; i++) {
-			for (int j = 0; j <WIDTH; j++) {
+			for (int j = 0; j < WIDTH; j++) {
 				cells[i][j] = Element.EMPTY_CELL;
 			}
 		}
 	}
 
 	private void closeResourcesAfterReading(FileReader fileReader, BufferedReader bufferedReader) throws IOException {
-		if (fileReader != null) {
-			fileReader.close();
-		}
 		if (bufferedReader != null) {
 			bufferedReader.close();
 		}
@@ -68,7 +65,7 @@ public class Board {
 		}
 	}
 
-	public int readBoardFromFile(String path) throws IOException {
+	public int readBoardFromFile(String path) throws IOException { //nale¿y dodaæ obs³ugê wszystkich elementów oprócz diody
 		FileReader fileReader = new FileReader(new File(path));
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
@@ -168,7 +165,52 @@ public class Board {
 		return 1;
 	}
 
-	public int printBoardToFile(String path) {
+	public int printBoardToFile(String path) throws IOException { //nale¿y dodaæ obs³ugê Wire
+		FileWriter fileWriter = new FileWriter(new File(path));
+		BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+		for (Element e : elements) {
+			int x = e.getLocation().get(0).x;
+			int y = e.getLocation().get(0).y;
+			char type = e.getType() == Element.REVERSED_TYPE ? 'R' : 'D';
+			if (e instanceof Diode) { // mo¿na poprawiæ tworzenie napisu -> stworzyæ za pomoc¹ StringBuildera
+				bufferedWriter.write("Diode: " + y + "," + x + " " + type);
+				bufferedWriter.newLine();
+			} else if (e instanceof NorGate) {
+				bufferedWriter.write("NOR: " + y + "," + x + " " + type);
+				bufferedWriter.newLine();
+			} else if (e instanceof OrGate) {
+				bufferedWriter.write("OR: " + y + "," + x + " " + type);
+				bufferedWriter.newLine();
+			} else if (e instanceof AndGate) {
+				bufferedWriter.write("AND: " + y + "," + x + " " + type);
+				bufferedWriter.newLine();
+			}
+		}
+		for (int i = 0; i < HEIGHT; i++) {
+			for (int j = 0; j < WIDTH; j++) {
+				switch (cells[i][j]) {
+				case Element.ELECTRON_HEAD:
+					bufferedWriter.write("ElectronHead: " + j + "," + i);
+					bufferedWriter.newLine();
+					break;
+				case Element.ELECTRON_TAIL:
+					bufferedWriter.write("ElectronTail: " + j + "," + i);
+					bufferedWriter.newLine();
+					break;
+				case Element.CONDUCTOR:
+					bufferedWriter.write("Conductor: " + j + "," + i);
+					bufferedWriter.newLine();
+					break;
+				case Element.EMPTY_CELL:
+					bufferedWriter.write("Blank: " + j + "," + i);
+					bufferedWriter.newLine();
+					break;
+				}
+			}
+		}
+
+		bufferedWriter.close();
 		return 1;
 	}
 
@@ -177,7 +219,7 @@ public class Board {
 		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 		DrawBoardToCanvasRunnable drawBoardRunnable = new DrawBoardToCanvasRunnable(graphicsContext);
 		Platform.runLater(drawBoardRunnable);
-		
+
 	}
 
 	public int getWIDTH() {
@@ -191,6 +233,7 @@ public class Board {
 	public int[][] getCells() {
 		return cells;
 	}
+
 	public void setCells(int[][] cells) {
 		this.cells = cells;
 	}
@@ -207,9 +250,10 @@ public class Board {
 	class DrawBoardToCanvasRunnable implements Runnable {
 		private GraphicsContext graphicsContext;
 		private Color cellColor;
+
 		public DrawBoardToCanvasRunnable(GraphicsContext graphicsContext) {
 			this.graphicsContext = graphicsContext;
-			cellColor=Color.WHITE;
+			cellColor = Color.WHITE;
 			this.graphicsContext.setFill(cellColor);
 		}
 
@@ -219,31 +263,28 @@ public class Board {
 				for (int j = 0; j < WIDTH; j++) {
 					switch (cells[i][j]) {
 					case Element.ELECTRON_HEAD:
-						cellColor=Element.ELECTRON_HEAD_COLOR;
+						cellColor = Element.ELECTRON_HEAD_COLOR;
 						break;
 					case Element.ELECTRON_TAIL:
-						cellColor=Element.ELECTRON_TAIL_COLOR;
+						cellColor = Element.ELECTRON_TAIL_COLOR;
 						break;
 					case Element.CONDUCTOR:
-						cellColor=Element.CONDUCTOR_COLOR;
+						cellColor = Element.CONDUCTOR_COLOR;
 						break;
 					case Element.EMPTY_CELL:
-						cellColor=Element.EMPTY_CELL_COLOR;
+						cellColor = Element.EMPTY_CELL_COLOR;
 						break;
 					}
-					
+
 					graphicsContext.setFill(cellColor);
 					rectToDraw = rectangles[i][j];
-					graphicsContext.fillRect(rectToDraw.getX(), rectToDraw.getY(), rectToDraw.getWidth(), rectToDraw.getHeight());
-					
-					/*drawCellRunnable.setCoordinates(i, j);
-					drawCellRunnable.setColor(cellColor);
-					Platform.runLater(drawCellRunnable);*/
+					graphicsContext.fillRect(rectToDraw.getX(), rectToDraw.getY(), rectToDraw.getWidth(),
+							rectToDraw.getHeight());
+
 				}
 			}
 		}
 
-		
 		public void setColor(Color color) {
 			graphicsContext.setFill(color);
 		}

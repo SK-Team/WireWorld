@@ -19,124 +19,124 @@ import javafx.stage.Window;
 
 public class Controller implements Initializable {
 
-	private MainWindow wireWorldFunctionality;
+    private MainWindow wireWorldFunctionality;
 
-	// i tak mamy inne œcie¿ki, bo robimy w innych œrodowiskach
+    // i tak mamy inne ï¿½cieï¿½ki, bo robimy w innych ï¿½rodowiskach
 
-	// public static final String DEFAULT_TEXT_FILE_PATH =
-	// "C:\\Users\\Dell\\IdeaProjects\\2018L_JIMP2_repozytorium_gr11\\WireWorld\\Program\\src\\defaultInputFile.txt";
-	public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt";
+    // public static final String DEFAULT_TEXT_FILE_PATH =
 
-	private final String FILE_CHOOSER_TITLE = "Wybierz plik wejœciowy";
+    // "C:\\Users\\Dell\\IdeaProjects\\2018L_JIMP2_repozytorium_gr11\\WireWorld\\Program\\src\\defaultInputFile.txt";
+    public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt";
 
-	private FileChooser fileChooser;
+    private final String FILE_CHOOSER_TITLE = "Wybierz plik wejï¿½ciowy";
 
-	@FXML
-	private Canvas canvas;
-	@FXML
-	private Button selectInputFileButton;
-	@FXML
-	private Button startButton;
-	@FXML
-	private Button stopButton;
-	@FXML
-	private Button pauseButton;
-	@FXML
-	private Button saveButton;
-	@FXML
-	private TextField currentInputFileTextView;
+    private FileChooser fileChooser;
 
-	@FXML
-	protected void handleFileChooseButton(ActionEvent event) {
+    @FXML
+    private Canvas canvas;
+    @FXML
+    private Button selectInputFileButton;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button stopButton;
+    @FXML
+    private Button pauseButton;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private TextField currentInputFileTextView;
 
-		Node source = (Node) event.getSource();
-		Window stage = source.getScene().getWindow();
+    @FXML
+    protected void handleFileChooseButton(ActionEvent event) {
 
-		String filePath;
-		File file = fileChooser.showOpenDialog(stage);
-		if (file == null) {
-			return;
-		} else {
-			filePath = file.getAbsolutePath();
-		}
+        Node source = (Node) event.getSource();
+        Window stage = source.getScene().getWindow();
 
-		try {
-			wireWorldFunctionality.setBoard(canvas,filePath); // tu powinniœmy obs³u¿yæ jak¹œ wartoœæ zwracan¹ w razie b³êdnego
-														// formatu pliku
-			startButton.setDisable(false);
-			stopButton.setDisable(false);
-			pauseButton.setDisable(false);
+        String filePath;
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null) {
+            return;
+        } else {
+            filePath = file.getAbsolutePath();
+        }
 
-			currentInputFileTextView.setText(filePath);
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            wireWorldFunctionality.setBoard(canvas, filePath); // tu powinniï¿½my obsï¿½uï¿½yï¿½ jakï¿½ï¿½ wartoï¿½ï¿½ zwracanï¿½ w razie bï¿½ï¿½dnego
+            // formatu pliku
+            startButton.setDisable(false);
+            stopButton.setDisable(false);
+            pauseButton.setDisable(false);
 
-	}
+            currentInputFileTextView.setText(filePath);
 
-	@FXML
-	protected void handleSaveButton(ActionEvent event) {
-		
-		Node source = (Node) event.getSource();
-		Window stage = source.getScene().getWindow();
-		
-		String savedFilePath;
-		File savedFile = fileChooser.showSaveDialog(stage);
-		if(savedFile==null) {
-			return ;
-		}
-		else {
-			savedFilePath = savedFile.getAbsolutePath();
-		}
-		try {
-			wireWorldFunctionality.saveGeneration(savedFilePath);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block //obs³u¿yæ ten b³¹d !!!
-			e.printStackTrace();
-		}
-	}
 
-	@FXML
-	protected void handleStartButton(ActionEvent event) {
-		wireWorldFunctionality.simulate(canvas, 100);
-	}
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	@FXML
-	protected void handlePauseButton(ActionEvent event) {
-		wireWorldFunctionality.pauseSimulation();
-		saveButton.setDisable(false);
-	}
+    }
 
-	@FXML
-	protected void handleStopButton(ActionEvent event) {
-		wireWorldFunctionality.stopSimulation();
-	}
+    @FXML
+    protected void handleSaveButton(ActionEvent event) {
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		initFileChooser();
-	}
+        Node source = (Node) event.getSource();
+        Window stage = source.getScene().getWindow();
 
-	public void setWireWorldFunctionality(MainWindow functionallity) {
-		this.wireWorldFunctionality = functionallity;
-	}
+        String savedFilePath;
+        File savedFile = fileChooser.showSaveDialog(stage);
+        if (savedFile == null) {
+            return;
+        } else {
+            savedFilePath = savedFile.getAbsolutePath();
+        }
+        try {
+            wireWorldFunctionality.saveGeneration(savedFilePath);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block //obsï¿½uï¿½yï¿½ ten bï¿½ï¿½d !!!
+            e.printStackTrace();
+        }
+    }
 
-	private void initFileChooser() {
-		fileChooser = new FileChooser();
-		fileChooser.setTitle(FILE_CHOOSER_TITLE);
-		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
-	}
+    @FXML
+    protected void handleStartButton(ActionEvent event) {
+        wireWorldFunctionality.simulate(canvas, 100);
+    }
 
-	private void drawFirstStateOnCanvas(GraphicsContext gc) {
-		gc.setFill(Color.WHITE);
-		gc.setStroke(Color.BLACK);
-		for (int i = 0; i < 10; i++) {
-			gc.fillRect(10 * i, 10, 8, 8);
-			gc.strokeRect(10 * i, 10, 8, 8);
-		}
-	}
+    @FXML
+    protected void handlePauseButton(ActionEvent event) {
+        wireWorldFunctionality.pauseSimulation();
+        saveButton.setDisable(false);
+    }
+
+    @FXML
+    protected void handleStopButton(ActionEvent event) {
+        wireWorldFunctionality.stopSimulation();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initFileChooser();
+    }
+
+    public void setWireWorldFunctionality(MainWindow functionallity) {
+        this.wireWorldFunctionality = functionallity;
+    }
+
+    private void initFileChooser() {
+        fileChooser = new FileChooser();
+        fileChooser.setTitle(FILE_CHOOSER_TITLE);
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
+    }
+
+    private void drawFirstStateOnCanvas(GraphicsContext gc) {
+        gc.setFill(Color.WHITE);
+        gc.setStroke(Color.BLACK);
+        for (int i = 0; i < 10; i++) {
+            gc.fillRect(10 * i, 10, 8, 8);
+            gc.strokeRect(10 * i, 10, 8, 8);
+        }
+    }
 
 }

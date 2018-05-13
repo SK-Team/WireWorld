@@ -1,5 +1,32 @@
-ElectronHead: 0,0
+Conductor: 0,0
 ElectronTail: 1,1
 ElectronHead: 2,1
 Blank: 1,3
-Conductor: 3,3
+
+Diode: 0,5
+ElectronHead: 1,5
+ElectronTail: 0,5
+
+OR: 0,10
+ElectronHead: 1,10
+ElectronTail: 0,10
+ElectronHead: 1,12
+ElectronTail: 0,12
+
+AND: 0,16
+ElectronHead: 1,16
+ElectronTail: 0,16
+ElectronHead: 1,19
+ElectronTail: 0,19
+
+NOR: 0,28
+ElectronHead: 1,28
+ElectronTail: 0,28
+ElectronHead: 1,30
+ElectronTail: 0,30
+
+Wire: 10,0 D
+
+Wire: 10,2 5 D
+
+Wire: 8,0 7 R

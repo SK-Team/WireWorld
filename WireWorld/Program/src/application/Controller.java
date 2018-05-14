@@ -112,7 +112,12 @@ public class Controller implements Initializable {
 
     @FXML
     protected void handleStopButton(ActionEvent event) {
-        wireWorldFunctionality.stopSimulation();
+        try {
+			wireWorldFunctionality.returnToFirstBoardState(canvas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Override

@@ -16,6 +16,7 @@ public class MainWindow extends Application {
 
     private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
 
+    private String boardBeforeAnySimulationFilePath;
     private Board board;
     private Simulator simulator;
     private boolean simulationActive = false;
@@ -74,8 +75,9 @@ public class MainWindow extends Application {
 
     }
 
-    public void stopSimulation() {
+    public void returnToFirstBoardState(Canvas canvas) throws IOException {
         simulationActive = false;
+        setBoard(canvas,boardBeforeAnySimulationFilePath);
 
     }
 
@@ -89,6 +91,7 @@ public class MainWindow extends Application {
 
     public void setBoard(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
         board = new Board(filePath);
+        boardBeforeAnySimulationFilePath = filePath;
         System.out.println("setBoard called");
         board.drawBoardToCanvas(canvas);
     }

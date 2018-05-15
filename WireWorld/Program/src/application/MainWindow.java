@@ -32,11 +32,15 @@ public class MainWindow extends Application {
 
             Controller controller = loader.getController();
             controller.setWireWorldFunctionality(wireWorldFunctionality);
+            controller.drawFirstBoard();
 
-            Scene scene = new Scene(root, 1000, 600);
+            Scene scene = new Scene(root, 650, 400);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +97,11 @@ public class MainWindow extends Application {
         board = new Board(filePath);
         boardBeforeAnySimulationFilePath = filePath;
         System.out.println("setBoard called");
+        board.drawBoardToCanvas(canvas);
+    }
+
+    public void drawEmptyBoard(Canvas canvas){
+        board = new Board();
         board.drawBoardToCanvas(canvas);
     }
 }

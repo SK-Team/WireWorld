@@ -101,6 +101,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void handleStartButton(ActionEvent event) {
+        saveButton.setDisable(true);
         wireWorldFunctionality.simulate(canvas, 100);
     }
 
@@ -113,6 +114,7 @@ public class Controller implements Initializable {
     @FXML
     protected void handleStopButton(ActionEvent event) {
         try {
+            saveButton.setDisable(true);
 			wireWorldFunctionality.returnToFirstBoardState(canvas);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -135,13 +137,9 @@ public class Controller implements Initializable {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
     }
 
-    private void drawFirstStateOnCanvas(GraphicsContext gc) {
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.BLACK);
-        for (int i = 0; i < 10; i++) {
-            gc.fillRect(10 * i, 10, 8, 8);
-            gc.strokeRect(10 * i, 10, 8, 8);
-        }
+    public void drawFirstBoard(){
+        wireWorldFunctionality.drawEmptyBoard(canvas);
     }
+
 
 }

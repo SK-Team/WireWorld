@@ -13,7 +13,7 @@ ElectronTail: 0,10
 ElectronHead: 1,12
 ElectronTail: 0,12
 
-AND: 0,16 R
+AND: 0,16
 ElectronHead: 1,16
 ElectronTail: 0,16
 

@@ -331,8 +331,12 @@ public class Board {
 					}
 
 					graphicsContext.setFill(cellColor);
+					graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
+					graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
 					rectToDraw = rectangles[i][j];
 					graphicsContext.fillRect(rectToDraw.getX(), rectToDraw.getY(), rectToDraw.getWidth(),
+							rectToDraw.getHeight());
+					graphicsContext.strokeRect(rectToDraw.getX(), rectToDraw.getY(), rectToDraw.getWidth(),
 							rectToDraw.getHeight());
 
 				}

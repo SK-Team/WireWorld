@@ -17,10 +17,12 @@ public abstract class Element {
     public static final int EMPTY_CELL = 4;
     public static final int REVERSED_TYPE = 10;
     public static final int DEFAULT_TYPE = 11;
-    public static final Color ELECTRON_HEAD_COLOR = Color.RED;
-    public static final Color ELECTRON_TAIL_COLOR = new Color(1, 1, 0, 1);
-    public static final Color CONDUCTOR_COLOR = Color.BLACK;
-    public static final Color EMPTY_CELL_COLOR = Color.WHITE;
+    public static final Color ELECTRON_HEAD_COLOR = Color.DEEPSKYBLUE;
+    public static final Color ELECTRON_TAIL_COLOR = Color.INDIANRED;
+    public static final Color CONDUCTOR_COLOR = Color.GOLD;
+    public static final Color EMPTY_CELL_COLOR = Color.BLACK;
+    public static final Color CELL_STROKE_COLOR = Color.WHITE;
+    public static final double CELL_STROKE_LINE_WIDTH = 0.3;
 
     public abstract void createLocation(Point p);
 

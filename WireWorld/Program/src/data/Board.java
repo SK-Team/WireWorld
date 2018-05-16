@@ -19,8 +19,8 @@ import javafx.scene.shape.Rectangle;
 
 public class Board {
 
-	private final int WIDTH = 50;
-	private final int HEIGHT = 50;
+	private final int WIDTH = 55;
+	private final int HEIGHT = 35;
 	private final int CELL_WIDTH_AND_HEIGHT = 10;
 	private final int WRONG_INPUT_FILE_FORMAT = 1;
 

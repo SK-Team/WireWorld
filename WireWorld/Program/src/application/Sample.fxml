@@ -6,26 +6,37 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0"
-            xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="application.Controller">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
     <children>
 
-        <Label layoutX="56.0" layoutY="126.0" prefHeight="17.0" prefWidth="138.0" text="Obecny plik wejściowy:"/>
-        <Canvas fx:id="canvas" height="350.0" layoutX="214.0" layoutY="30.0" width="400.0"/>
-        <Button fx:id="selectInputFileButton" layoutX="56.0" layoutY="93.0" mnemonicParsing="false"
-                onAction="#handleFileChooseButton" prefHeight="25.0" prefWidth="145.0" text="Wybierz plik wejściowy"/>
-        <Button fx:id="saveButton" disable="true" layoutX="57.0" layoutY="181.0" mnemonicParsing="false"
-                onAction="#handleSaveButton" text="zapisz obecną generację"/>
-        <Button fx:id="pauseButton" disable="true" layoutX="105.0" layoutY="221.0" mnemonicParsing="false"
-                onAction="#handlePauseButton" text="pauza"/>
-        <Button fx:id="stopButton" disable="true" layoutX="161.0" layoutY="221.0" mnemonicParsing="false"
-                onAction="#handleStopButton" text="stop"/>
-        <Button fx:id="startButton" disable="true" layoutX="56.0" layoutY="221.0" mnemonicParsing="false"
-                onAction="#handleStartButton" text="start"/>
-        <ProgressBar layoutX="56.0" layoutY="254.0" prefHeight="18.0" prefWidth="145.0" progress="0.0"/>
-        <TextField fx:id="currentInputFileTextView" disable="true" editable="false" layoutX="58.0" layoutY="143.0"
-                   prefHeight="25.0" prefWidth="145.0"/>
+        <Label layoutX="37.0" layoutY="126.0" prefHeight="17.0" prefWidth="153.0" text="Obecny plik wejściowy:" />
+        <Canvas fx:id="canvas" height="350.0" layoutX="214.0" layoutY="30.0" width="500.0" />
+        <Button fx:id="selectInputFileButton" layoutX="37.0" layoutY="92.0" mnemonicParsing="false" onAction="#handleFileChooseButton" prefHeight="25.0" prefWidth="153.0" text="Wybierz plik wejściowy" />
+        <Button fx:id="saveButton" disable="true" layoutX="37.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleSaveButton" prefHeight="25.0" prefWidth="153.0" text="Zapisz obecną generację" />
+        <Button fx:id="pauseButton" disable="true" layoutX="90.0" layoutY="213.0" mnemonicParsing="false" onAction="#handlePauseButton" text="Pauza" />
+        <Button fx:id="stopButton" disable="true" layoutX="149.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleStopButton" text="Stop" />
+        <Button fx:id="startButton" disable="true" layoutX="37.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleStartButton" text="Start" />
+        <!--<ProgressBar layoutX="37.0" layoutY="251.0" prefHeight="18.0" prefWidth="153.0" progress="0.0" />-->
+        <TextField fx:id="currentInputFileTextView" disable="true" editable="false" layoutX="37.0" layoutY="143.0" prefHeight="25.0" prefWidth="153.0" />
+      <!--<TextArea fx:id="currentInputFileTextAreaView" editable="false" layoutX="47.0" layoutY="280.0" prefHeight="61.0" prefWidth="145.0" wrapText="true" />-->
+      <Label alignment="CENTER" layoutX="37.0" layoutY="30.0" prefHeight="48.0" prefWidth="153.0" text="Wireworld">
+         <font>
+            <Font name="Algerian" size="24.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#2a75a1" />
+                  <Stop color="#b21706" offset="0.5172413793103445" />
+                  <Stop color="#edba2f" offset="0.9961685823754789" />
+                  <Stop color="#edba2f" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
     </children>
 </AnchorPane>

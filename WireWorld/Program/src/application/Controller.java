@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -46,6 +47,8 @@ public class Controller implements Initializable {
     private Button saveButton;
     @FXML
     private TextField currentInputFileTextView;
+//    @FXML
+//    private TextArea currentInputFileTextAreaView;
 
     @FXML
     protected void handleFileChooseButton(ActionEvent event) {
@@ -68,6 +71,8 @@ public class Controller implements Initializable {
             stopButton.setDisable(false);
             pauseButton.setDisable(false);
 
+
+//            currentInputFileTextAreaView.setText(filePath);
             currentInputFileTextView.setText(filePath);
 
 

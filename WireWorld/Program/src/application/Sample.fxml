@@ -2,10 +2,14 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
@@ -36,9 +40,19 @@
             </LinearGradient>
          </textFill>
       </Label>
-      <RadioButton layoutX="36.0" layoutY="313.0" mnemonicParsing="false" text="Głowa elektronu" />
-      <RadioButton layoutX="36.0" layoutY="344.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="108.0" text="Ogon elektronu" />
-      <RadioButton layoutX="36.0" layoutY="372.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="108.0" text="Przewodnik" />
-      <RadioButton layoutX="36.0" layoutY="401.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="108.0" text="Pusta komórka" />
+      <VBox fx:id="radioButtonsVBox" disable="true" layoutX="53.0" layoutY="326.0" prefHeight="71.0" prefWidth="122.0">
+         <children>
+            <RadioButton fx:id="electronHeadRadioButton" mnemonicParsing="false" onAction="#handleElectronHeadRadioButton" text="Głowa elektronu">
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggleGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="electronTailRadioButton" mnemonicParsing="false" onAction="#handleElectronTailRadioButton" prefHeight="17.0" prefWidth="108.0" text="Ogon elektronu" toggleGroup="$toggleGroup" />
+            <RadioButton fx:id="conductorRadioButton" mnemonicParsing="false" onAction="#handleConductorRadioButton" prefHeight="17.0" prefWidth="108.0" text="Przewodnik" toggleGroup="$toggleGroup" />
+            <RadioButton fx:id="emptyCellRadioButton" mnemonicParsing="false" onAction="#handleEmptyCellRadioButton" prefHeight="26.0" prefWidth="108.0" text="Pusta komórka" toggleGroup="$toggleGroup" />
+         </children>
+      </VBox>
+      <CheckBox fx:id="userDrawingCheckBox" disable="true" layoutX="54.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleuserDrawingCheckBox" text="Rysowanie reczne" />
+      <Slider fx:id="speedSlider" blockIncrement="0.25" disable="true" layoutX="14.0" layoutY="410.0" majorTickUnit="0.5" max="3.0" min="0.5" minorTickCount="1" prefHeight="38.0" prefWidth="192.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
     </children>
 </AnchorPane>

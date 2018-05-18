@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import data.Board;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +19,7 @@ public class MainWindow extends Application {
     private Board board;
     private Simulator simulator;
     private boolean simulationActive = false;
+    private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
 
     @Override
     public void start(Stage primaryStage) {
@@ -34,7 +34,7 @@ public class MainWindow extends Application {
             controller.setWireWorldFunctionality(wireWorldFunctionality);
             controller.drawFirstBoard();
 
-            Scene scene = new Scene(root, 750, 400);
+            Scene scene = new Scene(root, 750, 450);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -68,7 +68,7 @@ public class MainWindow extends Application {
                     board.printToConsole();
 
                     try {
-                        Thread.sleep(INTERVAL_BEETWEEN_SIMULATIONS);
+                        Thread.sleep(interval);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -81,7 +81,7 @@ public class MainWindow extends Application {
 
     public void returnToFirstBoardState(Canvas canvas) throws IOException {
         simulationActive = false;
-        setBoard(canvas,boardBeforeAnySimulationFilePath);
+        setBoardFromFile(canvas,boardBeforeAnySimulationFilePath);
 
     }
 
@@ -93,15 +93,31 @@ public class MainWindow extends Application {
         board.printBoardToFile(filePath);
     }
 
-    public void setBoard(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
+    public void setBoardFromFile(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
         board = new Board(filePath);
         boardBeforeAnySimulationFilePath = filePath;
-        System.out.println("setBoard called");
+        System.out.println("setBoardFromFile called");
         board.drawBoardToCanvas(canvas);
     }
 
     public void drawEmptyBoard(Canvas canvas){
         board = new Board();
         board.drawBoardToCanvas(canvas);
+    }
+
+    public Board getBoard(){
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(double interval) {
+        this.interval = (int)interval;
     }
 }

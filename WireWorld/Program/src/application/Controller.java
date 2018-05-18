@@ -6,15 +6,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -47,8 +47,8 @@ public class Controller implements Initializable {
     private Button saveButton;
     @FXML
     private TextField currentInputFileTextView;
-//    @FXML
-//    private TextArea currentInputFileTextAreaView;
+    @FXML
+    private TextArea currentInputFileTextAreaView;
 
     @FXML
     protected void handleFileChooseButton(ActionEvent event) {
@@ -72,7 +72,7 @@ public class Controller implements Initializable {
             pauseButton.setDisable(false);
 
 
-//            currentInputFileTextAreaView.setText(filePath);
+            currentInputFileTextAreaView.setText(filePath);
             currentInputFileTextView.setText(filePath);
 
 
@@ -126,10 +126,26 @@ public class Controller implements Initializable {
 			e.printStackTrace();
 		}
     }
+    
+    @FXML
+    protected void handleMouseClickedOnCanvas(MouseEvent event) {
+    	System.out.println("Klikniêto: "+event.getX()+" "+event.getY());
+    }
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initFileChooser();
+        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				handleMouseClickedOnCanvas(event);
+				
+			}
+        	
+		});
+        
     }
 
     public void setWireWorldFunctionality(MainWindow functionallity) {

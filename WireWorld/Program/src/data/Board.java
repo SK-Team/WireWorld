@@ -19,9 +19,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Board {
 
-	public final int WIDTH = 50;
-	public final int HEIGHT = 35;
-	public final int CELL_WIDTH_AND_HEIGHT = 10;
+	public static final int WIDTH = 60;
+	public static final int HEIGHT = 50;
+	public static final int CELL_WIDTH_AND_HEIGHT = 10;
 	private final int WRONG_INPUT_FILE_FORMAT = 1;
 
 	private List<Element> elements;
@@ -282,6 +282,14 @@ public class Board {
 
 	public void setCells(int[][] cells) {
 		this.cells = cells;
+	}
+
+	public List<Element> getElements() {
+		return elements;
+	}
+
+	public void setElements(List<Element> elements) {
+		this.elements = elements;
 	}
 
 	public int[][] copyCells(){

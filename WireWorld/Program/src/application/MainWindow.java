@@ -32,9 +32,9 @@ public class MainWindow extends Application {
 
             Controller controller = loader.getController();
             controller.setWireWorldFunctionality(wireWorldFunctionality);
-            controller.drawFirstBoard();
+            controller.drawEmptyBoard();
 
-            Scene scene = new Scene(root, 750, 450);
+            Scene scene = new Scene(root, 850, 630);
             scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -117,7 +117,8 @@ public class MainWindow extends Application {
         return interval;
     }
 
-    public void setInterval(double interval) {
-        this.interval = (int)interval;
+    public void setInterval(int interval) {
+        this.interval = interval;
+
     }
 }

@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import data.*;
@@ -235,30 +234,37 @@ public class Controller implements Initializable {
 //            System.out.println((int) (event.getY() / b.CELL_WIDTH_AND_HEIGHT) + " " +
 //                    (int) (event.getX() / b.CELL_WIDTH_AND_HEIGHT));
                 b.setCells(cells);
+                b.drawCellToCanvas(canvas, new Point((int) (event.getX() / Board.CELL_WIDTH_AND_HEIGHT),
+                        (int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)));
             } else if (cellType == Element.DIODE) {
                 Diode diode = new Diode(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
                         (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
                 b.getElements().add(diode);
                 b.fillWithElement(diode);
+                b.drawElementToCanvas(canvas, diode.getLocation());
             } else if (cellType == Element.AND_GATE) {
                 AndGate andGate = new AndGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
                         (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
                 b.getElements().add(andGate);
                 b.fillWithElement(andGate);
+                b.drawElementToCanvas(canvas, andGate.getLocation());
             } else if (cellType == Element.OR_GATE) {
                 OrGate orGate = new OrGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
                         (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
                 b.getElements().add(orGate);
                 b.fillWithElement(orGate);
+                b.drawElementToCanvas(canvas, orGate.getLocation());
             } else if (cellType == Element.NOR_GATE) {
                 NorGate norGate = new NorGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
                         (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
                 b.getElements().add(norGate);
                 b.fillWithElement(norGate);
+                b.drawElementToCanvas(canvas, norGate.getLocation());
+
             } else if (cellType == Element.WIRE) {
                 //TODO Kabelek
             }
-            b.drawBoardToCanvas(canvas);
+//            b.drawBoardToCanvas(canvas);
             wireWorldFunctionality.setBoard(b);
             startButton.setDisable(false);
             speedSlider.setDisable(false);

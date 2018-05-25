@@ -5,7 +5,7 @@ import data.Element;
 
 public class Simulator {
 
-    private int countElectronHeadsInNeighbourhood(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
+    public int countElectronHeadsInNeighbourhood(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
         int[][] cells = b.getCells();
         int electronHeads = 0;
 
@@ -35,7 +35,7 @@ public class Simulator {
         return electronHeads;
     }
 
-    private int whatHappensWithCell(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
+    public int whatHappensWithCell(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
         int[][] cells = b.getCells();
 
 

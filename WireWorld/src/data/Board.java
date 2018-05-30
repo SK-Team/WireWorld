@@ -220,6 +220,10 @@ public class Board {
 		int[][] cellsToPrintWithoutElements = copyCells();
 
 		for (Element e : elements) {
+
+			bufferedWriter.write(e.toString());
+			bufferedWriter.newLine();
+
 			int x = e.getLocation().get(0).x;
 			int y = e.getLocation().get(0).y;
 			char type = e.getType() == Element.REVERSED_TYPE ? 'R' : 'D';
@@ -239,9 +243,11 @@ public class Board {
 				int length = ((Wire) e).getLength();
 				bufferedWriter.write("Wire: " + x + "," + y + " " + length + " " + type);
 				bufferedWriter.newLine();
+
 			}
 			// peta, ktora zapobiega duplikacji w pliku wynikowym (gdyby nie ona, dla
 			// kazdego punktu zajmowanego przez element, program wypisywalby dodatkowo
+
 			// przewodnik)
 			for (Point p : e.getLocation()) {
 				if (cells[p.x][p.y] == Element.CONDUCTOR) {
@@ -357,7 +363,7 @@ public class Board {
 
 	public void printToConsole() {
 		for (int i = 0; i < HEIGHT; i++) {
-			System.out.println("");
+			System.out.println();
 			for (int j = 0; j < WIDTH; j++) {
 				System.out.print(cells[i][j] + " ");
 			}

@@ -1,0 +1,5 @@
+Conductor: 0,0
+ElectronTail: 1,1
+ElectronHead: 2,1
+Blank: 1,3
+Diode: 3,3

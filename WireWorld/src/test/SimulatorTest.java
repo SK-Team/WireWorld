@@ -38,7 +38,7 @@ public class SimulatorTest {
 		int y = 1;
 		// when
 		int expectedResult = 3;
-		int result = simulator.countElectronHeadsInNeighbourhood(board, y, x); // celowe odwrócenie wspó³rzêdnych
+		int result = simulator.countElectronHeadsInNeighbourhood(board, y, x); // celowe odwrï¿½cenie wspï¿½rzï¿½dnych
 		// then
 		assertThat(result).isEqualTo(expectedResult);
 
@@ -55,7 +55,7 @@ public class SimulatorTest {
 		int y = 1;
 		// when
 		int expectedResult = 6;
-		int result = simulator.countElectronHeadsInNeighbourhood(board, y, x); // celowe odwrócenie wspó³rzêdnych
+		int result = simulator.countElectronHeadsInNeighbourhood(board, y, x); // celowe odwrï¿½cenie wspï¿½rzï¿½dnych
 		// then
 		assertThat(result).isEqualTo(expectedResult);
 	}
@@ -185,3 +185,4 @@ public class SimulatorTest {
 		assertThat(result).isEqualTo(expectedResult);
 	}
 }
+

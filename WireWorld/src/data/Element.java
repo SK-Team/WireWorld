@@ -1,10 +1,9 @@
 package data;
 
-import java.awt.Point;
-import java.util.List;
-
-import javafx.scene.paint.Paint;
 import javafx.scene.paint.Color;
+
+import java.awt.*;
+import java.util.List;
 
 public abstract class Element {
 
@@ -39,4 +38,10 @@ public abstract class Element {
 
     public abstract int getType();
 
+    @Override
+    public String toString() {
+        Point p = location.get(0);
+        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        return "Element: " + p.x + "," + p.y + " " + t;
+    }
 }

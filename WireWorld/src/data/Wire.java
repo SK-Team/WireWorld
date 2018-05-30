@@ -59,5 +59,12 @@ public class Wire extends Element {
     public int getLength(){
         return length;
     }
+    @Override
+    public String toString() {
+        Point p = location.get(0);
+        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        return "Wire: " + p.x + "," + p.y + " " + t;
+    }
+
 
 }

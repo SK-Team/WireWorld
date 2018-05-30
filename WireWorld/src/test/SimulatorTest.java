@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import data.Board;
@@ -16,7 +15,6 @@ import simulator.Simulator;
 public class SimulatorTest {
 
 	Simulator simulator;
-	@Mock
 	Board board;
 
 	@Before
@@ -26,7 +24,7 @@ public class SimulatorTest {
 	}
 
 	@Test
-	public void countElectronHeadsInNeighbourHoodWhenCellIsNearBoundaryTest() {
+	public void shouldCountElectronHeadsInNeighbourHoodWhenCellIsNearBoundary() {
 		// given
 		int[][] cells = {
 				{ Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
@@ -47,7 +45,7 @@ public class SimulatorTest {
 	}
 
 	@Test
-	public void countElectronHeadsInNeighbourHoodWhenCellIsInTheMiddleTest() {
+	public void shouldCountElectronHeadsInNeighbourHoodWhenCellIsInTheMiddle() {
 		// given
 		int[][] cells = { { Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
 				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
@@ -63,7 +61,7 @@ public class SimulatorTest {
 	}
 
 	@Test
-	public void whatHappensWithElectronHeadTest() {
+	public void shouldReturnNewStateOfElectronHead() {
 		// given
 		int[][] cells = {
 				{ Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
@@ -85,7 +83,7 @@ public class SimulatorTest {
 	}
 
 	@Test
-	public void whatHappensWithElectronTailTest() {
+	public void shouldReturnNewStateOfElectronTail() {
 		// given
 		int[][] cells = {
 				{ Element.ELECTRON_TAIL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
@@ -107,7 +105,7 @@ public class SimulatorTest {
 	}
 
 	@Test
-	public void whatHappensWithEmptyCellTest() {
+	public void shouldReturnNewStateOfEmptyCell() {
 		// given
 		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
 				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
@@ -124,7 +122,7 @@ public class SimulatorTest {
 		assertThat(result).isEqualTo(expectedResult);
 	}
 	@Test
-	public void whatHappensWithConductotWithMoreThan2ElectronHeadsInNeighbourHood() {
+	public void shouldReturnNewStateOfConductorWithMoreThan2ElectronHeadsInNeighbourHood() {
 		// given
 		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
 				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
@@ -140,8 +138,8 @@ public class SimulatorTest {
 		// then
 		assertThat(result).isEqualTo(expectedResult);
 	}
-	@Test
-	public void whatHappensWithConductotWith2ElectronHeadsInNeighbourHood() {
+	@Test 
+	public void shouldReturnNewStateOfConductorWith2ElectronHeadsInNeighbourhood() {
 		// given
 		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD },
 				{ Element.ELECTRON_TAIL, Element.CONDUCTOR, Element.EMPTY_CELL },
@@ -158,7 +156,7 @@ public class SimulatorTest {
 		assertThat(result).isEqualTo(expectedResult);
 	}
 	@Test
-	public void simulateOneGenerationTest() {
+	public void shouldSimulateOneGeneration() {
 		// given
 		int[][] cells = { { Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
 				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },

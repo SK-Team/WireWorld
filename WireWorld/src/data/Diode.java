@@ -63,4 +63,10 @@ public class Diode extends Element {
         return type;
     }
 
+    @Override
+    public String toString() {
+        Point p = location.get(0);
+        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        return "Diode: " + p.x + "," + p.y + " " + t;
+    }
 }

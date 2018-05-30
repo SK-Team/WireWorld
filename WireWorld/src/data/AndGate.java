@@ -110,4 +110,11 @@ public class AndGate extends Element {
         return type;
     }
 
+    @Override
+    public String toString() {
+        Point p = location.get(0);
+        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        return "AND: " + p.x + "," + p.y + " " + t;
+    }
+
 }

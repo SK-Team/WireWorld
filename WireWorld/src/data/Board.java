@@ -217,7 +217,11 @@ public class Board {
 		int[][] cellsToPrintWithoutElements = copyCells();
 
 		for (Element e : elements) {
-			int x = e.getLocation().get(0).x;
+
+            bufferedWriter.write(e.toString());
+            bufferedWriter.newLine();
+
+			/*int x = e.getLocation().get(0).x;
 			int y = e.getLocation().get(0).y;
 			char type = e.getType() == Element.REVERSED_TYPE ? 'R' : 'D';
 			if (e instanceof Diode) { // mo�na poprawi� tworzenie napisu -> stworzy� za pomoc� StringBuildera
@@ -236,7 +240,7 @@ public class Board {
 				int length = ((Wire) e).getLength();
 				bufferedWriter.write("Wire: " + x + "," + y + " " + length + " " + type);
 				bufferedWriter.newLine();
-			}
+			}*/
 			// pętla, która zapobiega duplikacji w pliku wynikowym (gdyby nie ona, dla
 			// każdego punktu zajmowanego przez element, program wypisywalby dodatkowo
 			// przewodnik)
@@ -352,7 +356,7 @@ public class Board {
 
 	public void printToConsole() {
 		for (int i = 0; i < HEIGHT; i++) {
-			System.out.println("");
+			System.out.println();
 			for (int j = 0; j < WIDTH; j++) {
 				System.out.print(cells[i][j] + " ");
 			}

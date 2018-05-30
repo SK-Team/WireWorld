@@ -25,292 +25,289 @@ import javafx.stage.Window;
 
 public class Controller implements Initializable {
 
-    private MainWindow wireWorldFunctionality;
+	private MainWindow wireWorldFunctionality;
 
-    // i tak mamy inne ?cie?ki, bo robimy w innych ?rodowiskach
+	// i tak mamy inne ?cie?ki, bo robimy w innych ?rodowiskach
 
-    // public static final String DEFAULT_TEXT_FILE_PATH =
+	// public static final String DEFAULT_TEXT_FILE_PATH =
 
-    // "C:\\Users\\Dell\\IdeaProjects\\2018L_JIMP2_repozytorium_gr11\\WireWorld\\Program\\src\\defaultInputFile.txt";
-    public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt";
+	// "C:\\Users\\Dell\\IdeaProjects\\2018L_JIMP2_repozytorium_gr11\\WireWorld\\Program\\src\\defaultInputFile.txt";
+	public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt";
 
-    private final String FILE_CHOOSER_TITLE = "Wybierz plik wej?ciowy";
+	private final String FILE_CHOOSER_TITLE = "Wybierz plik wej?ciowy";
 
-    private FileChooser fileChooser;
+	private FileChooser fileChooser;
 
-    int cellType;
+	int cellType;
 
-    @FXML
-    private Canvas canvas;
-    @FXML
-    private Button selectInputFileButton;
-    @FXML
-    private Button startButton;
-    @FXML
-    private Button stopButton;
-    @FXML
-    private Button pauseButton;
-    @FXML
-    private Button saveButton;
-    @FXML
-    private TextArea currentInputFileTextAreaView;
-    @FXML
-    private ToggleGroup toggleGroup;
-    @FXML
-    private RadioButton electronHeadRadioButton;
-    @FXML
-    private RadioButton electronTailRadioButton;
-    @FXML
-    private RadioButton conductorRadioButton;
-    @FXML
-    private RadioButton emptyCellRadioButton;
-    @FXML
-    private RadioButton diodeRadioButton;
-    @FXML
-    private CheckBox userDrawingCheckBox;
-    @FXML
-    private VBox radioButtonsVBox;
-    @FXML
-    private Slider speedSlider;
+	@FXML
+	private Canvas canvas;
+	@FXML
+	private Button selectInputFileButton;
+	@FXML
+	private Button startButton;
+	@FXML
+	private Button stopButton;
+	@FXML
+	private Button pauseButton;
+	@FXML
+	private Button saveButton;
+	@FXML
+	private TextArea currentInputFileTextAreaView;
+	@FXML
+	private ToggleGroup toggleGroup;
+	@FXML
+	private RadioButton electronHeadRadioButton;
+	@FXML
+	private RadioButton electronTailRadioButton;
+	@FXML
+	private RadioButton conductorRadioButton;
+	@FXML
+	private RadioButton emptyCellRadioButton;
+	@FXML
+	private RadioButton diodeRadioButton;
+	@FXML
+	private CheckBox userDrawingCheckBox;
+	@FXML
+	private VBox radioButtonsVBox;
+	@FXML
+	private Slider speedSlider;
 
+	@FXML
+	protected void handleFileChooseButton(ActionEvent event) {
 
-    @FXML
-    protected void handleFileChooseButton(ActionEvent event) {
+		Node source = (Node) event.getSource();
+		Window stage = source.getScene().getWindow();
 
-        Node source = (Node) event.getSource();
-        Window stage = source.getScene().getWindow();
+		String filePath;
+		File file = fileChooser.showOpenDialog(stage);
+		if (file == null) {
+			return;
+		} else {
+			filePath = file.getAbsolutePath();
+		}
 
-        String filePath;
-        File file = fileChooser.showOpenDialog(stage);
-        if (file == null) {
-            return;
-        } else {
-            filePath = file.getAbsolutePath();
-        }
+		try {
+			wireWorldFunctionality.setBoardFromFile(canvas, filePath); // tu powinni?my obs?u?y? jak?? warto?? zwracan?
+																		// w razie b??dnego
+			// formatu pliku
+			startButton.setDisable(false);
+			pauseButton.setDisable(false);
+			stopButton.setDisable(false);
+			speedSlider.setDisable(false);
 
-        try {
-            wireWorldFunctionality.setBoardFromFile(canvas, filePath); // tu powinni?my obs?u?y? jak?? warto?? zwracan? w razie b??dnego
-            // formatu pliku
-            startButton.setDisable(false);
-            pauseButton.setDisable(false);
-            stopButton.setDisable(false);
-            speedSlider.setDisable(false);
+			currentInputFileTextAreaView.setText(filePath);
 
-            currentInputFileTextAreaView.setText(filePath);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+	}
 
-    }
+	@FXML
+	protected void handleSaveButton(ActionEvent event) {
 
-    @FXML
-    protected void handleSaveButton(ActionEvent event) {
+		Node source = (Node) event.getSource();
+		Window stage = source.getScene().getWindow();
 
-        Node source = (Node) event.getSource();
-        Window stage = source.getScene().getWindow();
+		String savedFilePath;
+		File savedFile = fileChooser.showSaveDialog(stage);
+		if (savedFile == null) {
+			return;
+		} else {
+			savedFilePath = savedFile.getAbsolutePath();
+		}
+		try {
+			wireWorldFunctionality.saveGeneration(savedFilePath);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block //obs?u?y? ten b??d !!!
+			e.printStackTrace();
+		}
+	}
 
-        String savedFilePath;
-        File savedFile = fileChooser.showSaveDialog(stage);
-        if (savedFile == null) {
-            return;
-        } else {
-            savedFilePath = savedFile.getAbsolutePath();
-        }
-        try {
-            wireWorldFunctionality.saveGeneration(savedFilePath);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block //obs?u?y? ten b??d !!!
-            e.printStackTrace();
-        }
-    }
+	@FXML
+	protected void handleStartButton(ActionEvent event) {
+		saveButton.setDisable(true);
 
-    @FXML
-    protected void handleStartButton(ActionEvent event) {
-        saveButton.setDisable(true);
+		if (toggleGroup.getSelectedToggle() != null)
+			toggleGroup.getSelectedToggle().setSelected(false);
+		radioButtonsVBox.setDisable(true);
+		userDrawingCheckBox.setSelected(false);
+		userDrawingCheckBox.setDisable(true);
 
-        if (toggleGroup.getSelectedToggle() != null)
-            toggleGroup.getSelectedToggle().setSelected(false);
-        radioButtonsVBox.setDisable(true);
-        userDrawingCheckBox.setSelected(false);
-        userDrawingCheckBox.setDisable(true);
+		wireWorldFunctionality.simulate(canvas, 100);
+	}
 
+	@FXML
+	protected void handlePauseButton(ActionEvent event) {
+		wireWorldFunctionality.pauseSimulation();
+		userDrawingCheckBox.setDisable(false);
+		saveButton.setDisable(false);
+	}
 
-        wireWorldFunctionality.simulate(canvas, 100);
-    }
+	@FXML
+	protected void handleStopButton(ActionEvent event) {
+		try {
+			userDrawingCheckBox.setDisable(false);
+			saveButton.setDisable(false);
+			saveButton.setDisable(true);
+			wireWorldFunctionality.returnToFirstBoardState(canvas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-    @FXML
-    protected void handlePauseButton(ActionEvent event) {
-        wireWorldFunctionality.pauseSimulation();
-        userDrawingCheckBox.setDisable(false);
-        saveButton.setDisable(false);
-    }
+	@FXML
+	protected void handleuserDrawingCheckBox(ActionEvent event) {
+		if (userDrawingCheckBox.isSelected() == true) {
+			radioButtonsVBox.setDisable(false);
+		} else {
+			if (toggleGroup.getSelectedToggle() != null)
+				toggleGroup.getSelectedToggle().setSelected(false);
+			radioButtonsVBox.setDisable(true);
+		}
 
-    @FXML
-    protected void handleStopButton(ActionEvent event) {
-        try {
-            userDrawingCheckBox.setDisable(false);
-            saveButton.setDisable(false);
-            saveButton.setDisable(true);
-            wireWorldFunctionality.returnToFirstBoardState(canvas);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	}
 
-    @FXML
-    protected void handleuserDrawingCheckBox(ActionEvent event) {
-        if (userDrawingCheckBox.isSelected() == true) {
-            radioButtonsVBox.setDisable(false);
-        } else {
-            if (toggleGroup.getSelectedToggle() != null)
-                toggleGroup.getSelectedToggle().setSelected(false);
-            radioButtonsVBox.setDisable(true);
-        }
+	@FXML
+	protected void handleEmptyCellRadioButton(ActionEvent event) {
+		cellType = Element.EMPTY_CELL;
+	}
 
-    }
+	@FXML
+	protected void handleElectronTailRadioButton(ActionEvent event) {
+		cellType = Element.ELECTRON_TAIL;
+	}
 
-    @FXML
-    protected void handleEmptyCellRadioButton(ActionEvent event) {
-        cellType = Element.EMPTY_CELL;
-    }
+	@FXML
+	protected void handleElectronHeadRadioButton(ActionEvent event) {
+		cellType = Element.ELECTRON_HEAD;
+	}
 
-    @FXML
-    protected void handleElectronTailRadioButton(ActionEvent event) {
-        cellType = Element.ELECTRON_TAIL;
-    }
+	@FXML
+	protected void handleConductorRadioButton(ActionEvent event) {
+		cellType = Element.CONDUCTOR;
+	}
 
-    @FXML
-    protected void handleElectronHeadRadioButton(ActionEvent event) {
-        cellType = Element.ELECTRON_HEAD;
-    }
+	@FXML
+	protected void handleDiodeRadioButton(ActionEvent event) {
+		cellType = Element.DIODE;
+	}
 
-    @FXML
-    protected void handleConductorRadioButton(ActionEvent event) {
-        cellType = Element.CONDUCTOR;
-    }
+	@FXML
+	protected void handleAndGateRadioButton(ActionEvent event) {
+		cellType = Element.AND_GATE;
+	}
 
-    @FXML
-    protected void handleDiodeRadioButton(ActionEvent event) {
-        cellType = Element.DIODE;
-    }
+	@FXML
+	protected void handleOrGateRadioButton(ActionEvent event) {
+		cellType = Element.OR_GATE;
+	}
 
-    @FXML
-    protected void handleAndGateRadioButton(ActionEvent event) {
-        cellType = Element.AND_GATE;
-    }
+	@FXML
+	protected void handleNorGateRadioButton(ActionEvent event) {
+		cellType = Element.NOR_GATE;
+	}
 
-    @FXML
-    protected void handleOrGateRadioButton(ActionEvent event) {
-        cellType = Element.OR_GATE;
-    }
+	@FXML
+	protected void handleWireRadioButton(ActionEvent event) {
+		cellType = Element.WIRE;
+	}
 
-    @FXML
-    protected void handleNorGateRadioButton(ActionEvent event) {
-        cellType = Element.NOR_GATE;
-    }
+	@FXML
+	protected void handleClearBoardButton(ActionEvent event) {
+		wireWorldFunctionality.drawEmptyBoard(canvas);
+	}
 
-    @FXML
-    protected void handleWireRadioButton(ActionEvent event) {
-        cellType = Element.WIRE;
-    }
+	@FXML
+	protected void handleMouseClickedOnCanvas(MouseEvent event) {
+		if (userDrawingCheckBox.isSelected() == true && toggleGroup.getSelectedToggle() != null) {
+			Board b = wireWorldFunctionality.getBoard();
+			int type = Element.DEFAULT_TYPE;
+			if (cellType >= Element.ELECTRON_HEAD && cellType <= Element.EMPTY_CELL) { //To porownanie jest zle - co jak zmienimy wartosci stalych?
+				int cells[][] = b.getCells();
+				cells[(int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)][(int) (event.getX()
+						/ Board.CELL_WIDTH_AND_HEIGHT)] = cellType;
+				// System.out.println((int) (event.getY() / b.CELL_WIDTH_AND_HEIGHT) + " " +
+				// (int) (event.getX() / b.CELL_WIDTH_AND_HEIGHT));
+				b.setCells(cells);
+				b.drawCellToCanvas(canvas, new Point((int) (event.getX() / Board.CELL_WIDTH_AND_HEIGHT),
+						(int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)));
+			} else if (cellType == Element.DIODE) {
+				Diode diode = new Diode(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
+						(int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
+				b.getElements().add(diode);
+				b.fillWithElement(diode);
+				b.drawElementToCanvas(canvas, diode.getLocation());
+			} else if (cellType == Element.AND_GATE) {
+				AndGate andGate = new AndGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
+						(int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
+				b.getElements().add(andGate);
+				b.fillWithElement(andGate);
+				b.drawElementToCanvas(canvas, andGate.getLocation());
+			} else if (cellType == Element.OR_GATE) {
+				OrGate orGate = new OrGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
+						(int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
+				b.getElements().add(orGate);
+				b.fillWithElement(orGate);
+				b.drawElementToCanvas(canvas, orGate.getLocation());
+			} else if (cellType == Element.NOR_GATE) {
+				NorGate norGate = new NorGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
+						(int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
+				b.getElements().add(norGate);
+				b.fillWithElement(norGate);
+				b.drawElementToCanvas(canvas, norGate.getLocation());
 
-    @FXML
-    protected void handleClearBoardButton(ActionEvent event) {
-        wireWorldFunctionality.drawEmptyBoard(canvas);
-    }
+			} else if (cellType == Element.WIRE) {
+				// TODO Kabelek
+			}
+			// b.drawBoardToCanvas(canvas);
+			wireWorldFunctionality.setBoard(b);
+			startButton.setDisable(false);
+			speedSlider.setDisable(false);
+			pauseButton.setDisable(false);
+		}
 
-    @FXML
-    protected void handleMouseClickedOnCanvas(MouseEvent event) {
-        if (userDrawingCheckBox.isSelected() == true && toggleGroup.getSelectedToggle() != null) {
-            Board b = wireWorldFunctionality.getBoard();
-            int type = Element.DEFAULT_TYPE;
-            if (cellType >= Element.ELECTRON_HEAD && cellType <= Element.EMPTY_CELL) {
-                int cells[][] = b.getCells();
-                cells[(int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)][(int) (event.getX() / Board.CELL_WIDTH_AND_HEIGHT)]
-                        = cellType;
-//            System.out.println((int) (event.getY() / b.CELL_WIDTH_AND_HEIGHT) + " " +
-//                    (int) (event.getX() / b.CELL_WIDTH_AND_HEIGHT));
-                b.setCells(cells);
-                b.drawCellToCanvas(canvas, new Point((int) (event.getX() / Board.CELL_WIDTH_AND_HEIGHT),
-                        (int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)));
-            } else if (cellType == Element.DIODE) {
-                Diode diode = new Diode(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
-                        (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
-                b.getElements().add(diode);
-                b.fillWithElement(diode);
-                b.drawElementToCanvas(canvas, diode.getLocation());
-            } else if (cellType == Element.AND_GATE) {
-                AndGate andGate = new AndGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
-                        (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
-                b.getElements().add(andGate);
-                b.fillWithElement(andGate);
-                b.drawElementToCanvas(canvas, andGate.getLocation());
-            } else if (cellType == Element.OR_GATE) {
-                OrGate orGate = new OrGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
-                        (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
-                b.getElements().add(orGate);
-                b.fillWithElement(orGate);
-                b.drawElementToCanvas(canvas, orGate.getLocation());
-            } else if (cellType == Element.NOR_GATE) {
-                NorGate norGate = new NorGate(new Point((int) event.getX() / Board.CELL_WIDTH_AND_HEIGHT,
-                        (int) event.getY() / Board.CELL_WIDTH_AND_HEIGHT), type);
-                b.getElements().add(norGate);
-                b.fillWithElement(norGate);
-                b.drawElementToCanvas(canvas, norGate.getLocation());
+	}
 
-            } else if (cellType == Element.WIRE) {
-                //TODO Kabelek
-            }
-//            b.drawBoardToCanvas(canvas);
-            wireWorldFunctionality.setBoard(b);
-            startButton.setDisable(false);
-            speedSlider.setDisable(false);
-            pauseButton.setDisable(false);
-        }
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		initFileChooser();
+		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-    }
+			@Override
+			public void handle(MouseEvent event) {
+				handleMouseClickedOnCanvas(event);
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initFileChooser();
-        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			}
 
-            @Override
-            public void handle(MouseEvent event) {
-                handleMouseClickedOnCanvas(event);
+		});
 
-            }
+		speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-        });
+				wireWorldFunctionality.setInterval((int) (1000 / newValue.doubleValue()));
+				System.out.println(wireWorldFunctionality.getInterval());
+			}
+		});
 
-        speedSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                                Number oldValue, Number newValue) {
+	}
 
-                wireWorldFunctionality.setInterval((int) (1000 / newValue.doubleValue()));
-                System.out.println(wireWorldFunctionality.getInterval());
-            }
-        });
+	public void setWireWorldFunctionality(MainWindow functionallity) {
+		this.wireWorldFunctionality = functionallity;
+	}
 
+	private void initFileChooser() {
+		fileChooser = new FileChooser();
+		fileChooser.setTitle(FILE_CHOOSER_TITLE);
+		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
+	}
 
-    }
-
-    public void setWireWorldFunctionality(MainWindow functionallity) {
-        this.wireWorldFunctionality = functionallity;
-    }
-
-    private void initFileChooser() {
-        fileChooser = new FileChooser();
-        fileChooser.setTitle(FILE_CHOOSER_TITLE);
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("txt files", "*.txt"));
-    }
-
-    public void drawEmptyBoard() {
-        wireWorldFunctionality.drawEmptyBoard(canvas);
-    }
+	public void drawEmptyBoard() {
+		wireWorldFunctionality.drawEmptyBoard(canvas);
+	}
 
 }

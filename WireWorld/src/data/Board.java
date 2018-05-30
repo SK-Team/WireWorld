@@ -22,7 +22,8 @@ public class Board {
 	public static final int WIDTH = 60;
 	public static final int HEIGHT = 50;
 	public static final int CELL_WIDTH_AND_HEIGHT = 10;
-	private final int WRONG_INPUT_FILE_FORMAT = 1;
+
+	public static final int WRONG_INPUT_FILE_FORMAT = 1;
 
 	private List<Element> elements;
 	private int[][] cells; // zmiana w stosunku do specyfikacji: zamiast points jest cells
@@ -31,9 +32,8 @@ public class Board {
 
 	public Board() {
 		elements = new ArrayList<>();
-		cells = new int[HEIGHT][WIDTH]; // ze wzgl�du na r�nic� w orientacji uk�adu wsp�rz�dnych w tablicy i
-										// na
-		// planszy
+		cells = new int[HEIGHT][WIDTH]; // ze wzgledu na roznice w orientacji ukladu wspolrzednych w tablicy i na
+										// planszy, odwracam spolrzedne
 		rectangles = new Rectangle[HEIGHT][WIDTH];
 		prepareRectangles();
 		resetPoints();
@@ -89,8 +89,14 @@ public class Board {
 		while ((line = bufferedReader.readLine()) != null) {
 			String[] split = line.split(" ");
 			if (split.length >= 2) {
-				xySplit = split[1].split(",");
-				xySplit[1] = xySplit[1].trim();
+				try {
+					xySplit = split[1].split(",");
+					xySplit[1] = xySplit[1].trim();
+				} catch (ArrayIndexOutOfBoundsException e) {
+					closeResourcesAfterReading(fileReader, bufferedReader);
+					return WRONG_INPUT_FILE_FORMAT;
+				}
+
 				/*
 				 * System.out.println("XYSPLIT: "); for (String s : xySplit) {
 				 * System.out.println(s); }
@@ -98,8 +104,7 @@ public class Board {
 				if (xySplit.length == 2) {
 					x = Integer.valueOf(xySplit[0]);
 					y = Integer.valueOf(xySplit[1]);
-					// celowe odwr�cenie wsp�rz�dnych,poniewa� tablica
-					// ma na osi pionowej x, np.cells[2][3] oznacza pkt (3,2) na planszy
+					// celowe odwrocenie ukladu wspolrzednych
 					if (x < 0 || x > HEIGHT || y < 0 || y > WIDTH) {
 						closeResourcesAfterReading(fileReader, bufferedReader);
 						return WRONG_INPUT_FILE_FORMAT;
@@ -110,9 +115,7 @@ public class Board {
 				}
 
 				if (split[0].equals("ElectronHead:")) {
-					cells[y][x] = Element.ELECTRON_HEAD; // celowe wstawianie w ten spos�b, �eby nie "odwr�ci�"
-															// uk�adu
-					// wsp�rz�dnych
+					cells[y][x] = Element.ELECTRON_HEAD;
 				} else if (split[0].equals("ElectronTail:")) {
 					cells[y][x] = Element.ELECTRON_TAIL;
 				} else if (split[0].equals("Conductor:")) {
@@ -198,16 +201,16 @@ public class Board {
 			if (p.x >= 0 && p.x < WIDTH && p.y >= 0 && p.y < HEIGHT) {
 				cells[p.y][p.x] = Element.CONDUCTOR;
 				System.out.println("Wypelnieniono: " + p.x + " " + p.y);
-				// celowe wstawianie w ten spos�b, �eby nie "odwr�ci�" uk�adu
-				// wsp�rz�dnych
+				// celowe wstawianie w ten sposob, zeby nie "odwrocic" ukladu
+				// wspolrzednych
 			} else {
-				// po prostu nie wstawiamy tam przewodnika - uzyskamy efekt przesuni�cia za
-				// plansz�, ale nie wyrzucimy b��du
+				// po prostu nie wstawiamy tam przewodnika - uzyskamy efekt przesuniecia za
+				// plansze, ale nie wyrzucimy bledu
 			}
 
 		}
 
-		return 1;
+		return 0;
 	}
 
 	public int printBoardToFile(String path) throws IOException {
@@ -237,8 +240,8 @@ public class Board {
 				bufferedWriter.write("Wire: " + x + "," + y + " " + length + " " + type);
 				bufferedWriter.newLine();
 			}
-			// pętla, która zapobiega duplikacji w pliku wynikowym (gdyby nie ona, dla
-			// każdego punktu zajmowanego przez element, program wypisywalby dodatkowo
+			// peta, ktora zapobiega duplikacji w pliku wynikowym (gdyby nie ona, dla
+			// kazdego punktu zajmowanego przez element, program wypisywalby dodatkowo
 			// przewodnik)
 			for (Point p : e.getLocation()) {
 				if (cells[p.x][p.y] == Element.CONDUCTOR) {
@@ -271,7 +274,7 @@ public class Board {
 		}
 
 		bufferedWriter.close();
-		return 1;
+		return 0;
 	}
 
 	public void drawBoardToCanvas(Canvas canvas) {
@@ -310,28 +313,30 @@ public class Board {
 	public int[][] getCells() {
 		return cells;
 	}
+
 	private void setCellsFromArrayWithWrongDimensions(int[][] someCells) {
 		cells = new int[HEIGHT][WIDTH];
 		resetPoints();
-		for(int i=0; i<someCells.length; i++) {
-			for(int j=0; j<someCells[i].length; j++) {
-				cells[i][j]=someCells[i][j];
+		for (int i = 0; i < someCells.length; i++) {
+			for (int j = 0; j < someCells[i].length; j++) {
+				cells[i][j] = someCells[i][j];
 			}
 		}
-		
+
 	}
+
 	public void setCells(int[][] cells) {
-		if(cells.length!=HEIGHT) {
+		if (cells.length != HEIGHT) {
 			setCellsFromArrayWithWrongDimensions(cells);
 			return;
 		}
-		for(int i=0; i<cells.length; i++) {
-			if(cells[i].length!=WIDTH) {
+		for (int i = 0; i < cells.length; i++) {
+			if (cells[i].length != WIDTH) {
 				setCellsFromArrayWithWrongDimensions(cells);
 				return;
 			}
 		}
-		this.cells=cells;
+		this.cells = cells;
 	}
 
 	public List<Element> getElements() {

@@ -5,6 +5,12 @@ import data.Element;
 
 public class Simulator {
 
+    private boolean [][] changes;
+
+    public Simulator(){
+        changes = new boolean[Board.HEIGHT][Board.WIDTH];
+    }
+
     public int countElectronHeadsInNeighbourhood(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
         int[][] cells = b.getCells();
         int electronHeads = 0;
@@ -65,10 +71,16 @@ public class Simulator {
         for (int i = 0; i < b.getHEIGHT(); i++) {
             for (int j = 0; j < b.getWIDTH(); j++) {
                 newCells[i][j] = whatHappensWithCell(b, i, j);
+
+                changes[i][j] = newCells[i][j] == cells[i][j] ? false : true;
+
             }
         }
         b.setCells(newCells);
         return 1;
     }
 
+    public boolean[][] getChanges() {
+        return changes;
+    }
 }

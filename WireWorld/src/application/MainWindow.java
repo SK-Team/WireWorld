@@ -64,7 +64,7 @@ public class MainWindow extends Application {
                 for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
                     System.out.println("Symulacja nr " + i);
                     simulator.simulateGeneration(board);
-                    board.drawBoardToCanvas(canvas);
+                    board.drawBoardToCanvas(canvas, simulator.getChanges() );
                     board.printToConsole();
 
                     try {

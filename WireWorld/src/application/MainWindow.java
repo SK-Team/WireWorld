@@ -13,112 +13,109 @@ import simulator.Simulator;
 
 public class MainWindow extends Application {
 
-    private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
+	private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
+	private String boardBeforeAnySimulationFilePath;
+	private Board board;
+	private Simulator simulator;
+	private boolean simulationActive = false;
+	private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
 
-    private String boardBeforeAnySimulationFilePath;
-    private Board board;
-    private Simulator simulator;
-    private boolean simulationActive = false;
-    private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
+	@Override
+	public void start(Stage primaryStage) {
 
-    @Override
-    public void start(Stage primaryStage) {
+		MainWindow wireWorldFunctionality = new MainWindow();
 
-        MainWindow wireWorldFunctionality = new MainWindow();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
+			AnchorPane root = (AnchorPane) loader.load();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
-            AnchorPane root = (AnchorPane) loader.load();
+			Controller controller = loader.getController();
+			controller.setWireWorldFunctionality(wireWorldFunctionality);
+			controller.drawEmptyBoard();
 
-            Controller controller = loader.getController();
-            controller.setWireWorldFunctionality(wireWorldFunctionality);
-            controller.drawEmptyBoard();
+			Scene scene = new Scene(root, 850, 630);
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(scene);
+			primaryStage.show();
 
-            Scene scene = new Scene(root, 850, 630);
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            primaryStage.setScene(scene);
-            primaryStage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
+	public static void main(String[] args) {
+		launch(args);
+	}
 
+	public void simulate(Canvas canvas, int howManyGenerations) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+		if (simulator == null) { // pierwsza symulacja
+			simulator = new Simulator();
+			System.out.println("Simulator initialized");
+		}
+		board.printToConsole();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		simulationActive = true;
+		new Thread() {
+			public void run() {
+				for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
+					System.out.println("Symulacja nr " + i);
+					simulator.simulateGeneration(board);
+					board.drawBoardToCanvas(canvas);
+					board.printToConsole();
 
-    public void simulate(Canvas canvas, int howManyGenerations) {
+					try {
+						Thread.sleep(interval);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 
-        if (simulator == null) { // pierwsza symulacja
-            simulator = new Simulator();
-            System.out.println("Simulator initialized");
-        }
-        board.printToConsole();
+	}
 
-        simulationActive = true;
-        new Thread() {
-            public void run() {
-                for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
-                    System.out.println("Symulacja nr " + i);
-                    simulator.simulateGeneration(board);
-                    board.drawBoardToCanvas(canvas);
-                    board.printToConsole();
+	public void returnToFirstBoardState(Canvas canvas) throws IOException {
+		simulationActive = false;
+		setBoardFromFile(canvas, boardBeforeAnySimulationFilePath);
 
-                    try {
-                        Thread.sleep(interval);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
+	}
 
-    }
+	public void pauseSimulation() {
+		simulationActive = false;
+	}
 
-    public void returnToFirstBoardState(Canvas canvas) throws IOException {
-        simulationActive = false;
-        setBoardFromFile(canvas,boardBeforeAnySimulationFilePath);
+	public void saveGeneration(String filePath) throws IOException {
+		board.printBoardToFile(filePath);
+	}
 
-    }
+	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
+		board = new Board(filePath);
+		boardBeforeAnySimulationFilePath = filePath;
+		System.out.println("setBoardFromFile called");
+		board.drawBoardToCanvas(canvas);
+	}
 
-    public void pauseSimulation() {
-        simulationActive = false;
-    }
+	public void drawEmptyBoard(Canvas canvas) {
+		board = new Board();
+		board.drawBoardToCanvas(canvas);
+	}
 
-    public void saveGeneration(String filePath) throws IOException {
-        board.printBoardToFile(filePath);
-    }
+	public Board getBoard() {
+		return board;
+	}
 
-    public void setBoardFromFile(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
-        board = new Board(filePath);
-        boardBeforeAnySimulationFilePath = filePath;
-        System.out.println("setBoardFromFile called");
-        board.drawBoardToCanvas(canvas);
-    }
+	public void setBoard(Board board) {
+		this.board = board;
+	}
 
-    public void drawEmptyBoard(Canvas canvas){
-        board = new Board();
-        board.drawBoardToCanvas(canvas);
-    }
+	public int getInterval() {
+		return interval;
+	}
 
-    public Board getBoard(){
-        return board;
-    }
+	public void setInterval(int interval) {
+		this.interval = interval;
 
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public int getInterval() {
-        return interval;
-    }
-
-    public void setInterval(int interval) {
-        this.interval = interval;
-
-    }
+	}
 }

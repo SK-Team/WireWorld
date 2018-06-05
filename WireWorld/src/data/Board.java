@@ -23,8 +23,6 @@ public class Board {
 	public static final int HEIGHT = 50;
 	public static final int CELL_WIDTH_AND_HEIGHT = 10;
 
-	public static final int WRONG_INPUT_FILE_FORMAT = 1;
-
 	private List<Element> elements;
 	private int[][] cells; // zmiana w stosunku do specyfikacji: zamiast points jest cells
 
@@ -33,15 +31,15 @@ public class Board {
 	public Board() {
 		elements = new ArrayList<>();
 		cells = new int[HEIGHT][WIDTH]; // ze wzgledu na roznice w orientacji ukladu wspolrzednych w tablicy i na
-										// planszy, odwracam spolrzedne
+		// planszy, odwracam spolrzedne
 		rectangles = new Rectangle[HEIGHT][WIDTH];
 		prepareRectangles();
 		resetPoints();
 	}
 
-	public Board(String inputFile) throws IOException {
+	public Board(String inputFile) throws IOException, WrongInputFileException {
 		this();
-		int result = readBoardFromFile(inputFile);
+		readBoardFromFile(inputFile);
 	}
 
 	private void resetPoints() {
@@ -67,140 +65,54 @@ public class Board {
 		}
 	}
 
-	private void parseOneLine() {
-
-	}
-	/*
-	 * Point parseCoordinatesFromLineSplit(String[] split) {
-	 * 
-	 * }
-	 */
-
-	public int readBoardFromFile(String path) throws IOException { // nale�y doda� obs�ug� wszystkich
-																	// element�w opr�cz
-		// diody
+	public void readBoardFromFile(String path) throws IOException, WrongInputFileException {
 		FileReader fileReader = new FileReader(new File(path));
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		String line;
-		int type;
-		int length;
 		int x, y;
-		String[] xySplit;
+		Element element;
 		while ((line = bufferedReader.readLine()) != null) {
 			String[] split = line.split(" ");
+			element = null;
 			if (split.length >= 2) {
 				try {
-					xySplit = split[1].split(",");
-					xySplit[1] = xySplit[1].trim();
-				} catch (ArrayIndexOutOfBoundsException e) {
+					Point point = InputFileParser.parseCoordinatesFromLineSplit(split);
+					x = point.x;
+					y = point.y;
+				} catch (WrongInputFileException e) {
 					closeResourcesAfterReading(fileReader, bufferedReader);
-					return WRONG_INPUT_FILE_FORMAT;
+					throw new WrongInputFileException();
 				}
-
-				/*
-				 * System.out.println("XYSPLIT: "); for (String s : xySplit) {
-				 * System.out.println(s); }
-				 */
-				if (xySplit.length == 2) {
-					x = Integer.valueOf(xySplit[0]);
-					y = Integer.valueOf(xySplit[1]);
-					// celowe odwrocenie ukladu wspolrzednych
-					if (x < 0 || x > HEIGHT || y < 0 || y > WIDTH) {
-						closeResourcesAfterReading(fileReader, bufferedReader);
-						return WRONG_INPUT_FILE_FORMAT;
-					}
+				Integer tmpCellState = InputFileParser.parseCellStateFromLineSplit(split);
+				if (tmpCellState != null) {
+					cells[y][x] = tmpCellState;
+					continue;
+				}
+				element = InputFileParser.parseWireFromLineSplit(split, new Point(x, y));
+				if (element == null) {
+					element = InputFileParser.parseElementExceptWireFromLineSplit(split, new Point(x, y));
+				}
+				if (element != null) {
+					elements.add(element);
+					fillWithElement(element);
 				} else {
 					closeResourcesAfterReading(fileReader, bufferedReader);
-					return WRONG_INPUT_FILE_FORMAT;
+					throw new WrongInputFileException();
 				}
-
-				if (split[0].equals("ElectronHead:")) {
-					cells[y][x] = Element.ELECTRON_HEAD;
-				} else if (split[0].equals("ElectronTail:")) {
-					cells[y][x] = Element.ELECTRON_TAIL;
-				} else if (split[0].equals("Conductor:")) {
-					cells[y][x] = Element.CONDUCTOR;
-				} else if (split[0].equals("Blank:")) {
-					cells[y][x] = Element.EMPTY_CELL;
-				} else if (split[0].equals("Wire:")) {
-					length = 2;
-					type = Element.DEFAULT_TYPE;
-					if (split.length >= 3) {
-						if (split[2].equals("R")) {
-							type = Element.REVERSED_TYPE;
-						} else if (split[2].equals("D")) {
-							type = Element.DEFAULT_TYPE;
-						} else {
-							length = Integer.valueOf(split[2]);
-						}
-					}
-					if (split.length >= 4) {
-						if (split[3].equals("R")) {
-							type = Element.REVERSED_TYPE;
-						} else if (split[2].equals("D")) {
-							type = Element.DEFAULT_TYPE;
-						}
-					}
-					System.out.println("Mamy kabelek");
-					Wire w = new Wire(new Point(x, y), type, length);
-					elements.add(w);
-					fillWithElement(w);
-
-				} else {
-
-					if (split.length >= 3) {
-						split[2] = split[2].trim();
-						if (split[2].equals("R")) {
-							type = Element.REVERSED_TYPE;
-						} else if (split[2].equals("D")) {
-							type = Element.DEFAULT_TYPE;
-						} else {
-							closeResourcesAfterReading(fileReader, bufferedReader);
-							return WRONG_INPUT_FILE_FORMAT;
-						}
-
-					} else {
-						type = Element.DEFAULT_TYPE;
-					}
-					if (split[0].equals("Diode:")) {
-						System.out.println("Mamy diod�");
-						Diode d = new Diode(new Point(x, y), type);
-						elements.add(d);
-						fillWithElement(d);
-					} else if (split[0].equals("OR:")) {
-						System.out.println("Mamy OR");
-						OrGate o = new OrGate(new Point(x, y), type);
-						elements.add(o);
-						fillWithElement(o);
-					} else if (split[0].equals("NOR:")) {
-						System.out.println("Mamy NOR");
-						NorGate n = new NorGate(new Point(x, y), type);
-						elements.add(n);
-						fillWithElement(n);
-					} else if (split[0].equals("AND:")) {
-						System.out.println("Mamy AND");
-						AndGate a = new AndGate(new Point(x, y), type);
-						elements.add(a);
-						fillWithElement(a);
-					}
-				}
-
+			} else {
+				closeResourcesAfterReading(fileReader, bufferedReader);
+				throw new WrongInputFileException();
 			}
-
 		}
-
 		closeResourcesAfterReading(fileReader, bufferedReader);
-		return 1;
 	}
 
 	public int fillWithElement(Element e) {
 		List<Point> elementLocation = e.getLocation();
 
 		for (Point p : elementLocation) {
-			System.out.println("Pkt do wype�nienia: " + p.x + " " + p.y);
 			if (p.x >= 0 && p.x < WIDTH && p.y >= 0 && p.y < HEIGHT) {
 				cells[p.y][p.x] = Element.CONDUCTOR;
-				System.out.println("Wypelnieniono: " + p.x + " " + p.y);
 				// celowe wstawianie w ten sposob, zeby nie "odwrocic" ukladu
 				// wspolrzednych
 			} else {
@@ -224,31 +136,10 @@ public class Board {
 			bufferedWriter.write(e.toString());
 			bufferedWriter.newLine();
 
-			int x = e.getLocation().get(0).x;
-			int y = e.getLocation().get(0).y;
-			char type = e.getType() == Element.REVERSED_TYPE ? 'R' : 'D';
-			if (e instanceof Diode) { // mo�na poprawi� tworzenie napisu -> stworzy� za pomoc� StringBuildera
-				bufferedWriter.write("Diode: " + x + "," + y + " " + type);
-				bufferedWriter.newLine();
-			} else if (e instanceof NorGate) {
-				bufferedWriter.write("NOR: " + x + "," + y + " " + type);
-				bufferedWriter.newLine();
-			} else if (e instanceof OrGate) {
-				bufferedWriter.write("OR: " + x + "," + y + " " + type);
-				bufferedWriter.newLine();
-			} else if (e instanceof AndGate) {
-				bufferedWriter.write("AND: " + x + "," + y + " " + type);
-				bufferedWriter.newLine();
-			} else if (e instanceof Wire) {
-				int length = ((Wire) e).getLength();
-				bufferedWriter.write("Wire: " + x + "," + y + " " + length + " " + type);
-				bufferedWriter.newLine();
-
-			}
 			// peta, ktora zapobiega duplikacji w pliku wynikowym (gdyby nie ona, dla
 			// kazdego punktu zajmowanego przez element, program wypisywalby dodatkowo
-
 			// przewodnik)
+
 			for (Point p : e.getLocation()) {
 				if (cells[p.x][p.y] == Element.CONDUCTOR) {
 					cellsToPrintWithoutElements[p.x][p.y] = Element.EMPTY_CELL;
@@ -271,10 +162,6 @@ public class Board {
 					bufferedWriter.write("Conductor: " + j + "," + i);
 					bufferedWriter.newLine();
 					break;
-				/*
-				 * case Element.EMPTY_CELL: bufferedWriter.write("Blank: " + j + "," + i);
-				 * bufferedWriter.newLine(); break;
-				 */
 				}
 			}
 		}
@@ -283,8 +170,16 @@ public class Board {
 		return 0;
 	}
 
+	public void drawBoardToCanvas(Canvas canvas, boolean[][] changes) {
+		System.out.println("DrawBoardToCanvas called 1");
+		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+		DrawBoardToCanvasRunnable drawBoardRunnable = new DrawBoardToCanvasRunnable(graphicsContext, changes);
+		Platform.runLater(drawBoardRunnable);
+
+	}
+
 	public void drawBoardToCanvas(Canvas canvas) {
-		System.out.println("DrawBoardToCanvas called");
+		System.out.println("DrawBoardToCanvas called 2");
 		GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 		DrawBoardToCanvasRunnable drawBoardRunnable = new DrawBoardToCanvasRunnable(graphicsContext);
 		Platform.runLater(drawBoardRunnable);
@@ -373,37 +268,34 @@ public class Board {
 	class DrawBoardToCanvasRunnable implements Runnable {
 		private GraphicsContext graphicsContext;
 		private Color cellColor;
+		private boolean[][] changes;
+
+		public DrawBoardToCanvasRunnable(GraphicsContext graphicsContext, boolean[][] changes) {
+			this.graphicsContext = graphicsContext;
+			cellColor = Color.WHITE;
+			this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
+			this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+			this.changes = changes;
+		}
 
 		public DrawBoardToCanvasRunnable(GraphicsContext graphicsContext) {
 			this.graphicsContext = graphicsContext;
 			cellColor = Color.WHITE;
 			this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
 			this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+			changes = new boolean[HEIGHT][WIDTH];
+			for (int i = 0; i < HEIGHT; i++)
+				for (int j = 0; j < WIDTH; j++)
+					changes[i][j] = true;
 		}
 
 		public void run() {
-			// Rectangle rectToDraw;
 			for (int i = 0; i < HEIGHT; i++) {
 				for (int j = 0; j < WIDTH; j++) {
-
-					cellColor = setColor(i, j);
-
-					drawCell(i, j, graphicsContext, cellColor);
-
-					/*
-					 * graphicsContext.setFill(cellColor);
-					 * graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
-					 * graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH); // rectToDraw =
-					 * rectangles[i][j]; graphicsContext.fillRect(j * CELL_WIDTH_AND_HEIGHT,
-					 * i*CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT);
-					 * graphicsContext.strokeRect(j * CELL_WIDTH_AND_HEIGHT,
-					 * i*CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT); //
-					 * graphicsContext.fillRect(rectToDraw.getX(), rectToDraw.getY(),
-					 * rectToDraw.getWidth(), // rectToDraw.getHeight()); //
-					 * graphicsContext.strokeRect(rectToDraw.getX(), rectToDraw.getY(),
-					 * rectToDraw.getWidth(), // rectToDraw.getHeight());
-					 */
-
+					if (changes[i][j]) {
+						cellColor = setColor(i, j);
+						drawCell(i, j, graphicsContext, cellColor);
+					}
 				}
 			}
 		}

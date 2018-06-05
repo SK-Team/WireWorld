@@ -102,6 +102,9 @@ public class Controller implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (WrongInputFileException e) {
+			//TODO!!!
+		}
 
 	}
 
@@ -156,6 +159,9 @@ public class Controller implements Initializable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch(WrongInputFileException e) {
+			//TODO !!!
 		}
 	}
 
@@ -226,12 +232,11 @@ public class Controller implements Initializable {
 		if (userDrawingCheckBox.isSelected() == true && toggleGroup.getSelectedToggle() != null) {
 			Board b = wireWorldFunctionality.getBoard();
 			int type = Element.DEFAULT_TYPE;
-			if (cellType >= Element.ELECTRON_HEAD && cellType <= Element.EMPTY_CELL) { //To porownanie jest zle - co jak zmienimy wartosci stalych?
+			if (cellType == Element.ELECTRON_HEAD || cellType == Element.ELECTRON_TAIL  ||
+					cellType == Element.CONDUCTOR || cellType == Element.EMPTY_CELL) {
 				int cells[][] = b.getCells();
 				cells[(int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)][(int) (event.getX()
 						/ Board.CELL_WIDTH_AND_HEIGHT)] = cellType;
-				// System.out.println((int) (event.getY() / b.CELL_WIDTH_AND_HEIGHT) + " " +
-				// (int) (event.getX() / b.CELL_WIDTH_AND_HEIGHT));
 				b.setCells(cells);
 				b.drawCellToCanvas(canvas, new Point((int) (event.getX() / Board.CELL_WIDTH_AND_HEIGHT),
 						(int) (event.getY() / Board.CELL_WIDTH_AND_HEIGHT)));
@@ -263,7 +268,6 @@ public class Controller implements Initializable {
 			} else if (cellType == Element.WIRE) {
 				// TODO Kabelek
 			}
-			// b.drawBoardToCanvas(canvas);
 			wireWorldFunctionality.setBoard(b);
 			startButton.setDisable(false);
 			speedSlider.setDisable(false);

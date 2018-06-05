@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import data.Board;
+import data.WrongInputFileException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -61,7 +62,7 @@ public class MainWindow extends Application {
 				for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
 					System.out.println("Symulacja nr " + i);
 					simulator.simulateGeneration(board);
-					board.drawBoardToCanvas(canvas);
+					board.drawBoardToCanvas(canvas, simulator.getChanges());
 					board.printToConsole();
 
 					try {
@@ -76,7 +77,7 @@ public class MainWindow extends Application {
 
 	}
 
-	public void returnToFirstBoardState(Canvas canvas) throws IOException {
+	public void returnToFirstBoardState(Canvas canvas) throws IOException, WrongInputFileException {
 		simulationActive = false;
 		setBoardFromFile(canvas, boardBeforeAnySimulationFilePath);
 
@@ -90,7 +91,11 @@ public class MainWindow extends Application {
 		board.printBoardToFile(filePath);
 	}
 
-	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException { // zastanowiæ siê nad try catch
+	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException, WrongInputFileException { // zastanowiæ
+																												// siê
+																												// nad
+																												// try
+																												// catch
 		board = new Board(filePath);
 		boardBeforeAnySimulationFilePath = filePath;
 		System.out.println("setBoardFromFile called");

@@ -6,16 +6,12 @@ import static org.junit.Assert.fail;
 import java.awt.Point;
 import java.io.IOException;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import data.AndGate;
 import data.Board;
 import data.Diode;
 import data.Element;
-import data.NorGate;
-import data.OrGate;
+import data.WrongInputFileException;
 
 public class BoardTest {
 
@@ -26,65 +22,48 @@ public class BoardTest {
 		board = new Board();
 	}
 
-	@Test
-	public void shouldReturnErrorAfterReadingFromFileWithWrongCoordinates() {
-		// given
+	@Test(expected = WrongInputFileException.class)
+	public void shouldThrowWrongInputFileExceptionAfterReadingFromFileWithWrongCoordinates()
+			throws WrongInputFileException {
 		String filePath = getClass().getResource("WrongCoordinatesInputFile.txt").getPath();
-		// when
-		int result = 0;
-		int expectedResult = Board.WRONG_INPUT_FILE_FORMAT;
+
 		try {
-			result = board.readBoardFromFile(filePath);
+			board.readBoardFromFile(filePath);
 		} catch (IOException e) {
 			fail("IOException thrown!");
 		}
-
-		// then
-		assertThat(result).isEqualTo(expectedResult);
 	}
 
-	@Test
-	public void shouldReturnErrorAfterReadingFileWithToManyCoordinates() {
-		// given
+	@Test(expected = WrongInputFileException.class)
+	public void shouldThrowWrongInputFileExceptionAfterReadingFileWithToManyCoordinates()
+			throws WrongInputFileException {
 		String filePath = getClass().getResource("TooManyCoordinatesInputFile.txt").getPath();
-		// when
-		int result = 0;
-		int expectedResult = Board.WRONG_INPUT_FILE_FORMAT;
 		try {
-			result = board.readBoardFromFile(filePath);
+			board.readBoardFromFile(filePath);
 		} catch (IOException e) {
 			fail("IOException thrown!");
 		}
-
-		// then
-		assertThat(result).isEqualTo(expectedResult);
 	}
 
-	@Test
-	public void shouldReturnErrorAfterReadingFileWithWrongElementType() {
-		// given
+	@Test(expected = WrongInputFileException.class)
+	public void shouldThrowWrongInputFileExceptionAfterReadingFileWithWrongElementType()
+			throws WrongInputFileException {
 		String filePath = getClass().getResource("WrongElementTypeInputFile.txt").getPath();
-		// when
-		int result = 0;
-		int expectedResult = Board.WRONG_INPUT_FILE_FORMAT;
 		try {
-			result = board.readBoardFromFile(filePath);
+			board.readBoardFromFile(filePath);
 		} catch (IOException e) {
 			fail("IOException thrown!");
 		}
-
-		// then
-		assertThat(result).isEqualTo(expectedResult);
 	}
 
 	@Test(expected = IOException.class)
-	public void shouldThrowIOExceptionAfterReadingUnexistingFile() throws IOException {
+	public void shouldThrowIOExceptionAfterReadingUnexistingFile() throws IOException, WrongInputFileException {
 		String filePath = "UnexistingFile.txt";
 		board.readBoardFromFile(filePath);
 	}
 
 	@Test
-	public void shouldReadBoardFromCorrectFile() {
+	public void shouldReadBoardFromCorrectFile() throws WrongInputFileException {
 		String filePath = getClass().getResource("CorrectInputFile.txt").getPath();
 
 		int[][] expectedCellsState = board.copyCells();

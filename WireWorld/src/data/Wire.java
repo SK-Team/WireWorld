@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Wire extends Element {
 
+	public static final int DEFAULT_LENGTH=2;
+	
     private List<Point> location;
     private int type;
     private int length;

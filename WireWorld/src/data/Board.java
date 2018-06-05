@@ -378,4 +378,47 @@ public class Board {
 		graphicsContext.strokeRect(j * CELL_WIDTH_AND_HEIGHT, i * CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT,
 				CELL_WIDTH_AND_HEIGHT);
 	}
+
+
+	public void addToBoard(double x, double y, int cellType, Canvas canvas){
+
+		int type = Element.DEFAULT_TYPE;
+		if (cellType == Element.ELECTRON_HEAD || cellType == Element.ELECTRON_TAIL  ||
+				cellType == Element.CONDUCTOR || cellType == Element.EMPTY_CELL) {
+			int cells[][] = getCells();
+			cells[(int) (y / CELL_WIDTH_AND_HEIGHT)][(int) (x / CELL_WIDTH_AND_HEIGHT)]
+					= cellType;
+			setCells(cells);
+			drawCellToCanvas(canvas, new Point((int) (x / CELL_WIDTH_AND_HEIGHT),
+					(int) (y / CELL_WIDTH_AND_HEIGHT)));
+
+		} else if (cellType == Element.DIODE) {
+			Diode diode = new Diode(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
+					(int) y / CELL_WIDTH_AND_HEIGHT), type);
+			getElements().add(diode);
+			fillWithElement(diode);
+			drawElementToCanvas(canvas, diode.getLocation());
+		} else if (cellType == Element.AND_GATE) {
+			AndGate andGate = new AndGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
+					(int) y / CELL_WIDTH_AND_HEIGHT), type);
+			getElements().add(andGate);
+			fillWithElement(andGate);
+			drawElementToCanvas(canvas, andGate.getLocation());
+		} else if (cellType == Element.OR_GATE) {
+			OrGate orGate = new OrGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
+					(int) y / CELL_WIDTH_AND_HEIGHT), type);
+			getElements().add(orGate);
+			fillWithElement(orGate);
+			drawElementToCanvas(canvas, orGate.getLocation());
+		} else if (cellType == Element.NOR_GATE) {
+			NorGate norGate = new NorGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
+					(int) y / CELL_WIDTH_AND_HEIGHT), type);
+			getElements().add(norGate);
+			fillWithElement(norGate);
+			drawElementToCanvas(canvas, norGate.getLocation());
+
+		} else if (cellType == Element.WIRE) {
+			// TODO Kabelek
+		}
+	}
 }

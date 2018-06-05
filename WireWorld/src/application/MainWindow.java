@@ -1,9 +1,10 @@
 package application;
 
+import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
-import data.Board;
-import data.WrongInputFileException;
+import data.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -105,6 +106,12 @@ public class MainWindow extends Application {
 	public void drawEmptyBoard(Canvas canvas) {
 		board = new Board();
 		board.drawBoardToCanvas(canvas);
+	}
+
+	public void addSelectedToBoard(double x, double y, int cellType, Canvas canvas ){
+
+		board.addToBoard(x, y, cellType, canvas);
+
 	}
 
 	public Board getBoard() {

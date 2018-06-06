@@ -1,3 +1,4 @@
+/*
 package test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,3 +103,4 @@ public class BoardTest {
 		assertThat(cellsState).isEqualTo(expectedCellsState);
 	}
 }
+*/

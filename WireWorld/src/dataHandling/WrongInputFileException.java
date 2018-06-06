@@ -1,4 +1,4 @@
-package data;
+package dataHandling;
 
 public class WrongInputFileException extends Exception {
 	public WrongInputFileException() {

@@ -1,7 +1,7 @@
 package simulator;
 
-import data.Board;
-import data.Element;
+import dataHandling.Board;
+import elements.Element;
 
 public class Simulator {
 

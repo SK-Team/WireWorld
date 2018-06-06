@@ -1,10 +1,8 @@
 package application;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 
-import data.*;
+import dataHandling.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

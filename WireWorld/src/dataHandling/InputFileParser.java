@@ -1,4 +1,6 @@
-package data;
+package dataHandling;
+
+import elements.*;
 
 import java.awt.Point;
 

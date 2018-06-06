@@ -14,6 +14,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
+<?import java.net.URL?>
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="850.0"
             xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="application.Controller">
@@ -67,8 +68,8 @@
                           text="Bramka OR" toggleGroup="$toggleGroup"/>
              <RadioButton fx:id="norGateRadioButton" mnemonicParsing="false" onAction="#handleNorGateRadioButton"
                           prefHeight="17.0" prefWidth="175.0" text="Bramka NOR" toggleGroup="$toggleGroup"/>
-             <RadioButton fx:id="wireRadioButton" mnemonicParsing="false" onAction="#handleWireRadioButton" text="Kabel"
-                          toggleGroup="$toggleGroup"/>
+             <!--<RadioButton fx:id="wireRadioButton" mnemonicParsing="false" onAction="#handleWireRadioButton" text="Kabel"-->
+             <!--toggleGroup="$toggleGroup"/>-->
          </children>
       </VBox>
         <CheckBox fx:id="userDrawingCheckBox" layoutX="39.0" layoutY="364.0" mnemonicParsing="false"
@@ -79,4 +80,9 @@
         <Button fx:id="clearBoardButton" layoutX="39.0" layoutY="551.0" mnemonicParsing="false"
                 onAction="#handleClearBoardButton" prefHeight="25.0" prefWidth="153.0" text="Wyczyść planszę"/>
     </children>
+
+    <stylesheets>
+        <URL value="@application.css"/>
+    </stylesheets>
+
 </AnchorPane>

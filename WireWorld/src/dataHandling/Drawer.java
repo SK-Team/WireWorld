@@ -53,7 +53,7 @@ public class Drawer implements Runnable {
             for (int j = 0; j < Board.WIDTH; j++)
                 changes[i][j] = true;
         for (Point p : points) {
-            if (p.x < Board.HEIGHT && p.y < Board.WIDTH)
+            if (p.x < Board.HEIGHT && p.x > 0 && p.y > 0 && p.y < Board.WIDTH)
                 changes[p.x][p.y] = true;
         }
     }
@@ -62,14 +62,14 @@ public class Drawer implements Runnable {
         this.graphicsContext = graphicsContext;
         cellColor = Color.WHITE;
         this.graphicsContext.setStroke(CELL_STROKE_COLOR);
-        this.graphicsContext.setLineWidth(CELL_STROKE_LINE_WIDTH);
+        this.graphicsContext.setLineWidth(0);
         changes = new boolean[Board.HEIGHT][Board.WIDTH];
         this.cells = cells;
         for (int i = 0; i < Board.HEIGHT; i++)
             for (int j = 0; j < Board.WIDTH; j++)
                 changes[i][j] = true;
 
-        changes[point.x][point.y] = true;
+        changes[point.y][point.x] = true;
     }
 
     public void run() {

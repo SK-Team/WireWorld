@@ -117,11 +117,15 @@ public class Controller implements Initializable {
 		saveButton.setDisable(true);
 		selectInputFileButton.setDisable(true);
 
+		pauseButton.setDisable(false);
+
 		if (toggleGroup.getSelectedToggle() != null)
 			toggleGroup.getSelectedToggle().setSelected(false);
 		radioButtonsVBox.setDisable(true);
-		userDrawingCheckBox.setSelected(false);
 		userDrawingCheckBox.setDisable(true);
+		userDrawingCheckBox.setSelected(false);
+		elementTypeCheckBox.setDisable(true);
+		elementTypeCheckBox.setSelected(false);
 
 		wireWorldFunctionality.simulate(canvas, 100000,this);
 	}
@@ -131,15 +135,18 @@ public class Controller implements Initializable {
 		wireWorldFunctionality.pauseSimulation();
 		userDrawingCheckBox.setDisable(false);
 		saveButton.setDisable(false);
+		selectInputFileButton.setDisable(false);
 	}
 
 	@FXML
 	protected void handleStopButton(ActionEvent event) {
 		try {
+			wireWorldFunctionality.pauseSimulation();
 			userDrawingCheckBox.setDisable(false);
 			saveButton.setDisable(false);
 			saveButton.setDisable(true);
 			wireWorldFunctionality.returnToFirstBoardState(canvas);
+			selectInputFileButton.setDisable(false);
 		} catch (IOException e) {
             wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
 			e.printStackTrace();
@@ -152,10 +159,12 @@ public class Controller implements Initializable {
 	protected void handleuserDrawingCheckBox(ActionEvent event) {
 		if (userDrawingCheckBox.isSelected() == true) {
 			radioButtonsVBox.setDisable(false);
+			elementTypeCheckBox.setDisable(false);
 		} else {
 			if (toggleGroup.getSelectedToggle() != null)
 				toggleGroup.getSelectedToggle().setSelected(false);
 			radioButtonsVBox.setDisable(true);
+			elementTypeCheckBox.setDisable(true);
 		}
 
 	}
@@ -254,7 +263,6 @@ public class Controller implements Initializable {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
 				wireWorldFunctionality.setInterval((int) (1000 / newValue.doubleValue()));
-				System.out.println(wireWorldFunctionality.getInterval());
 			}
 		});
 

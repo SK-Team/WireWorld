@@ -249,7 +249,6 @@ public class Board {
     }
 
     public void drawBoardToCanvas(Canvas canvas) {
-        System.out.println("DrawBoardToCanvas called 2");
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Drawer drawer = new Drawer(graphicsContext, cells);
         Platform.runLater(drawer);
@@ -257,14 +256,12 @@ public class Board {
     }
 
     public void drawBoardToCanvas(Canvas canvas, boolean[][] changes) {
-        System.out.println("DrawBoardToCanvas called 1");
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Drawer drawer = new Drawer(graphicsContext, changes, cells);
         Platform.runLater(drawer);
     }
 
     public void drawElementToCanvas(Canvas canvas, List<Point> location) {
-        System.out.println("drawElementToCanvas called");
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Drawer drawer = new Drawer(graphicsContext, location, cells);
         Platform.runLater(drawer);
@@ -272,7 +269,6 @@ public class Board {
     }
 
     public void drawCellToCanvas(Canvas canvas, Point point) {
-        System.out.println("drawCellToCanvas called");
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
         Drawer drawer = new Drawer(graphicsContext, point, cells);
         Platform.runLater(drawer);

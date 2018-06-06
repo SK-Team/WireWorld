@@ -43,6 +43,7 @@ public class MainWindow extends Application {
 
 			Scene scene = new Scene(root, 850, 630);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            primaryStage.setTitle("WireWorld");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -50,7 +51,8 @@ public class MainWindow extends Application {
 				@Override
 				public void handle(WindowEvent arg0) {
 					wireWorldFunctionality.pauseSimulation();
-				}
+
+                }
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +68,6 @@ public class MainWindow extends Application {
 		if (simulator == null) { // pierwsza symulacja
 			simulator = new Simulator();
 		}
-		board.printToConsole();
 
 		simulationActive = true;
 		simulationPaused = false;
@@ -117,7 +118,6 @@ public class MainWindow extends Application {
 	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException, WrongInputFileException {
 		board = new Board(filePath);
 		boardBeforeAnySimulationFilePath = filePath;
-		System.out.println("setBoardFromFile called");
 		board.drawBoardToCanvas(canvas);
 	}
 

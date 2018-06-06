@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import data.Board;
-import data.Diode;
-import data.Element;
-import data.WrongInputFileException;
+import dataHandling.Board;
+import dataHandling.WrongInputFileException;
+import elements.Diode;
+import elements.Element;
+import elements.ElementConstans;
 
 public class BoardTest {
 
@@ -74,10 +75,10 @@ public class BoardTest {
 			}
 			System.out.println();
 		}
-		expectedCellsState[0][0] = Element.CONDUCTOR;
-		expectedCellsState[1][1] = Element.ELECTRON_TAIL;
-		expectedCellsState[1][2] = Element.ELECTRON_HEAD;
-		expectedCellsState[1][3] = Element.EMPTY_CELL;
+		expectedCellsState[0][0] = ElementConstans.CONDUCTOR;
+		expectedCellsState[1][1] = ElementConstans.ELECTRON_TAIL;
+		expectedCellsState[1][2] = ElementConstans.ELECTRON_HEAD;
+		expectedCellsState[1][3] = ElementConstans.EMPTY_CELL;
 
 		try {
 			board.readBoardFromFile(filePath);
@@ -91,7 +92,7 @@ public class BoardTest {
 			}
 			Diode readDiode = (Diode) elements.get(0);
 			for (Point p : readDiode.getLocation()) {
-				expectedCellsState[p.y][p.x] = Element.CONDUCTOR;
+				expectedCellsState[p.y][p.x] = ElementConstans.CONDUCTOR;
 			}
 		} catch (IOException e) {
 			fail("IOEXception thrown!");

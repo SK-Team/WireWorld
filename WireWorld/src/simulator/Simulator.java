@@ -67,7 +67,7 @@ public class Simulator {
 	public int simulateGeneration(Board b) {
 		int[][] cells = b.getCells();
 		int[][] newCells = new int[b.getHEIGHT()][b.getWIDTH()];
-
+		anyChange = false;
 		for (int i = 0; i < b.getHEIGHT(); i++) {
 			for (int j = 0; j < b.getWIDTH(); j++) {
 				newCells[i][j] = whatHappensWithCell(b, i, j);

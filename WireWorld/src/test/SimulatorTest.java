@@ -7,8 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import data.Board;
-import data.Element;
+import dataHandling.Board;
+import elements.ElementConstans;
 import simulator.Simulator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,12 +27,12 @@ public class SimulatorTest {
 	public void shouldCountElectronHeadsInNeighbourHoodWhenCellIsNearBoundary() {
 		// given
 		int[][] cells = {
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.CONDUCTOR, Element.EMPTY_CELL, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD } };
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 0;
 		int y = 1;
@@ -47,9 +47,9 @@ public class SimulatorTest {
 	@Test
 	public void shouldCountElectronHeadsInNeighbourHoodWhenCellIsInTheMiddle() {
 		// given
-		int[][] cells = { { Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
-				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD } };
+		int[][] cells = { { ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 1;
 		int y = 1;
@@ -64,18 +64,18 @@ public class SimulatorTest {
 	public void shouldReturnNewStateOfElectronHead() {
 		// given
 		int[][] cells = {
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.CONDUCTOR, Element.EMPTY_CELL, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD } };
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 0;
 		int y = 0;
 
 		// when
-		int expectedResult = Element.ELECTRON_TAIL;
+		int expectedResult = ElementConstans.ELECTRON_TAIL;
 		int result = simulator.whatHappensWithCell(board, y, x);
 
 		// then
@@ -86,18 +86,18 @@ public class SimulatorTest {
 	public void shouldReturnNewStateOfElectronTail() {
 		// given
 		int[][] cells = {
-				{ Element.ELECTRON_TAIL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.CONDUCTOR, Element.EMPTY_CELL, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD },
-				{ Element.CONDUCTOR, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD,
-						Element.ELECTRON_HEAD } };
+				{ ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.CONDUCTOR, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD,
+						ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 0;
 		int y = 0;
 
 		// when
-		int expectedResult = Element.CONDUCTOR;
+		int expectedResult = ElementConstans.CONDUCTOR;
 		int result = simulator.whatHappensWithCell(board, y, x);
 
 		// then
@@ -107,15 +107,15 @@ public class SimulatorTest {
 	@Test
 	public void shouldReturnNewStateOfEmptyCell() {
 		// given
-		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
-				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD } };
+		int[][] cells = { { ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 0;
 		int y = 0;
 
 		// when
-		int expectedResult = Element.EMPTY_CELL;
+		int expectedResult = ElementConstans.EMPTY_CELL;
 		int result = simulator.whatHappensWithCell(board, y, x);
 
 		// then
@@ -124,15 +124,15 @@ public class SimulatorTest {
 	@Test
 	public void shouldReturnNewStateOfConductorWithMoreThan2ElectronHeadsInNeighbourHood() {
 		// given
-		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
-				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD } };
+		int[][] cells = { { ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 		int x = 1;
 		int y = 1;
 
 		// when
-		int expectedResult = Element.CONDUCTOR;
+		int expectedResult = ElementConstans.CONDUCTOR;
 		int result = simulator.whatHappensWithCell(board, y, x);
 
 		// then
@@ -141,15 +141,15 @@ public class SimulatorTest {
 	@Test 
 	public void shouldReturnNewStateOfConductorWith2ElectronHeadsInNeighbourhood() {
 		// given
-		int[][] cells = { { Element.EMPTY_CELL, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD },
-				{ Element.ELECTRON_TAIL, Element.CONDUCTOR, Element.EMPTY_CELL },
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_TAIL, Element.ELECTRON_TAIL } };
+		int[][] cells = { { ElementConstans.EMPTY_CELL, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.ELECTRON_TAIL, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_TAIL } };
 		board.setCells(cells);
 		int x = 1;
 		int y = 1;
 
 		// when
-		int expectedResult = Element.ELECTRON_HEAD;
+		int expectedResult = ElementConstans.ELECTRON_HEAD;
 		int result = simulator.whatHappensWithCell(board, y, x);
 
 		// then
@@ -158,23 +158,23 @@ public class SimulatorTest {
 	@Test
 	public void shouldSimulateOneGeneration() {
 		// given
-		int[][] cells = { { Element.ELECTRON_HEAD, Element.ELECTRON_HEAD, Element.ELECTRON_HEAD },
-				{ Element.ELECTRON_HEAD, Element.CONDUCTOR, Element.EMPTY_CELL },
-				{ Element.ELECTRON_HEAD, Element.ELECTRON_TAIL, Element.ELECTRON_HEAD } };
+		int[][] cells = { { ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_HEAD },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.CONDUCTOR, ElementConstans.EMPTY_CELL },
+				{ ElementConstans.ELECTRON_HEAD, ElementConstans.ELECTRON_TAIL, ElementConstans.ELECTRON_HEAD } };
 		board.setCells(cells);
 
 
 		// when
 		int[][] expectedResult = board.copyCells();
-		expectedResult[0][0] = Element.ELECTRON_TAIL;
-		expectedResult[0][1] = Element.ELECTRON_TAIL;
-		expectedResult[0][2] = Element.ELECTRON_TAIL;
-		expectedResult[1][0] = Element.ELECTRON_TAIL;
-		expectedResult[1][1] = Element.CONDUCTOR;
-		expectedResult[1][2] = Element.EMPTY_CELL;
-		expectedResult[2][0] = Element.ELECTRON_TAIL;
-		expectedResult[2][1] = Element.CONDUCTOR;
-		expectedResult[2][2] = Element.ELECTRON_TAIL;
+		expectedResult[0][0] = ElementConstans.ELECTRON_TAIL;
+		expectedResult[0][1] = ElementConstans.ELECTRON_TAIL;
+		expectedResult[0][2] = ElementConstans.ELECTRON_TAIL;
+		expectedResult[1][0] = ElementConstans.ELECTRON_TAIL;
+		expectedResult[1][1] = ElementConstans.CONDUCTOR;
+		expectedResult[1][2] = ElementConstans.EMPTY_CELL;
+		expectedResult[2][0] = ElementConstans.ELECTRON_TAIL;
+		expectedResult[2][1] = ElementConstans.CONDUCTOR;
+		expectedResult[2][2] = ElementConstans.ELECTRON_TAIL;
 		
 	
 		simulator.simulateGeneration(board);

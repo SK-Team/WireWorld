@@ -3,6 +3,7 @@ package application;
 import dataHandling.Board;
 import dataHandling.WrongInputFileException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -19,9 +20,9 @@ public class MainWindow extends Application {
 	private Board board;
 	private Simulator simulator;
 	private boolean simulationActive = false;
+	private boolean simulationPaused = false;
 	private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
 	private Stage primaryStage;
-	private boolean isAnyChange;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -32,9 +33,9 @@ public class MainWindow extends Application {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("Sample.fxml"));
 			AnchorPane root = (AnchorPane) loader.load();
 
-			Controller controller = loader.getController();
-			controller.setWireWorldFunctionality(wireWorldFunctionality);
-			controller.drawEmptyBoard();
+			Controller guiController = loader.getController();
+			guiController.setWireWorldFunctionality(wireWorldFunctionality);
+			guiController.drawEmptyBoard();
 
 			Scene scene = new Scene(root, 850, 630);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -50,7 +51,7 @@ public class MainWindow extends Application {
 		launch(args);
 	}
 
-	public boolean simulate(Canvas canvas, int howManyGenerations) {
+	public void simulate(Canvas canvas, int howManyGenerations, Controller guiController) {
 
 		if (simulator == null) { // pierwsza symulacja
 			simulator = new Simulator();
@@ -59,15 +60,16 @@ public class MainWindow extends Application {
 		board.printToConsole();
 
 		simulationActive = true;
+		simulationPaused = false;
 
-		class DrawingThread extends Thread {
+		new Thread() {
 			public void run() {
-				for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
+				System.out.println("Pocz¹tek!");
+				for (int i = 0; i < howManyGenerations && simulationActive == true && simulationPaused == false; i++) {
 					System.out.println("Symulacja nr " + i);
 					simulator.simulateGeneration(board);
 					if (!simulator.isAnyChange()) {
 						simulationActive = false;
-						return;
 					}
 					board.drawBoardToCanvas(canvas, simulator.getChanges());
 					board.printToConsole();
@@ -75,21 +77,21 @@ public class MainWindow extends Application {
 					try {
 						Thread.sleep(interval);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
+				simulationActive = false;
+				if (!simulationPaused) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							guiController.handleSimulationFinished();
+							showNoChangesDialog();
+						}
+					});
+				}
 			}
-		}
-
-		DrawingThread drawingThread = new DrawingThread();
-
-		drawingThread.start();
-
-		if (!drawingThread.isAlive())
-			return isAnyChange;
-
-		return true;
+		}.start();
 	}
 
 	public void returnToFirstBoardState(Canvas canvas) throws IOException, WrongInputFileException {
@@ -99,18 +101,14 @@ public class MainWindow extends Application {
 	}
 
 	public void pauseSimulation() {
-		simulationActive = false;
+		simulationPaused = true;
 	}
 
 	public void saveGeneration(String filePath) throws IOException {
 		board.printBoardToFile(filePath);
 	}
 
-	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException, WrongInputFileException { // zastanowiæ
-																												// siê
-																												// nad
-																												// try
-																												// catch
+	public void setBoardFromFile(Canvas canvas, String filePath) throws IOException, WrongInputFileException {
 		board = new Board(filePath);
 		boardBeforeAnySimulationFilePath = filePath;
 		System.out.println("setBoardFromFile called");
@@ -122,7 +120,7 @@ public class MainWindow extends Application {
 		board.drawBoardToCanvas(canvas);
 	}
 
-	public void addSelectedToBoard(double x, double y, int cellType, Canvas canvas ){
+	public void addSelectedToBoard(double x, double y, int cellType, Canvas canvas) {
 
 		board.addToBoard(x, y, cellType, canvas);
 
@@ -159,7 +157,6 @@ public class MainWindow extends Application {
 			controller.setDialogStage(dialogStage);
 
 			dialogStage.showAndWait();
-
 
 		} catch (Exception e) {
 			e.printStackTrace();

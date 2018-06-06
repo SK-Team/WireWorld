@@ -1,7 +1,5 @@
 package elements;
 
-import javafx.scene.paint.Color;
-
 import java.awt.*;
 import java.util.List;
 

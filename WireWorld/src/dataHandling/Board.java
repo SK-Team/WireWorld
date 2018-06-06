@@ -168,9 +168,7 @@ public class Board {
         cells = new int[HEIGHT][WIDTH];
         resetPoints();
         for (int i = 0; i < someCells.length; i++) {
-            for (int j = 0; j < someCells[i].length; j++) {
-                cells[i][j] = someCells[i][j];
-            }
+            System.arraycopy(someCells[i], 0, cells[i], 0, someCells[i].length);
         }
 
     }

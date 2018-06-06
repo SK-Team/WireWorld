@@ -1,6 +1,6 @@
 package dataHandling;
 
-import elements.Element;
+import elements.ElementConstans;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -8,6 +8,14 @@ import java.awt.*;
 import java.util.List;
 
 public class Drawer implements Runnable {
+
+    public static final Color ELECTRON_HEAD_COLOR = Color.DEEPSKYBLUE;
+    public static final Color ELECTRON_TAIL_COLOR = Color.INDIANRED;
+    public static final Color CONDUCTOR_COLOR = Color.GOLD;
+    public static final Color EMPTY_CELL_COLOR = Color.BLACK;
+    public static final Color CELL_STROKE_COLOR = Color.WHITE;
+    public static final double CELL_STROKE_LINE_WIDTH = 0.3;
+
     private GraphicsContext graphicsContext;
     private Color cellColor;
     private boolean[][] changes;
@@ -16,8 +24,8 @@ public class Drawer implements Runnable {
     public Drawer(GraphicsContext graphicsContext, boolean[][] changes, int[][] cells) {
         this.graphicsContext = graphicsContext;
         cellColor = Color.WHITE;
-        this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
-        this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+        this.graphicsContext.setStroke(CELL_STROKE_COLOR);
+        this.graphicsContext.setLineWidth(CELL_STROKE_LINE_WIDTH);
         this.cells = cells;
         this.changes = changes;
     }
@@ -25,8 +33,8 @@ public class Drawer implements Runnable {
     public Drawer(GraphicsContext graphicsContext, int[][] cells) {
         this.graphicsContext = graphicsContext;
         cellColor = Color.WHITE;
-        this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
-        this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+        this.graphicsContext.setStroke(CELL_STROKE_COLOR);
+        this.graphicsContext.setLineWidth(CELL_STROKE_LINE_WIDTH);
         this.cells = cells;
         changes = new boolean[Board.HEIGHT][Board.WIDTH];
         for (int i = 0; i < Board.HEIGHT; i++)
@@ -37,8 +45,8 @@ public class Drawer implements Runnable {
     public Drawer(GraphicsContext graphicsContext, List<Point> points, int[][] cells) {
         this.graphicsContext = graphicsContext;
         cellColor = Color.WHITE;
-        this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
-        this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+        this.graphicsContext.setStroke(CELL_STROKE_COLOR);
+        this.graphicsContext.setLineWidth(CELL_STROKE_LINE_WIDTH);
         this.cells = cells;
         changes = new boolean[Board.HEIGHT][Board.WIDTH];
         for (int i = 0; i < Board.HEIGHT; i++)
@@ -53,8 +61,8 @@ public class Drawer implements Runnable {
     public Drawer(GraphicsContext graphicsContext, Point point, int[][] cells) {
         this.graphicsContext = graphicsContext;
         cellColor = Color.WHITE;
-        this.graphicsContext.setStroke(Element.CELL_STROKE_COLOR);
-        this.graphicsContext.setLineWidth(Element.CELL_STROKE_LINE_WIDTH);
+        this.graphicsContext.setStroke(CELL_STROKE_COLOR);
+        this.graphicsContext.setLineWidth(CELL_STROKE_LINE_WIDTH);
         changes = new boolean[Board.HEIGHT][Board.WIDTH];
         this.cells = cells;
         for (int i = 0; i < Board.HEIGHT; i++)
@@ -76,16 +84,16 @@ public class Drawer implements Runnable {
     }
 
     public Color setColor(int i, int j, int[][] cells) {
-        Color cellColor = Element.EMPTY_CELL_COLOR;
+        Color cellColor = EMPTY_CELL_COLOR;
         switch (cells[i][j]) {
-            case Element.ELECTRON_HEAD:
-                cellColor = Element.ELECTRON_HEAD_COLOR;
+            case ElementConstans.ELECTRON_HEAD:
+                cellColor = ELECTRON_HEAD_COLOR;
                 break;
-            case Element.ELECTRON_TAIL:
-                cellColor = Element.ELECTRON_TAIL_COLOR;
+            case ElementConstans.ELECTRON_TAIL:
+                cellColor = ELECTRON_TAIL_COLOR;
                 break;
-            case Element.CONDUCTOR:
-                cellColor = Element.CONDUCTOR_COLOR;
+            case ElementConstans.CONDUCTOR:
+                cellColor = CONDUCTOR_COLOR;
                 break;
         }
         return cellColor;

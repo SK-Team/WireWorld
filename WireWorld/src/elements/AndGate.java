@@ -17,7 +17,7 @@ public class AndGate extends Element {
     }
 
     public AndGate(Point startPoint) {
-        this(startPoint, Element.DEFAULT_TYPE);
+        this(startPoint, ElementConstans.DEFAULT_TYPE);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AndGate extends Element {
         int x = p.x;
         int y = p.y;
 
-        if (type == Element.DEFAULT_TYPE) {
+        if (type == ElementConstans.DEFAULT_TYPE) {
             location.add(p);
             for (int i = 1; i <= 12; i++)
                 location.add(new Point(x + i, y));
@@ -61,7 +61,7 @@ public class AndGate extends Element {
             location.add(new Point(x + 16, y + 6));
             location.add(new Point(x + 17, y + 6));
             location.add(new Point(x + 7, y + 7));
-        } else if (type == Element.REVERSED_TYPE) {
+        } else if (type == ElementConstans.REVERSED_TYPE) {
             location.add(p);
             location.add(new Point(x + 13, y + 3));
             location.add(new Point(x + 3, y + 2));
@@ -113,7 +113,7 @@ public class AndGate extends Element {
     @Override
     public String toString() {
         Point p = location.get(0);
-        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        char t = type == ElementConstans.DEFAULT_TYPE ? 'D' : 'R';
         return "AND: " + p.x + "," + p.y + " " + t;
     }
 

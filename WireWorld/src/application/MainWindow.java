@@ -1,8 +1,7 @@
 package application;
 
-import java.io.IOException;
-
-import dataHandling.*;
+import dataHandling.Board;
+import dataHandling.WrongInputFileException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +9,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import simulator.Simulator;
+
+import java.io.IOException;
 
 public class MainWindow extends Application {
 
@@ -19,6 +20,8 @@ public class MainWindow extends Application {
 	private Simulator simulator;
 	private boolean simulationActive = false;
 	private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
+	private Stage primaryStage;
+	private boolean isAnyChange;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -47,7 +50,7 @@ public class MainWindow extends Application {
 		launch(args);
 	}
 
-	public void simulate(Canvas canvas, int howManyGenerations) {
+	public boolean simulate(Canvas canvas, int howManyGenerations) {
 
 		if (simulator == null) { // pierwsza symulacja
 			simulator = new Simulator();
@@ -56,11 +59,16 @@ public class MainWindow extends Application {
 		board.printToConsole();
 
 		simulationActive = true;
-		new Thread() {
+
+		class DrawingThread extends Thread {
 			public void run() {
 				for (int i = 0; i < howManyGenerations && simulationActive == true; i++) {
 					System.out.println("Symulacja nr " + i);
 					simulator.simulateGeneration(board);
+					if (!simulator.isAnyChange()) {
+						simulationActive = false;
+						return;
+					}
 					board.drawBoardToCanvas(canvas, simulator.getChanges());
 					board.printToConsole();
 
@@ -72,8 +80,16 @@ public class MainWindow extends Application {
 					}
 				}
 			}
-		}.start();
+		}
 
+		DrawingThread drawingThread = new DrawingThread();
+
+		drawingThread.start();
+
+		if (!drawingThread.isAlive())
+			return isAnyChange;
+
+		return true;
 	}
 
 	public void returnToFirstBoardState(Canvas canvas) throws IOException, WrongInputFileException {
@@ -127,5 +143,26 @@ public class MainWindow extends Application {
 	public void setInterval(int interval) {
 		this.interval = interval;
 
+	}
+
+	public void showNoChangesDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("NoChangesDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Koniec symulacji");
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			NoChangesDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+
+			dialogStage.showAndWait();
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

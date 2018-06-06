@@ -1,22 +1,15 @@
 package dataHandling;
 
-import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import elements.*;
 import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Board {
 
@@ -27,14 +20,10 @@ public class Board {
     private List<Element> elements;
     private int[][] cells; // zmiana w stosunku do specyfikacji: zamiast points jest cells
 
-    private Rectangle[][] rectangles;
-
     public Board() {
         elements = new ArrayList<>();
         cells = new int[HEIGHT][WIDTH]; // ze wzgledu na roznice w orientacji ukladu wspolrzednych w tablicy i na
         // planszy, odwracam spolrzedne
-        rectangles = new Rectangle[HEIGHT][WIDTH];
-        prepareRectangles();
         resetPoints();
     }
 
@@ -46,7 +35,7 @@ public class Board {
     private void resetPoints() {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
-                cells[i][j] = Element.EMPTY_CELL;
+                cells[i][j] = ElementConstans.EMPTY_CELL;
             }
         }
     }
@@ -54,15 +43,6 @@ public class Board {
     private void closeResourcesAfterReading(FileReader fileReader, BufferedReader bufferedReader) throws IOException {
         if (bufferedReader != null) {
             bufferedReader.close();
-        }
-    }
-
-    private void prepareRectangles() {
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
-                rectangles[i][j] = new Rectangle(j * CELL_WIDTH_AND_HEIGHT, i * CELL_WIDTH_AND_HEIGHT,
-                        CELL_WIDTH_AND_HEIGHT, CELL_WIDTH_AND_HEIGHT);
-            }
         }
     }
 
@@ -113,7 +93,7 @@ public class Board {
 
         for (Point p : elementLocation) {
             if (p.x >= 0 && p.x < WIDTH && p.y >= 0 && p.y < HEIGHT) {
-                cells[p.y][p.x] = Element.CONDUCTOR;
+                cells[p.y][p.x] = ElementConstans.CONDUCTOR;
                 // celowe wstawianie w ten sposob, zeby nie "odwrocic" ukladu
                 // wspolrzednych
             } else {
@@ -142,8 +122,8 @@ public class Board {
             // przewodnik)
 
             for (Point p : e.getLocation()) {
-                if (cells[p.x][p.y] == Element.CONDUCTOR) {
-                    cellsToPrintWithoutElements[p.x][p.y] = Element.EMPTY_CELL;
+                if (cells[p.x][p.y] == ElementConstans.CONDUCTOR) {
+                    cellsToPrintWithoutElements[p.x][p.y] = ElementConstans.EMPTY_CELL;
                 }
             }
 
@@ -151,15 +131,15 @@ public class Board {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
                 switch (cellsToPrintWithoutElements[i][j]) {
-                    case Element.ELECTRON_HEAD:
+                    case ElementConstans.ELECTRON_HEAD:
                         bufferedWriter.write("ElectronHead: " + j + "," + i);
                         bufferedWriter.newLine();
                         break;
-                    case Element.ELECTRON_TAIL:
+                    case ElementConstans.ELECTRON_TAIL:
                         bufferedWriter.write("ElectronTail: " + j + "," + i);
                         bufferedWriter.newLine();
                         break;
-                    case Element.CONDUCTOR:
+                    case ElementConstans.CONDUCTOR:
                         bufferedWriter.write("Conductor: " + j + "," + i);
                         bufferedWriter.newLine();
                         break;
@@ -237,9 +217,9 @@ public class Board {
 
     public void addToBoard(double x, double y, int cellType, Canvas canvas) {
 
-        int type = Element.DEFAULT_TYPE;
-        if (cellType == Element.ELECTRON_HEAD || cellType == Element.ELECTRON_TAIL ||
-                cellType == Element.CONDUCTOR || cellType == Element.EMPTY_CELL) {
+        int type = ElementConstans.DEFAULT_TYPE;
+        if (cellType == ElementConstans.ELECTRON_HEAD || cellType == ElementConstans.ELECTRON_TAIL ||
+                cellType == ElementConstans.CONDUCTOR || cellType == ElementConstans.EMPTY_CELL) {
             int cells[][] = getCells();
             cells[(int) (y / CELL_WIDTH_AND_HEIGHT)][(int) (x / CELL_WIDTH_AND_HEIGHT)]
                     = cellType;
@@ -247,20 +227,20 @@ public class Board {
             drawCellToCanvas(canvas, new Point((int) (x / CELL_WIDTH_AND_HEIGHT),
                     (int) (y / CELL_WIDTH_AND_HEIGHT)));
 
-        } else if (cellType == Element.DIODE || cellType == Element.AND_GATE ||
-                cellType == Element.OR_GATE || cellType == Element.NOR_GATE) {
+        } else if (cellType == ElementConstans.DIODE || cellType == ElementConstans.AND_GATE ||
+                cellType == ElementConstans.OR_GATE || cellType == ElementConstans.NOR_GATE) {
             Element e = null;
 
-            if (cellType == Element.DIODE) {
+            if (cellType == ElementConstans.DIODE) {
                 e = new Diode(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
                         (int) y / CELL_WIDTH_AND_HEIGHT), type);
-            } else if (cellType == Element.AND_GATE) {
+            } else if (cellType == ElementConstans.AND_GATE) {
                 e = new AndGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
                         (int) y / CELL_WIDTH_AND_HEIGHT), type);
-            } else if (cellType == Element.OR_GATE) {
+            } else if (cellType == ElementConstans.OR_GATE) {
                 e = new OrGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
                         (int) y / CELL_WIDTH_AND_HEIGHT), type);
-            } else if (cellType == Element.NOR_GATE) {
+            } else if (cellType == ElementConstans.NOR_GATE) {
                 e = new NorGate(new Point((int) x / CELL_WIDTH_AND_HEIGHT,
                         (int) y / CELL_WIDTH_AND_HEIGHT), type);
 
@@ -269,9 +249,6 @@ public class Board {
             fillWithElement(e);
             drawElementToCanvas(canvas, e.getLocation());
         }
-//		} else if (cellType == Element.WIRE) {
-//			// TODO Kabelek
-//		}
     }
 
     public void drawBoardToCanvas(Canvas canvas) {

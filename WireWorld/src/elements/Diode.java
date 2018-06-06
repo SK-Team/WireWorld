@@ -1,6 +1,6 @@
 package elements;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class Diode extends Element {
     }
 
     public Diode(Point startPoint) {
-        this(startPoint, Element.DEFAULT_TYPE);
+        this(startPoint, ElementConstans.DEFAULT_TYPE);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Diode extends Element {
         int x = p.x;
         int y = p.y;
 
-        if (type == Element.DEFAULT_TYPE) {
+        if (type == ElementConstans.DEFAULT_TYPE) {
             location.add(p);
             location.add(new Point(x + 1, y));
             location.add(new Point(x + 2, y));
@@ -37,7 +37,7 @@ public class Diode extends Element {
             location.add(new Point(x + 3, y + 1));
             location.add(new Point(x + 4, y - 1));
             location.add(new Point(x + 4, y + 1));
-        } else if (type == Element.REVERSED_TYPE) {
+        } else if (type == ElementConstans.REVERSED_TYPE) {
             location.add(p);
             location.add(new Point(x + 1, y));
             location.add(new Point(x + 2, y));
@@ -66,7 +66,7 @@ public class Diode extends Element {
     @Override
     public String toString() {
         Point p = location.get(0);
-        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        char t = type == ElementConstans.DEFAULT_TYPE ? 'D' : 'R';
         return "Diode: " + p.x + "," + p.y + " " + t;
     }
 }

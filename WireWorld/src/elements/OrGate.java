@@ -19,7 +19,7 @@ public class OrGate extends Element {
     }
 
     public OrGate(Point startPoint) {
-        this(startPoint, Element.DEFAULT_TYPE);
+        this(startPoint, ElementConstans.DEFAULT_TYPE);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class OrGate extends Element {
         int x = p.x;
         int y = p.y;
 
-        if (type == Element.DEFAULT_TYPE) {
+        if (type == ElementConstans.DEFAULT_TYPE) {
             location.add(p);
             location.add(new Point(x + 6, y - 1));
             location.add(new Point(x + 7, y - 1));
@@ -42,7 +42,7 @@ public class OrGate extends Element {
             location.add(new Point(x + 6, y + 3));
             location.add(new Point(x + 7, y + 3));
 
-        } else if (type == Element.REVERSED_TYPE) {
+        } else if (type == ElementConstans.REVERSED_TYPE) {
             location.add(p);
             location.add(new Point(x + 13, y - 2));
             location.add(new Point(x + 14, y - 2));
@@ -73,7 +73,7 @@ public class OrGate extends Element {
     @Override
     public String toString() {
         Point p = location.get(0);
-        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        char t = type == ElementConstans.DEFAULT_TYPE ? 'D' : 'R';
         return "OR: " + p.x + "," + p.y + " " + t;
     }
 

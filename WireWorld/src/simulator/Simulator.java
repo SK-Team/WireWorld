@@ -1,11 +1,12 @@
 package simulator;
 
 import dataHandling.Board;
-import elements.Element;
+import elements.ElementConstans;
 
 public class Simulator {
 
 	private boolean[][] changes;
+	private boolean anyChange;
 
 	public Simulator() {
 		changes = new boolean[Board.HEIGHT][Board.WIDTH];
@@ -16,26 +17,26 @@ public class Simulator {
 		int electronHeads = 0;
 
 		if (y + 1 < b.getWIDTH()) {
-			electronHeads += cells[x][y + 1] == Element.ELECTRON_HEAD ? 1 : 0;
+			electronHeads += cells[x][y + 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 			if (x - 1 >= 0)
-				electronHeads += cells[x - 1][y + 1] == Element.ELECTRON_HEAD ? 1 : 0;
+				electronHeads += cells[x - 1][y + 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 			if (x + 1 < b.getHEIGHT())
-				electronHeads += cells[x + 1][y + 1] == Element.ELECTRON_HEAD ? 1 : 0;
+				electronHeads += cells[x + 1][y + 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 		}
 
 		if (y - 1 >= 0) {
-			electronHeads += cells[x][y - 1] == Element.ELECTRON_HEAD ? 1 : 0;
+			electronHeads += cells[x][y - 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 			if (x - 1 >= 0)
-				electronHeads += cells[x - 1][y - 1] == Element.ELECTRON_HEAD ? 1 : 0;
+				electronHeads += cells[x - 1][y - 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 			if (x + 1 < b.getHEIGHT())
-				electronHeads += cells[x + 1][y - 1] == Element.ELECTRON_HEAD ? 1 : 0;
+				electronHeads += cells[x + 1][y - 1] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 		}
 
 		if (x - 1 >= 0) {
-			electronHeads += cells[x - 1][y] == Element.ELECTRON_HEAD ? 1 : 0;
+			electronHeads += cells[x - 1][y] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 		}
 		if (x + 1 < b.getHEIGHT()) {
-			electronHeads += cells[x + 1][y] == Element.ELECTRON_HEAD ? 1 : 0;
+			electronHeads += cells[x + 1][y] == ElementConstans.ELECTRON_HEAD ? 1 : 0;
 		}
 
 		return electronHeads;
@@ -44,22 +45,22 @@ public class Simulator {
 	public int whatHappensWithCell(Board b, int x, int y) { // przyjmuje wsp�rz�dne "tablicowe"
 		int[][] cells = b.getCells();
 
-		if (cells[x][y] == Element.EMPTY_CELL) {
-			return Element.EMPTY_CELL;
-		} else if (cells[x][y] == Element.ELECTRON_HEAD) {
-			return Element.ELECTRON_TAIL;
-		} else if (cells[x][y] == Element.ELECTRON_TAIL) {
-			return Element.CONDUCTOR;
-		} else if (cells[x][y] == Element.CONDUCTOR) {
+		if (cells[x][y] == ElementConstans.EMPTY_CELL) {
+			return ElementConstans.EMPTY_CELL;
+		} else if (cells[x][y] == ElementConstans.ELECTRON_HEAD) {
+			return ElementConstans.ELECTRON_TAIL;
+		} else if (cells[x][y] == ElementConstans.ELECTRON_TAIL) {
+			return ElementConstans.CONDUCTOR;
+		} else if (cells[x][y] == ElementConstans.CONDUCTOR) {
 			int electronHeads = countElectronHeadsInNeighbourhood(b, x, y);
 			if (electronHeads == 1 || electronHeads == 2) {
-				return Element.ELECTRON_HEAD;
+				return ElementConstans.ELECTRON_HEAD;
 			} else {
-				return Element.CONDUCTOR;
+				return ElementConstans.CONDUCTOR;
 			}
 
 		} else {
-			return Element.CONDUCTOR;
+			return ElementConstans.CONDUCTOR;
 		}
 	}
 
@@ -71,8 +72,10 @@ public class Simulator {
 			for (int j = 0; j < b.getWIDTH(); j++) {
 				newCells[i][j] = whatHappensWithCell(b, i, j);
 
-				changes[i][j] = newCells[i][j] == cells[i][j] ? false : true;
-
+				if (newCells[i][j] != cells[i][j]) {
+					changes[i][j] = true;
+					anyChange = true;
+				}
 			}
 		}
 		b.setCells(newCells);
@@ -81,5 +84,9 @@ public class Simulator {
 
 	public boolean[][] getChanges() {
 		return changes;
+	}
+
+	public boolean isAnyChange() {
+		return anyChange;
 	}
 }

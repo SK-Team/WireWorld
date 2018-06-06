@@ -1,6 +1,6 @@
 package elements;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +21,11 @@ public class Wire extends Element {
     }
 
     public Wire(Point startPoint) {
-        this(startPoint, Element.DEFAULT_TYPE, 2);
+        this(startPoint, ElementConstans.DEFAULT_TYPE, 2);
     }
 
     public Wire(Point startPoint, int length){
-        this(startPoint, Element.DEFAULT_TYPE, length);
+        this(startPoint, ElementConstans.DEFAULT_TYPE, length);
     }
 
     @Override
@@ -33,13 +33,13 @@ public class Wire extends Element {
         int x = p.x;
         int y = p.y;
 
-        if (type == Element.DEFAULT_TYPE) {
+        if (type == ElementConstans.DEFAULT_TYPE) {
             location.add(p);
             for( int i = 1; i < this.length; i++)
                 location.add(new Point(x + i, y));
 
 
-        } else if (type == Element.REVERSED_TYPE) {
+        } else if (type == ElementConstans.REVERSED_TYPE) {
             location.add(p);
             for( int i = 1; i < this.length; i++)
                 location.add(new Point(x, y + i));
@@ -64,7 +64,7 @@ public class Wire extends Element {
     @Override
     public String toString() {
         Point p = location.get(0);
-        char t = type == Element.DEFAULT_TYPE ? 'D' : 'R';
+        char t = type == ElementConstans.DEFAULT_TYPE ? 'D' : 'R';
         return "Wire: " + p.x + "," + p.y + " " + t;
     }
 

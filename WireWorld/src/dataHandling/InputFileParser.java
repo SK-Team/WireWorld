@@ -2,7 +2,7 @@ package dataHandling;
 
 import elements.*;
 
-import java.awt.Point;
+import java.awt.*;
 
 public class InputFileParser {
 	public static Point parseCoordinatesFromLineSplit(String[] split) throws WrongInputFileException {
@@ -31,50 +31,50 @@ public class InputFileParser {
 		if (split.length >= 3) {
 			split[2] = split[2].trim();
 			if (split[2].equals("R")) {
-				return Element.REVERSED_TYPE;
+				return ElementConstans.REVERSED_TYPE;
 			} else if (split[2].equals("D")) {
-				return Element.DEFAULT_TYPE;
+				return ElementConstans.DEFAULT_TYPE;
 			} else {
 				throw new WrongInputFileException();
 			}
 		}
-		return Element.DEFAULT_TYPE;
+		return ElementConstans.DEFAULT_TYPE;
 	}
 
 	public static Integer parseCellStateFromLineSplit(String[] split) {
 		if (split[0].equals("ElectronHead:")) {
-			return Element.ELECTRON_HEAD;
+			return ElementConstans.ELECTRON_HEAD;
 		} else if (split[0].equals("ElectronTail:")) {
-			return Element.ELECTRON_TAIL;
+			return ElementConstans.ELECTRON_TAIL;
 		} else if (split[0].equals("Conductor:")) {
-			return Element.CONDUCTOR;
+			return ElementConstans.CONDUCTOR;
 		} else if (split[0].equals("Blank:")) {
-			return Element.EMPTY_CELL;
+			return ElementConstans.EMPTY_CELL;
 		} else {
 			return null;
 		}
 	}
 
 	public static Wire parseWireFromLineSplit(String[] split, Point givenStartPoint) {
-		int length = Wire.DEFAULT_LENGTH;
-		int type = Element.DEFAULT_TYPE;
+		int length;
+		int type;
 		if (split[0].equals("Wire:")) {
 			length = Wire.DEFAULT_LENGTH;
-			type = Element.DEFAULT_TYPE;
+			type = ElementConstans.DEFAULT_TYPE;
 			if (split.length >= 3) {
 				if (split[2].equals("R")) {
-					type = Element.REVERSED_TYPE;
+					type = ElementConstans.REVERSED_TYPE;
 				} else if (split[2].equals("D")) {
-					type = Element.DEFAULT_TYPE;
+					type = ElementConstans.DEFAULT_TYPE;
 				} else {
 					length = Integer.valueOf(split[2]);
 				}
 			}
 			if (split.length >= 4) {
 				if (split[3].equals("R")) {
-					type = Element.REVERSED_TYPE;
+					type = ElementConstans.REVERSED_TYPE;
 				} else if (split[3].equals("D")) {
-					type = Element.DEFAULT_TYPE;
+					type = ElementConstans.DEFAULT_TYPE;
 				}
 			}
 			return new Wire(givenStartPoint, type, length);

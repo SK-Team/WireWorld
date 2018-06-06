@@ -16,6 +16,8 @@ import java.io.IOException;
 public class MainWindow extends Application {
 
 	private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
+	public static final String NO_GENERATION_CHANGES_MESSAGE = "Pozosta³e generacje nie " +
+			"bêd¹ siê zmieniaæ ze wzglêdu na brak elektronów. Symulacja zostanie zatrzymana.";
 	private String boardBeforeAnySimulationFilePath;
 	private Board board;
 	private Simulator simulator;
@@ -86,7 +88,7 @@ public class MainWindow extends Application {
 						@Override
 						public void run() {
 							guiController.handleSimulationFinished();
-							showNoChangesDialog();
+							showNoChangesDialog(NO_GENERATION_CHANGES_MESSAGE);
 						}
 					});
 				}
@@ -120,9 +122,9 @@ public class MainWindow extends Application {
 		board.drawBoardToCanvas(canvas);
 	}
 
-	public void addSelectedToBoard(double x, double y, int cellType, Canvas canvas) {
+	public void addSelectedToBoard(double x, double y, int cellType, Canvas canvas, int type) {
 
-		board.addToBoard(x, y, cellType, canvas);
+		board.addToBoard(x, y, cellType, canvas, type);
 
 	}
 
@@ -143,18 +145,19 @@ public class MainWindow extends Application {
 
 	}
 
-	public void showNoChangesDialog() {
+	public void showNoChangesDialog(String message) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("NoChangesDialog.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("OptionDialog.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Koniec symulacji");
+			dialogStage.setTitle("B³¹d");
 			dialogStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			dialogStage.setScene(scene);
 
-			NoChangesDialogController controller = loader.getController();
+			OptionController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
+			controller.setMessageLabel(message);
 
 			dialogStage.showAndWait();
 

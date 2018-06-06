@@ -215,9 +215,8 @@ public class Board {
     }
 
 
-    public void addToBoard(double x, double y, int cellType, Canvas canvas) {
+    public void addToBoard(double x, double y, int cellType, Canvas canvas, int type) {
 
-        int type = ElementConstans.DEFAULT_TYPE;
         if (cellType == ElementConstans.ELECTRON_HEAD || cellType == ElementConstans.ELECTRON_TAIL ||
                 cellType == ElementConstans.CONDUCTOR || cellType == ElementConstans.EMPTY_CELL) {
             int cells[][] = getCells();

@@ -22,12 +22,17 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-	public static final String DEFAULT_TEXT_FILE_PATH = "C:\\Users\\sucha_rakzuks\\Desktop\\defaultInputFile.txt";
-	private final String FILE_CHOOSER_TITLE = "Wybierz plik wej?ciowy";
+
+    public static final String WRONG_INPUT_FILE_MESSAGE = "Błędny format pliku wejściowego.";
+    public static final String UNSUCCESSFUL_FILE_LOADING_MESSAGE = "Nie udało się wczytać pliku";
+    public static final String UNSUCCESSFUL_SAVING_MESSAGE = "Nie udało się zapisać generacji.";
+
+    private final String FILE_CHOOSER_TITLE = "Wybierz plik wejściowy";
 
 	private MainWindow wireWorldFunctionality;
 	private FileChooser fileChooser;
 	private int cellType;
+    private int type;
 
 	@FXML
 	private Canvas canvas;
@@ -46,17 +51,9 @@ public class Controller implements Initializable {
 	@FXML
 	private ToggleGroup toggleGroup;
 	@FXML
-	private RadioButton electronHeadRadioButton;
-	@FXML
-	private RadioButton electronTailRadioButton;
-	@FXML
-	private RadioButton conductorRadioButton;
-	@FXML
-	private RadioButton emptyCellRadioButton;
-	@FXML
-	private RadioButton diodeRadioButton;
-	@FXML
 	private CheckBox userDrawingCheckBox;
+    @FXML
+    private CheckBox elementTypeCheckBox;
 	@FXML
 	private VBox radioButtonsVBox;
 	@FXML
@@ -77,9 +74,7 @@ public class Controller implements Initializable {
 		}
 
 		try {
-			wireWorldFunctionality.setBoardFromFile(canvas, filePath); // tu powinni?my obs?u?y? jak?? warto?? zwracan?
-			// w razie b??dnego
-			// formatu pliku
+            wireWorldFunctionality.setBoardFromFile(canvas, filePath);
 			startButton.setDisable(false);
 			pauseButton.setDisable(false);
 			stopButton.setDisable(false);
@@ -88,10 +83,10 @@ public class Controller implements Initializable {
 			currentInputFileTextAreaView.setText(filePath);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
 			e.printStackTrace();
 		} catch (WrongInputFileException e) {
-			// TODO!!!
+            wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
 		}
 
 	}
@@ -112,7 +107,7 @@ public class Controller implements Initializable {
 		try {
 			wireWorldFunctionality.saveGeneration(savedFilePath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block //obs?u?y? ten b??d !!!
+            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_SAVING_MESSAGE);
 			e.printStackTrace();
 		}
 	}
@@ -146,10 +141,10 @@ public class Controller implements Initializable {
 			saveButton.setDisable(true);
 			wireWorldFunctionality.returnToFirstBoardState(canvas);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
 			e.printStackTrace();
 		} catch (WrongInputFileException e) {
-			// TODO !!!
+            wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
 		}
 	}
 
@@ -164,6 +159,15 @@ public class Controller implements Initializable {
 		}
 
 	}
+
+    @FXML
+    protected void handleElementTypeCheckBox(ActionEvent event) {
+        if (elementTypeCheckBox.isSelected())
+            type = ElementConstans.REVERSED_TYPE;
+        else
+            type = ElementConstans.DEFAULT_TYPE;
+
+    }
 
 	@FXML
 	protected void handleEmptyCellRadioButton(ActionEvent event) {
@@ -206,11 +210,6 @@ public class Controller implements Initializable {
 	}
 
 	@FXML
-	protected void handleWireRadioButton(ActionEvent event) {
-		cellType = ElementConstans.WIRE;
-	}
-
-	@FXML
 	protected void handleClearBoardButton(ActionEvent event) {
 		wireWorldFunctionality.drawEmptyBoard(canvas);
 	}
@@ -219,7 +218,7 @@ public class Controller implements Initializable {
 	protected void handleMouseClickedOnCanvas(MouseEvent event) {
 		if (userDrawingCheckBox.isSelected() == true && toggleGroup.getSelectedToggle() != null) {
 
-			wireWorldFunctionality.addSelectedToBoard(event.getX(), event.getY(), cellType, canvas);
+            wireWorldFunctionality.addSelectedToBoard(event.getX(), event.getY(), cellType, canvas, type);
 
 			startButton.setDisable(false);
 			speedSlider.setDisable(false);
@@ -239,6 +238,7 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		initFileChooser();
+        type = ElementConstans.DEFAULT_TYPE;
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override

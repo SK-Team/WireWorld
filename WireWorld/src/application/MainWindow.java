@@ -4,11 +4,13 @@ import dataHandling.Board;
 import dataHandling.WrongInputFileException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import simulator.Simulator;
 
 import java.io.IOException;
@@ -16,8 +18,8 @@ import java.io.IOException;
 public class MainWindow extends Application {
 
 	private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
-	public static final String NO_GENERATION_CHANGES_MESSAGE = "Pozosta³e generacje nie " +
-			"bêd¹ siê zmieniaæ ze wzglêdu na brak elektronów. Symulacja zostanie zatrzymana.";
+	public static final String NO_GENERATION_CHANGES_MESSAGE = "Pozosta³e generacje nie "
+			+ "bêd¹ siê zmieniaæ ze wzglêdu na brak elektronów. Symulacja zostanie zatrzymana.";
 	private String boardBeforeAnySimulationFilePath;
 	private Board board;
 	private Simulator simulator;
@@ -43,7 +45,13 @@ public class MainWindow extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
+				@Override
+				public void handle(WindowEvent arg0) {
+					wireWorldFunctionality.pauseSimulation();
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,7 +65,6 @@ public class MainWindow extends Application {
 
 		if (simulator == null) { // pierwsza symulacja
 			simulator = new Simulator();
-			System.out.println("Simulator initialized");
 		}
 		board.printToConsole();
 
@@ -66,15 +73,12 @@ public class MainWindow extends Application {
 
 		new Thread() {
 			public void run() {
-				System.out.println("Pocz¹tek!");
 				for (int i = 0; i < howManyGenerations && simulationActive == true && simulationPaused == false; i++) {
-					System.out.println("Symulacja nr " + i);
 					simulator.simulateGeneration(board);
 					if (!simulator.isAnyChange()) {
 						simulationActive = false;
 					}
 					board.drawBoardToCanvas(canvas, simulator.getChanges());
-					board.printToConsole();
 
 					try {
 						Thread.sleep(interval);

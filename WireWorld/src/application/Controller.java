@@ -23,16 +23,16 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    public static final String WRONG_INPUT_FILE_MESSAGE = "BÅ‚Ä™dny format pliku wejÅ›ciowego.";
-    public static final String UNSUCCESSFUL_FILE_LOADING_MESSAGE = "Nie udaÅ‚o siÄ™ wczytaÄ‡ pliku";
-    public static final String UNSUCCESSFUL_SAVING_MESSAGE = "Nie udaÅ‚o siÄ™ zapisaÄ‡ generacji.";
+	public static final String WRONG_INPUT_FILE_MESSAGE = "B³êdny format pliku wejœciowego.";
+	public static final String UNSUCCESSFUL_FILE_LOADING_MESSAGE = "Nie uda³o siê wczytaæ pliku";
+	public static final String UNSUCCESSFUL_SAVING_MESSAGE = "Nie uda³o siê zapisaæ generacji.";
 
-    private final String FILE_CHOOSER_TITLE = "Wybierz plik wejÅ›ciowy";
+	private final String FILE_CHOOSER_TITLE = "Wybierz plik wejœciowy";
 
 	private MainWindow wireWorldFunctionality;
 	private FileChooser fileChooser;
 	private int cellType;
-    private int type;
+	private int type;
 
 	@FXML
 	private Canvas canvas;
@@ -52,8 +52,8 @@ public class Controller implements Initializable {
 	private ToggleGroup toggleGroup;
 	@FXML
 	private CheckBox userDrawingCheckBox;
-    @FXML
-    private CheckBox elementTypeCheckBox;
+	@FXML
+	private CheckBox elementTypeCheckBox;
 	@FXML
 	private VBox radioButtonsVBox;
 	@FXML
@@ -74,7 +74,7 @@ public class Controller implements Initializable {
 		}
 
 		try {
-            wireWorldFunctionality.setBoardFromFile(canvas, filePath);
+			wireWorldFunctionality.setBoardFromFile(canvas, filePath);
 			startButton.setDisable(false);
 			pauseButton.setDisable(false);
 			stopButton.setDisable(false);
@@ -83,10 +83,10 @@ public class Controller implements Initializable {
 			currentInputFileTextAreaView.setText(filePath);
 
 		} catch (IOException e) {
-            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
+			wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
 			e.printStackTrace();
 		} catch (WrongInputFileException e) {
-            wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
+			wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
 		}
 
 	}
@@ -107,7 +107,7 @@ public class Controller implements Initializable {
 		try {
 			wireWorldFunctionality.saveGeneration(savedFilePath);
 		} catch (IOException e) {
-            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_SAVING_MESSAGE);
+			wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_SAVING_MESSAGE);
 			e.printStackTrace();
 		}
 	}
@@ -127,7 +127,7 @@ public class Controller implements Initializable {
 		elementTypeCheckBox.setDisable(true);
 		elementTypeCheckBox.setSelected(false);
 
-		wireWorldFunctionality.simulate(canvas, 100000,this);
+		wireWorldFunctionality.simulate(canvas, 100000, this);
 	}
 
 	@FXML
@@ -148,10 +148,10 @@ public class Controller implements Initializable {
 			wireWorldFunctionality.returnToFirstBoardState(canvas);
 			selectInputFileButton.setDisable(false);
 		} catch (IOException e) {
-            wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
+			wireWorldFunctionality.showNoChangesDialog(UNSUCCESSFUL_FILE_LOADING_MESSAGE);
 			e.printStackTrace();
 		} catch (WrongInputFileException e) {
-            wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
+			wireWorldFunctionality.showNoChangesDialog(WRONG_INPUT_FILE_MESSAGE);
 		}
 	}
 
@@ -169,14 +169,14 @@ public class Controller implements Initializable {
 
 	}
 
-    @FXML
-    protected void handleElementTypeCheckBox(ActionEvent event) {
-        if (elementTypeCheckBox.isSelected())
-            type = ElementConstans.REVERSED_TYPE;
-        else
-            type = ElementConstans.DEFAULT_TYPE;
+	@FXML
+	protected void handleElementTypeCheckBox(ActionEvent event) {
+		if (elementTypeCheckBox.isSelected())
+			type = ElementConstans.REVERSED_TYPE;
+		else
+			type = ElementConstans.DEFAULT_TYPE;
 
-    }
+	}
 
 	@FXML
 	protected void handleEmptyCellRadioButton(ActionEvent event) {
@@ -227,7 +227,7 @@ public class Controller implements Initializable {
 	protected void handleMouseClickedOnCanvas(MouseEvent event) {
 		if (userDrawingCheckBox.isSelected() == true && toggleGroup.getSelectedToggle() != null) {
 
-            wireWorldFunctionality.addSelectedToBoard(event.getX(), event.getY(), cellType, canvas, type);
+			wireWorldFunctionality.addSelectedToBoard(event.getX(), event.getY(), cellType, canvas, type);
 
 			startButton.setDisable(false);
 			speedSlider.setDisable(false);
@@ -236,6 +236,7 @@ public class Controller implements Initializable {
 		}
 
 	}
+
 	public void handleSimulationFinished() {
 		saveButton.setDisable(false);
 		pauseButton.setDisable(true);
@@ -247,7 +248,7 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		initFileChooser();
-        type = ElementConstans.DEFAULT_TYPE;
+		type = ElementConstans.DEFAULT_TYPE;
 		canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override

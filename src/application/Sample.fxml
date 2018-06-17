@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.Font?>
+<?import java.net.URL?>
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="850.0"
+            xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.Controller">
+    <children>
+
+        <Label layoutX="38.0" layoutY="108.0" prefHeight="17.0" prefWidth="153.0" text="Obecny plik wejściowy:"/>
+        <Canvas fx:id="canvas" height="500.0" layoutX="221.0" layoutY="76.0" width="600.0"/>
+        <Button fx:id="selectInputFileButton" layoutX="38.0" layoutY="76.0" mnemonicParsing="false"
+                onAction="#handleFileChooseButton" prefHeight="25.0" prefWidth="153.0" text="Wybierz plik wejściowy"/>
+        <Button fx:id="saveButton" disable="true" layoutX="38.0" layoutY="226.0" mnemonicParsing="false"
+                onAction="#handleSaveButton" prefHeight="25.0" prefWidth="153.0" text="Zapisz obecną generację"/>
+        <Button fx:id="pauseButton" disable="true" layoutX="88.0" layoutY="264.0" mnemonicParsing="false"
+                onAction="#handlePauseButton" text="Pauza"/>
+        <Button fx:id="stopButton" disable="true" layoutX="150.0" layoutY="264.0" mnemonicParsing="false"
+                onAction="#handleStopButton" text="Stop"/>
+        <Button fx:id="startButton" disable="true" layoutX="38.0" layoutY="264.0" mnemonicParsing="false"
+                onAction="#handleStartButton" text="Start"/>
+        <TextArea fx:id="currentInputFileTextAreaView" editable="false" layoutX="38.0" layoutY="131.0" prefHeight="87.0"
+                  prefWidth="153.0" wrapText="true"/>
+        <Label alignment="CENTER" layoutX="296.0" layoutY="14.0" prefHeight="55.0" prefWidth="261.0" text="Wireworld">
+            <font>
+                <Font name="Algerian" size="36.0"/>
+            </font>
+            <textFill>
+                <LinearGradient endX="1.0" endY="1.0">
+                    <stops>
+                        <Stop color="#2a75a1"/>
+                        <Stop color="#b21706" offset="0.5172413793103445"/>
+                        <Stop color="#edba2f" offset="0.9961685823754789"/>
+                        <Stop color="#edba2f" offset="1.0"/>
+                    </stops>
+                </LinearGradient>
+            </textFill>
+        </Label>
+        <VBox fx:id="radioButtonsVBox" disable="true" layoutX="38.0" layoutY="387.0" prefHeight="71.0"
+              prefWidth="153.0">
+            <children>
+                <RadioButton fx:id="electronHeadRadioButton" mnemonicParsing="false"
+                             onAction="#handleElectronHeadRadioButton" text="Głowa elektronu">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="toggleGroup"/>
+                    </toggleGroup>
+                </RadioButton>
+                <RadioButton fx:id="electronTailRadioButton" mnemonicParsing="false"
+                             onAction="#handleElectronTailRadioButton" prefHeight="17.0" prefWidth="108.0"
+                             text="Ogon elektronu" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="conductorRadioButton" mnemonicParsing="false" onAction="#handleConductorRadioButton"
+                             prefHeight="17.0" prefWidth="108.0" text="Przewodnik" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="emptyCellRadioButton" mnemonicParsing="false" onAction="#handleEmptyCellRadioButton"
+                             prefHeight="26.0" prefWidth="108.0" text="Pusta komórka" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="diodeRadioButton" mnemonicParsing="false" onAction="#handleDiodeRadioButton"
+                             text="Dioda" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="andGateRadioButton" mnemonicParsing="false" onAction="#handleAndGateRadioButton"
+                             text="Bramka AND" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="orGateRadioButton" mnemonicParsing="false" onAction="#handleOrGateRadioButton"
+                             text="Bramka OR" toggleGroup="$toggleGroup"/>
+                <RadioButton fx:id="norGateRadioButton" mnemonicParsing="false" onAction="#handleNorGateRadioButton"
+                             prefHeight="17.0" prefWidth="175.0" text="Bramka NOR" toggleGroup="$toggleGroup"/>
+            </children>
+        </VBox>
+        <CheckBox fx:id="userDrawingCheckBox" layoutX="39.0" layoutY="364.0" mnemonicParsing="false"
+                  onAction="#handleuserDrawingCheckBox" prefHeight="17.0" prefWidth="153.0" text="Rysowanie reczne"/>
+        <Slider fx:id="speedSlider" blockIncrement="0.25" disable="true" layoutX="19.0" layoutY="306.0"
+                majorTickUnit="0.5" max="3.0" min="0.5" minorTickCount="1" prefHeight="40.0" prefWidth="192.0"
+                showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0"/>
+        <Button fx:id="clearBoardButton" layoutX="38.0" layoutY="564.0" mnemonicParsing="false"
+                onAction="#handleClearBoardButton" prefHeight="25.0" prefWidth="153.0" text="Wyczyść planszę"/>
+        <CheckBox fx:id="elementTypeCheckBox" disable="true" layoutX="38.0" layoutY="531.0" mnemonicParsing="false"
+                  onAction="#handleElementTypeCheckBox" text="Odwrócone elementy"/>
+    </children>
+
+    <stylesheets>
+        <URL value="@application.css"/>
+    </stylesheets>
+
+</AnchorPane>

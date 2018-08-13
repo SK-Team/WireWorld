@@ -126,7 +126,6 @@ public class Controller implements Initializable {
 		userDrawingCheckBox.setSelected(false);
 		elementTypeCheckBox.setDisable(true);
 		elementTypeCheckBox.setSelected(false);
-
 		wireWorldFunctionality.simulate(canvas, 100000, this);
 	}
 

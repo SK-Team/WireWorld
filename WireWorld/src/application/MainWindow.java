@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class MainWindow extends Application {
 
-	private final int INTERVAL_BEETWEEN_SIMULATIONS = 1000;
+	private final int DEFAULT_INTERVAL_BEETWEEN_SIMULATIONS = 1000;
 	public static final String NO_GENERATION_CHANGES_MESSAGE = "Pozosta³e generacje nie "
 			+ "bêd¹ siê zmieniaæ ze wzglêdu na brak elektronów. Symulacja zostanie zatrzymana.";
 	private String boardBeforeAnySimulationFilePath;
@@ -25,7 +25,7 @@ public class MainWindow extends Application {
 	private Simulator simulator;
 	private boolean simulationActive = false;
 	private boolean simulationPaused = false;
-	private int interval = INTERVAL_BEETWEEN_SIMULATIONS;
+	private int interval = DEFAULT_INTERVAL_BEETWEEN_SIMULATIONS;
 	private Stage primaryStage;
 
 	@Override

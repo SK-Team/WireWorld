@@ -43,7 +43,7 @@ public class MainWindow extends Application {
 
 			Scene scene = new Scene(root, 850, 630);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            primaryStage.setTitle("WireWorld");
+			primaryStage.setTitle("WireWorld");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -52,7 +52,7 @@ public class MainWindow extends Application {
 				public void handle(WindowEvent arg0) {
 					wireWorldFunctionality.pauseSimulation();
 
-                }
+				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,0 +1,190 @@
+\documentclass[a4paper,11pt, notitlepage ]{article}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhf{}
+\setcounter{page}{1}
+\rfoot{Strona \thepage \hspace{1pt} z \pageref{LastPage}}
+\selectlanguage{polish}
+\makeatletter
+\newcommand{\linia}{\rule{\linewidth}{0.4mm}}
+\renewcommand{\maketitle}{\begin{titlepage}
+    \vspace*{1cm}
+    \begin{center}\small
+    Politechnika Warszawska\\
+    Wydział Elektryczny
+    \end{center}
+    \vspace{3cm}
+    \noindent\linia
+    \begin{center}
+      \LARGE \textsc{\@title}
+         \end{center}
+     \linia
+    \vspace{0.5cm}
+    \begin{flushright}
+    \begin{minipage}{8cm}
+    \textit{\small Autorzy:}\\
+    \normalsize \textsc{\@author} \par
+    \end{minipage}
+    \end{flushright}
+    \vspace*{\stretch{6}}
+    \begin{center}
+    \@date
+    \end{center}
+  \end{titlepage}%
+}
+\makeatother
+\author{J.~Korczakowski, nr albumu 291079\\ B.~Suchocki, nr albumu 291111\\ Grupa projektowa nr 11}
+\title{Specyfikacja funkcjonalna symulatora automatu komórkowego \textsl{Wireworld}}
+\frenchspacing
+\begin{document}
+\maketitle
+\setcounter{page}{2}
+\section{Opis ogólny}
+\subsection{Nazwa programu}
+Nasz program będzie nazywał się \verb+WireWorld+.
+\subsection{Poruszany problem}
+
+
+Zadaniem naszego programu będzie symulacja automatu komórkowego WireWorld wymyślonego przez Brian Silvermanna w 1987 roku. Kolejne symulacje polegają na zmianie stanów komórek ułożonych na prostokątnej planszy według okrelonych zasad. Każda komórka może znajdować się w~jednym z czterech stanów: ogon elektronu (kolor żółty), głowa elektronu (kolor czerwony), przewodnik (kolor czarny), pusta komórka (kolor biały). Zasady symulacji:
+\begin{itemize}
+\item Komórka pozostaje Pusta, jeśli była Pusta.
+\item Komórka staje się Ogonem elektronu, jeśli była Głową elektronu.
+\item Komórka staje się Przewodnikiem, jeśli była Ogonem elektronu.
+\item Komórka staje się Głową elektronu tylko wtedy, gdy dokładnie 1 lub 2 sąsiadujące komórki są Głowami Elektronu.
+\item Komórka staje się Przewodnikiem w każdym innym wypadku.
+\end{itemize}
+\indent Dodatkowo, w naszym programie zakładamy, że plansza jest ograniczona i~komórki poza nią są puste. Naszym zdaniem uprości to symulację i zwiększy jej czytelność.
+
+\subsection{Cel projektu}
+Celem tego projektu jest nauka i praktyka programowania w języku JAVA~przy jednoczesnym zapoznaniu się z tematem automatu komórkowego WireWorld Briana Silvermanna.
+
+\section{Opis funkcjonalności}
+\subsection{Uruchomienie i korzystanie z programu}
+Program uruchamiany jest poprzez dwukrotne kliknięcie na ikonę. Korzystanie z niego odbywa się za pomocą graficznego interfejsu użytkownika.
+
+\subsection{Możliwości programu:}
+\begin{itemize}
+\item Wczytywanie plików wejściowych z danymi planszy i liczbą generacji
+\item Wizualizacja generacji na żywo.
+\item Możliwość wstrzymania i zakończenia generacji.
+\item Zapis obecnie wyświetlanej generacji do pliku możliwego do ponownego wczytania przez program.
+\end{itemize}
+
+\section{Format danych i struktura plików}
+\subsection{Pojęcia}
+\begin{description}
+\item[Komórka] – podstawowa jednostka automatu komórkowego.
+\item[Generacja] – jeden cykl, w którym komórki zmieniają swój stan.
+\item[Stan komórki] – komórka może znajdować się w czterech stanach: ogon elektronu, głowa elektronu, przewodnik lub pusta komórka.
+\item[Sąsiedzi komórki] – komórki przylegające do niej bokami i rogami.
+\item[Bramka logiczna] - element konstrukcyjny realizujący prostą funkcję logiczną.
+\item[Bramka logiczna NOR] - bramka logiczna realizująca funkcję alternatywy wykluczającej.
+\item[Bramka logiczna AND] - bramka logiczna realizująca funkcję koniunkcji.
+\item[Bramka logiczna OR] - bramka logiczna realizująca funkcję alternatywy.
+
+\end{description}
+\subsection{Struktura katalogów}
+Projekt będzie znajdował się w katalogu \verb+WireWorldr+.  Pliki z kodem źródłowym przechowywane będą w katalogach odpowiadającym ich zastosowaniu (np. pliki odpowiedzialne za graficzny interfejs użytkownika będą w katalogu \verb+gui+). Katalogi te będą z kolei przechowywane w folderze \verb+src+, w którym znajdzie się również katalog \verb+data+ zawierający przykładowe pliki wejściowe oraz katalog \verb+test+ zawierający pliki testowe dla poszczególnyc modułów programu. Wyniki działania naszego programu(plik wyjściowy) oraz pliki wynikowe z rozszerzeniem .class umieścimy w katalogu \verb+bin+. W katalogi \verb+External Libraries+ znajdą się biblioteki, z których korzysta nasz program.
+Graficzne przedstawienie struktury katalogów w naszym projekcie:
+\begin{verbatim}
+WireWorld
++--- src
+|    +--- gui 
+|    +--- board
+|    +--- inne pakiety z plikami żródłowymi
+|    +--- test
+|    +--- data
++--- bin
++--- External Libraries
+\end{verbatim}
+\subsection{Przechowywanie danych w programie}
+ Plansza przeznaczona do przechowywania stanów wszystkich komórek będzie reprezentowana przez klasę zawierającą dwuwymiarową tablicę liczb całkowitych, zmienne zapamiętującą jej wymiary (wysokość i szerokość) oraz metody ją obsługujące.
+
+\subsection{Dane wejściowe}
+Plik wejściowy zawiera w każdym wierszu definicję obiektu lub stanu pojedynczej komórki. Definicja powinna zostać podana w postaci:
+ \newline \verb+Nazwa_obiektu_lub_stanu_komórki:+ X,Y
+\newline Gdzie: 
+\begin{description}
+\item \verb+nazwa_obiektu_lub_stanu_komorki+ – nazwa tworzonego obiektu lub nazwa stanu tworzonej komórki,
+\item \verb+ile_generacji+ – współrzędne oznaczające położenie początka obiektu lub położenie komórki.
+\end{description}
+Dostępne nazwy obiektów/stanów komórek:
+\begin{itemize}
+\item Diode - dioda,
+\item OR - bramka logiczna OR,
+\item NOR - bramka logiczna NOR,
+\item AND - bramka logiczna AND,
+\item Wire - drut
+\item ElectronHead - głowa elektronu,
+\item ElectronTail - ogon elektronu,
+\item Blank - pusta komórka,
+\item Conductor - przewodnik.
+
+\end{itemize}
+W przypadku definiowania drutu można (opcjonalnie) podać jeszcze dodatkowe dwa parametry:
+\begin{description}
+\item \verb+N+ - długość drutu (ilość pól planszy, które będzie zajmował), domśylnie ustawiany na: 2,
+\item \verb+orientation+ - orientacja drutu określająca czy kolejne pola przez niego zajmowane będą w linii poziomej (\verb+horizontal+) czy pionowej (\verb+vertical+). Domyślnie parametr ustawiony jest jako: \verb+horizontal+.
+\end{description}
+Przykład definicji drutu: 
+\begin{verbatim}Wire: 0,3 3 vertical \end{verbatim}
+W przypadku kilkukrotnego wpisania obiektu/stanu komórki na te same współrzędne, program weźmie pod uwagę ostatnią definicję.
+
+\subsection{Dane wyjściowe}
+Plik wyjściowy programu (opisujący stan wybranej generacji przy zastopowanej symulacji) sporządzony zostanie według tej samej struktury co plik wejściowy, dzięki czemu będzie mógł być potem użyty jako plik wejściowy. 
+
+\section{Scenariusz działania programu}
+\subsection{Scenariusz ogólny}
+\begin{enumerate}
+\item Uruchomienie programu poprzez dwukrotne kliknięcie ikony.
+\item Wyświetlenie interfejsu aplikacji wraz z pustą planszą.
+\item Otwarcie wybranego przez użytkownika pliku wejściowego.
+\item Generacja zadanej liczby generacji.
+\item Zapisanie obecnie wyświetlanej generacji, jeżeli użytkownik kliknie przycisk \verb+Zapisz obecną generację+.
+\item Zakończenie generacji planszy. Użytkownik może wybrać następny plik do generacji lub zakończyć działanie programu.
+\end{enumerate}
+
+\subsection{Scenariusz szczegółowy}
+\begin{enumerate}
+\item Uruchomienie programu poprzez dwukrotne kliknięcie ikony.
+\item Wyświetlenie interfejsu aplikacji wraz z pustą planszą.
+\item Użytkownik wybiera plik wejściowy poprzez kliknięcie na przycisk \verb+Wybierz+ \verb+plik+, a następnie wskazanie na odpowiedni plik w drzewie katalogów. Następuje próba wczytania danych planszy i liczba generacji.
+\begin{itemize}
+\item Jeśli wybrany przez użytkownika plik nie jest możliwy do wczytania to zostanie wyświetlony komunikat:"Nie udało się wczytać pliku wejściowego".
+\item Jeśli plik wejściowy zawiera błędne dane to zostanie wyświetlony komunikat: "Błędny format pliku wejściowego".
+\item Jeśli liczba generacji nie została podana to program będzie generował planszę w nieskończoność, z wyjątkiem przypadku gdy użytkownik naciśnie przycisk \verb+Stop+.
+\end{itemize}
+\item Wyświetlenie wczytanej z pliku planszy.
+\begin{itemize}
+\item Po naciśnięciu przez użytkownika przycisku \verb+Start+ program rozpocznie wyświetlanie nowych generacji w odstępie 1 sekundy. W~czasie generacji zapełniany będzie pasek postępu znajdujący się po prawej stronie ekranu.
+\item Jeśli użytkownik naciśnie przycisk \verb+Pauza+, to program wstrzyma wyświetlanie nowych generacji i umożliwi zapis bieżącej generacji do pliku za pomocą naciśnięcia przycisku \verb+Zapisz obecną generację+, a następnie wpisania nazwy pliku do zapisu. Wznowienie generowania odbywa się za pomocą przycisku \verb+Start+
+\begin{itemize}
+\item Jeśli nie będzie można zapisać generacji do pliku o nazwie podanej przez użytkownika to program wyświetli komunikat: "Nie udało się zapisać generacji do podanego  pliku. Wybierz plik jeszcze raz".
+\end{itemize}
+\item Jeśli użytkownik naciśnie przycisk \verb+Stop+ to program zakończy generację i wyświetli początkową planszę. Możliwe będzie wtedy rozpoczęcie generacji od nowa lub wczytanie innego pliku wejściowego.
+\end{itemize}
+\item Zakończenie generacji na skutek wypełnienia zadanej liczby.
+\item Użytkownik może wczytać nowy plik wejściowy, rozpocząć generację od nowa lub zakończyć działanie programu.
+\end{enumerate}
+\subsection{Ekrany działania programu}
+\begin{figure}[h]
+\centering
+\includegraphics[width=13cm]{Ekran}
+\caption{Ekran aplikacji}
+\end{figure}
+Ekran aplikacji został zamieszczony poniżej(Rys 1). W lewym górnym rogu znajduję się tytuł programu. Poniżej znajduje się przycisk \verb+Wybierz plik+ \verb+wejściowy+ odpowiedzialny za wyświetlenie menu do wybrania pliku wejściowego. Poniżej wypisany jest aktualnie używany plik wejściowy. Poniżej znajduje się przycisk \verb+Zapisz obecną generację+ odpowiedzialny za wyświetlenie menu do wybrania pliku do zapisu. Poniżej znajdują się przyciski odpowiedzialne za sterowanie generowaniem. Poniżej znajduje się pasek progresu.
+
+\section{Testowanie}
+Działanie poszczególnych części programu przetestujemy przy użyciu biblioteki \verb+AssertJ+ oraz przykładowych plików wejściowych. Tylko część graficzną (GUI) przetestujemy ręcznie np. sprawdzając czy program wykona odpowiednią akcję po nacinięciu przycisku.
+
+
+\end{document}

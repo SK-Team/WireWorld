@@ -1,4 +1,0 @@
-Conductor: 00
-ElectronTail: 1,1
-ElectronHead: 21
-Blank: 1,3
